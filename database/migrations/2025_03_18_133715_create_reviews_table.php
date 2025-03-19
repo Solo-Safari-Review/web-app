@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->integer('like');
+            $table->integer('likes');
             $table->text('content');
             $table->integer('rating');
             $table->text('review_context_1')->nullable();
