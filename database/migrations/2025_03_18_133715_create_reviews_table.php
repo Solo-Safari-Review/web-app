@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('review_context_3')->nullable();
             $table->text('review_context_4')->nullable();
             $table->integer('predicted_rating')->nullable();
+            $table->text('answer')->nullable();
             $table->timestamps();
         });
     }
