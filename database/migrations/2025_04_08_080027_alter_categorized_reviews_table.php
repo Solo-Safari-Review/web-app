@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('categorized_reviews', function (Blueprint $table) {
-            $table->renameColumn('departement_admin_comment', 'department_admin_comments');
+            $table->renameColumn('departement_admin_comment', 'department_admin_comment');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('categorized_reviews', function (Blueprint $table) {
-            $table->renameColumn('department_admin_comment', 'departement_admin_comments');
+            $table->renameColumn('department_admin_comment', 'departement_admin_comment');
         });
     }
 };
