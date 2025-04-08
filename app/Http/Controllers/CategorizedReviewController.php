@@ -52,7 +52,7 @@ class CategorizedReviewController extends Controller
      */
     public function update(Request $request, CategorizedReview $categorizedReview)
     {
-        //
+        dd($request);
     }
 
     /**

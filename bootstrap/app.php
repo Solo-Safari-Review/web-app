@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->validateCsrfTokens(except: [
+            // 'http://solo-safari-review.test',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -8,8 +8,8 @@ class Review extends Model
 {
     protected $guarded = ['id'];
 
-    public function categorizedReviews()
+    public function categorizedReview()
     {
-        return $this->hasMany(CategorizedReview::class);
+        return $this->hasOne(CategorizedReview::class);
     }
 }

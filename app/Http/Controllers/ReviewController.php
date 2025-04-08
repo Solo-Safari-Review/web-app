@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ActionStatus;
+use App\Enums\AnswerStatus;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use App\Enums\ReviewStatus;
+use Exception;
+use Illuminate\Support\Facades\Redirect;
 
 class ReviewController extends Controller
 {
@@ -13,6 +19,7 @@ class ReviewController extends Controller
      */
     public function index(Request $request)
     {
+        return csrf_field();
         try {
             $sort = $request->query('sort');
             $sortMethod = $request->query('sort-method');
@@ -58,7 +65,7 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -66,7 +73,7 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        //
+        dd($review);
     }
 
     /**
@@ -82,7 +89,30 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        //
+        $categorizedReview = $review->categorizedReview;
+        try {
+            $validated = $request->validate([
+                'status.review' => [Rule::enum(ReviewStatus::class), 'required'],
+                'status.action' => [Rule::enum(ActionStatus::class), 'required'],
+                'status.answer' => [Rule::enum(AnswerStatus::class), 'required'],
+                'comment.review_admin' => 'nullable|max:65535',
+                'comment.department_admin' => 'nullable|max:65535',
+            ]);
+
+            dd($validated);
+
+            $categorizedReview->update([
+                'review_status' => $validated['status']['review'],
+                'action_status' => $validated['status']['action'],
+                'answer_status' => $validated['status']['answer'],
+                'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
+                'department_admin_comment' => $validated['comment']['department_admin'] ?? null,
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'Status updated successfully'], 200);
     }
 
     /**
