@@ -92,22 +92,18 @@ class ReviewController extends Controller
         $categorizedReview = $review->categorizedReview;
         try {
             $validated = $request->validate([
-                'status.review' => [Rule::enum(ReviewStatus::class), 'required'],
-                'status.action' => [Rule::enum(ActionStatus::class), 'required'],
-                'status.answer' => [Rule::enum(AnswerStatus::class), 'required'],
+                'status.review' => [Rule::enum(ReviewStatus::class)],
+                'status.action' => [Rule::enum(ActionStatus::class)],
+                'status.answer' => [Rule::enum(AnswerStatus::class)],
                 'comment.review_admin' => 'nullable|max:65535',
                 'comment.department_admin' => 'nullable|max:65535',
             ]);
 
-            dd($validated);
-
-            $categorizedReview->update([
-                'review_status' => $validated['status']['review'],
-                'action_status' => $validated['status']['action'],
-                'answer_status' => $validated['status']['answer'],
-                'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
-                'department_admin_comment' => $validated['comment']['department_admin'] ?? null,
-            ]);
+            if (!empty($validated['status']['review'])) {$categorizedReview->update(['review_status' => $validated['status']['review']]);}
+            if (!empty($validated['status']['action'])) {$categorizedReview->update(['action_status' => $validated['status']['action']]);}
+            if (!empty($validated['status']['answer'])) {$categorizedReview->update(['answer_status' => $validated['status']['answer']]);}
+            if (!empty($validated['comment']['review_admin'])) {$categorizedReview->update(['review_admin_comment' => $validated['comment']['review_admin']]);}
+            if (!empty($validated['comment']['department_admin'])) {$categorizedReview->update(['department_admin_comment' => $validated['comment']['department_admin']]);}
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
