@@ -108,7 +108,7 @@ class ReviewController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        return response()->json(['message' => 'Status updated successfully'], 200);
+        return response()->json(['message' => 'Review updated successfully'], 200);
     }
 
     /**
