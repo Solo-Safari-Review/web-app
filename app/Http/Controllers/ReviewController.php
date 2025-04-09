@@ -19,7 +19,6 @@ class ReviewController extends Controller
      */
     public function index(Request $request)
     {
-        return csrf_field();
         try {
             $sort = $request->query('sort');
             $sortMethod = $request->query('sort-method');
@@ -65,7 +64,7 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        //
     }
 
     /**
@@ -73,7 +72,7 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        dd($review);
+        //
     }
 
     /**
