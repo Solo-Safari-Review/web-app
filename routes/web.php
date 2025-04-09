@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategorizedReviewController;
 use App\Http\Controllers\ReviewController;
-use App\Models\CategorizedReview;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -9,4 +9,4 @@ Route::get('/', function () {
 });
 
 Route::resource('reviews', ReviewController::class);
-Route::resource('categorized-reviews', CategorizedReview::class);
+Route::resource('categorized-reviews', CategorizedReviewController::class);
