@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Enums\ReviewStatus;
+use App\Models\Category;
+use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 
 class ReviewController extends Controller
@@ -60,11 +63,35 @@ class ReviewController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Send review to department admin
      */
     public function store(Request $request)
     {
-        //
+        try {
+            if ($request->filled('review_id')) {$request['review_id'] = Crypt::decryptString($request->review_id);}
+            if ($request->filled('user_id')) {$request['user_id'] = Crypt::decryptString($request->user_id);}
+
+            $validated = $request->validate([
+                'review_id' => [Rule::exists(Review::class, 'id'), 'required'],
+                'user_id' => [Rule::exists(User::class, 'id'), 'required'],
+                'comment.review_admin' => 'nullable|max:65535',
+            ]);
+
+            $review = Review::find($validated['review_id']);
+
+            if ($review->categorizedReview) {
+                $review->categorizedReview()->update([
+                    'user_id' => $validated['user_id'],
+                    'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
+                ]);
+            } else {
+                return response()->json(['error' => 'This review has not been categorized yet'], 500);
+            }
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'Status updated successfully'], 200);
     }
 
     /**
@@ -86,11 +113,18 @@ class ReviewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request)
     {
-        $categorizedReview = $review->categorizedReview;
         try {
+            $reviewId = Crypt::decryptString($request->route('review'));
+            $review = Review::find($reviewId);
+
+            $categorizedReview = $review->categorizedReview;
+
+            if ($request->filled('category_id')) {$request['category_id'] = Crypt::decryptString($request->category_id);}
+
             $validated = $request->validate([
+                'category_id' => [Rule::exists(Category::class, 'id')],
                 'status.review' => [Rule::enum(ReviewStatus::class)],
                 'status.action' => [Rule::enum(ActionStatus::class)],
                 'status.answer' => [Rule::enum(AnswerStatus::class)],
@@ -98,6 +132,7 @@ class ReviewController extends Controller
                 'comment.department_admin' => 'nullable|max:65535',
             ]);
 
+            if (!empty($validated['category_id'])) {$categorizedReview->update(['category_id' => $validated['category_id']]);}
             if (!empty($validated['status']['review'])) {$categorizedReview->update(['review_status' => $validated['status']['review']]);}
             if (!empty($validated['status']['action'])) {$categorizedReview->update(['action_status' => $validated['status']['action']]);}
             if (!empty($validated['status']['answer'])) {$categorizedReview->update(['answer_status' => $validated['status']['answer']]);}
