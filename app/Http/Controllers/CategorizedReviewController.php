@@ -21,7 +21,7 @@ class CategorizedReviewController extends Controller
      */
     public function index()
     {
-        dd(Crypt::encryptString(Review::find(2)->id), Crypt::encryptString(Category::find(1)->id));
+        //
     }
 
     /**
@@ -33,14 +33,14 @@ class CategorizedReviewController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly categorized review.
      */
     public function store(Request $request)
     {
         try {
-            $request['review_id'] = Crypt::decryptString($request->review_id);
-            $request['category_id'] = Crypt::decryptString($request->category_id);
-            $request['user_id'] = Crypt::decryptString($request->user_id);
+            if ($request->filled('review_id')){$request['review_id'] = Crypt::decryptString($request->review_id);}
+            if ($request->filled('category_id')){$request['category_id'] = Crypt::decryptString($request->category_id);}
+            if ($request->filled('user_id')){$request['user_id'] = Crypt::decryptString($request->user_id);}
 
             $validated = $request->validate([
                 'review_id' => 'required|unique:categorized_reviews,review_id',
@@ -100,7 +100,7 @@ class CategorizedReviewController extends Controller
      */
     public function update(Request $request, CategorizedReview $categorizedReview)
     {
-        dd($request);
+        //
     }
 
     /**
