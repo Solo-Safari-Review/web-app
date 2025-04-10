@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class CategorizedReviewController extends Controller
@@ -19,9 +20,49 @@ class CategorizedReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        dd(Crypt::encryptString(Review::find(2)->id), Crypt::encryptString(Category::find(1)->id));
+        try {
+            $categoryId = Crypt::decryptString($request->query('category'));
+        } catch (\Exception $e) {
+            abort(400, 'Invalid category token');
+        }
+
+        // Validasi sorting
+        $allowedSorts = ['date', 'likes'];
+        $allowedSortMethods = ['asc', 'desc'];
+
+        $sort = $request->query('sort');
+        if (in_array($sort, $allowedSorts)) {
+            $sort = $sort == "date" ? "created_at" : "likes";
+        } else {
+            $sort = "created_at";
+        }
+
+        $sortMethod = strtolower($request->query('sort-method'));
+        $sortMethod = in_array($sortMethod, $allowedSortMethods) ? $sortMethod : 'desc';
+
+        $filter = $request->query('filter');
+        $categorizedReviews = DB::table('categorized_reviews')
+            ->join('reviews', 'categorized_reviews.review_id', '=', 'reviews.id')
+            ->where('categorized_reviews.category_id', $categoryId);
+
+        // Filter handling
+        if ($filter === "rating" && $request->has('rating')) {
+            $categorizedReviews->where('reviews.rating', $request->query('rating'));
+        } elseif ($filter === "action-status") {
+            $categorizedReviews->where('categorized_reviews.action_status', $request->query('status'));
+        } elseif ($filter === "review-status") {
+            $categorizedReviews->where('categorized_reviews.review_status', $request->query('status'));
+        } elseif ($filter === "answer-status") {
+            $categorizedReviews->where('categorized_reviews.answer_status', $request->query('status'));
+        }
+
+        $categorizedReviews = $categorizedReviews
+            ->orderBy('reviews.' . $sort, $sortMethod)
+            ->cursorPaginate(20);
+
+        return response()->json($categorizedReviews);
     }
 
     /**
@@ -33,14 +74,14 @@ class CategorizedReviewController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly categorized review.
      */
     public function store(Request $request)
     {
         try {
-            $request['review_id'] = Crypt::decryptString($request->review_id);
-            $request['category_id'] = Crypt::decryptString($request->category_id);
-            $request['user_id'] = Crypt::decryptString($request->user_id);
+            if ($request->filled('review_id')){$request['review_id'] = Crypt::decryptString($request->review_id);}
+            if ($request->filled('category_id')){$request['category_id'] = Crypt::decryptString($request->category_id);}
+            if ($request->filled('user_id')){$request['user_id'] = Crypt::decryptString($request->user_id);}
 
             $validated = $request->validate([
                 'review_id' => 'required|unique:categorized_reviews,review_id',
@@ -100,7 +141,7 @@ class CategorizedReviewController extends Controller
      */
     public function update(Request $request, CategorizedReview $categorizedReview)
     {
-        dd($request);
+        //
     }
 
     /**
