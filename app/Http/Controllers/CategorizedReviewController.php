@@ -125,15 +125,7 @@ class CategorizedReviewController extends Controller
      */
     public function show(Request $request)
     {
-        try {
-            $categorizedReviewId = Crypt::decryptString($request->route('categorized_review'));
-        } catch (\Exception $e) {
-            abort(400, 'Invalid review token');
-        }
-
-        $categorizedReview = CategorizedReview::with('review')->find($categorizedReviewId);
-
-        return response()->json($categorizedReview);
+        //
     }
 
     /**
