@@ -23,32 +23,36 @@ class ReviewController extends Controller
     public function index(Request $request)
     {
         try {
+            $allowedSorts = ['created_at', 'likes'];
+            $allowedSortMethods = ['asc', 'desc'];
+
             $sort = $request->query('sort');
-            $sortMethod = $request->query('sort-method');
+            $sort = in_array($sort, $allowedSorts) ? $sort : 'created_at';
+
+            $sortMethod = strtolower($request->query('sort-method'));
+            $sortMethod = in_array($sortMethod, $allowedSortMethods) ? $sortMethod : 'desc';
+
             $filter = $request->query('filter');
+            $query = DB::table('reviews');
 
-            if (!$sort || $sort == 'date') {$sort = 'created_at';} else if ($sort == 'likes') {$sort = 'likes';}
-            if (!$sortMethod || $sortMethod == 'desc') {$sortMethod = 'desc';} else if ($sortMethod == 'asc') {$sortMethod = 'asc';}
-            if (!$filter) {
-                $reviews = DB::table('reviews')->orderBy($sort, $sortMethod)->cursorPaginate(20);
+            if ($filter === "rating") {
+                $rating = $request->query('rating');
+                $query->where('rating', $rating);
             } else {
-                if ($filter == "rating") {
-                    $rating = $request->query('rating');
-                    $reviews = DB::table('reviews')->where('rating', $rating)->orderBy($sort, $sortMethod)->cursorPaginate(20);
-                } else {
-                    $status = $request->query('status');
+                $query->join('categorized_reviews', 'reviews.id', '=', 'categorized_reviews.review_id');
 
-                    if ($filter == "action-status") {
-                        $reviews = DB::table('reviews')->join('categorized_reviews', 'reviews.id', '=', 'categorized_reviews.review_id')->where('categorized_reviews.action_status', $status)->orderBy($sort, $sortMethod)->cursorPaginate(20);
-                    } else if ($filter == "review-status") {
-                        $reviews = DB::table('reviews')->join('categorized_reviews', 'reviews.id', '=', 'categorized_reviews.review_id')->where('categorized_reviews.review_status', $status)->orderBy($sort, $sortMethod)->cursorPaginate(20);
-                    } else if ($filter == "answer-status") {
-                        $reviews = DB::table('reviews')->join('categorized_reviews', 'reviews.id', '=', 'categorized_reviews.review_id')->where('categorized_reviews.answer_status', $status)->orderBy($sort, $sortMethod)->cursorPaginate(20);
-                    }
+                if ($filter == 'review-status') {
+                    $query->where("categorized_reviews.review_status", $request->query('status'));
+                } elseif ($filter == 'action-status') {
+                    $query->where("categorized_reviews.action_status", $request->query('status'));
+                } elseif ($filter == 'answer-status') {
+                    $query->where("categorized_reviews.answer_status", $request->query('status'));
                 }
             }
 
-            return $reviews;
+            $reviews = $query->orderBy('reviews.'.$sort, $sortMethod)->cursorPaginate(20);
+            return response()->json($reviews);
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
