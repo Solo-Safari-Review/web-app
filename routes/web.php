@@ -11,4 +11,4 @@ Route::get('/', function () {
 
 Route::resource('reviews', ReviewController::class);
 Route::resource('categorized-reviews', CategorizedReviewController::class);
-Route::resource('category', CategoryController::class);
+Route::resource('categories', CategoryController::class);
