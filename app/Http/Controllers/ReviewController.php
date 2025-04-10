@@ -101,9 +101,17 @@ class ReviewController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Review $review)
+    public function show(Request $request)
     {
-        //
+        try {
+            $reviewId = Crypt::decryptString($request->route('reviews'));
+        } catch (\Exception $e) {
+            abort(400, 'Invalid review token');
+        }
+
+        $review = Review::with('categorizedReview')->find($reviewId);
+
+        return response()->json($review);
     }
 
     /**
