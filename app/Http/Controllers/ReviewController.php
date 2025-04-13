@@ -35,18 +35,20 @@ class ReviewController extends Controller
             $filter = $request->query('filter');
             $query = DB::table('reviews');
 
-            if ($filter === "rating") {
-                $rating = $request->query('rating');
-                $query->where('rating', $rating);
-            } else {
-                $query->join('categorized_reviews', 'reviews.id', '=', 'categorized_reviews.review_id');
+            if ($filter) {
+                if ($filter === "rating") {
+                    $rating = $request->query('rating');
+                    $query->where('rating', $rating);
+                } else {
+                    $query->join('categorized_reviews', 'reviews.id', '=', 'categorized_reviews.review_id');
 
-                if ($filter == 'review-status') {
-                    $query->where("categorized_reviews.review_status", $request->query('status'));
-                } elseif ($filter == 'action-status') {
-                    $query->where("categorized_reviews.action_status", $request->query('status'));
-                } elseif ($filter == 'answer-status') {
-                    $query->where("categorized_reviews.answer_status", $request->query('status'));
+                    if ($filter == 'review-status') {
+                        $query->where("categorized_reviews.review_status", $request->query('status'));
+                    } elseif ($filter == 'action-status') {
+                        $query->where("categorized_reviews.action_status", $request->query('status'));
+                    } elseif ($filter == 'answer-status') {
+                        $query->where("categorized_reviews.answer_status", $request->query('status'));
+                    }
                 }
             }
 
