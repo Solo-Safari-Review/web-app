@@ -92,7 +92,7 @@ class TopicController extends Controller
         try {
             Topic::find($topicId)->delete();
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            abort(400, 'Topic cannot be deleted');
         }
 
         return response()->json(['message' => 'Topic deleted successfully'], 200);

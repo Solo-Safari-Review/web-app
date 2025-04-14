@@ -92,7 +92,7 @@ class CategoryController extends Controller
         try {
             Category::find($categoryId)->delete();
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            abort(400, 'Category cannot be deleted');
         }
 
         return response()->json(['message' => 'Category deleted successfully'], 200);

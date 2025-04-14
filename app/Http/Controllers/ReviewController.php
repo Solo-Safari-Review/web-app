@@ -173,7 +173,7 @@ class ReviewController extends Controller
         try {
             Review::find($reviewId)->delete();
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            abort(400, 'Review cannot be deleted');
         }
 
         return response()->json(['message' => 'Review deleted successfully'], 200);

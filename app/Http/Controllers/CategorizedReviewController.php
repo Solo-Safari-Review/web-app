@@ -158,7 +158,7 @@ class CategorizedReviewController extends Controller
         try {
             CategorizedReview::find($categorizedReviewId)->delete();
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            abort(400, 'Categorized review cannot be deleted');
         }
 
         return response()->json(['message' => 'Categorized review deleted successfully'], 200);
