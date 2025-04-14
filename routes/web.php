@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategorizedReviewController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,3 +13,4 @@ Route::get('/', function () {
 Route::resource('reviews', ReviewController::class);
 Route::resource('categorized-reviews', CategorizedReviewController::class);
 Route::resource('categories', CategoryController::class);
+Route::resource('topics', TopicController::class);
