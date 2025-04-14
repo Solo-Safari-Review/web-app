@@ -12,4 +12,9 @@ class Review extends Model
     {
         return $this->hasOne(CategorizedReview::class);
     }
+
+    public function topics()
+    {
+        return $this->belongsToMany(Topic::class, 'reviewstopics');
+    }
 }
