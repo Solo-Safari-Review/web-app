@@ -6,6 +6,7 @@ use App\Models\Topic;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class TopicController extends Controller
 {
@@ -80,8 +81,20 @@ class TopicController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Topic $topic)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $topicId = Crypt::decryptString($request->query('topic'));
+        } catch (\Exception $e) {
+            abort(400, 'Invalid topic token');
+        }
+
+        try {
+            Topic::find($topicId)->delete();
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'Topic deleted successfully'], 200);
     }
 }

@@ -162,8 +162,20 @@ class ReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Review $review)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $reviewId = Crypt::decryptString($request->query('review'));
+        } catch (\Exception $e) {
+            abort(400, 'Invalid review token');
+        }
+
+        try {
+            Review::find($reviewId)->delete();
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'Review deleted successfully'], 200);
     }
 }

@@ -81,8 +81,20 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $categoryId = Crypt::decryptString($request->query('category'));
+        } catch (\Exception $e) {
+            abort(400, 'Invalid category token');
+        }
+
+        try {
+            Category::find($categoryId)->delete();
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'Category deleted successfully'], 200);
     }
 }
