@@ -16,7 +16,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         try {
-            $categories = Category::all();
+            $categories = Category::with('categorizedReviews')->get();
 
             return $categories;
         } catch (\Throwable $th) {

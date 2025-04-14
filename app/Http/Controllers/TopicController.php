@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Topic;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 
 class TopicController extends Controller
@@ -12,7 +14,13 @@ class TopicController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $topics = Topic::with('reviews')->get();
+
+            return $topics;
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
     }
 
     /**
@@ -28,7 +36,21 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'name' => 'required|unique:topics,name',
+            ]);
+
+            Topic::create([
+                'name' => $validated['name'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
+        return response()->json(['message' => 'Category created successfully'], 200);
     }
 
     /**
