@@ -15,6 +15,6 @@ class Review extends Model
 
     public function topics()
     {
-        return $this->belongsToMany(Topic::class, 'reviewstopics');
+        return $this->belongsToMany(Topic::class);
     }
 }

@@ -10,6 +10,6 @@ class Topic extends Model
 
     public function reviews()
     {
-        return $this->belongsToMany(Review::class, 'reviewstopics');
+        return $this->belongsToMany(Review::class);
     }
 }
