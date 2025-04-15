@@ -8,7 +8,7 @@ use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return csrf_token();
+    return view('home');
 });
 
 Route::get('/login', [LoginController::class, 'show'])->name('login.show');
