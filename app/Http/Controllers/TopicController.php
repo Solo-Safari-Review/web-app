@@ -6,6 +6,7 @@ use App\Models\Topic;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 
 class TopicController extends Controller
@@ -16,7 +17,10 @@ class TopicController extends Controller
     public function index()
     {
         try {
-            $topics = Topic::with('reviews')->get();
+            $ttl = 5 * 60;
+            $topics = Cache::remember('topics', $ttl, function () {
+                return Topic::with('reviews')->get();
+            });
 
             return $topics;
         } catch (\Throwable $th) {

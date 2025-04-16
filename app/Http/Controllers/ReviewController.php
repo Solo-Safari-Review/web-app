@@ -12,6 +12,7 @@ use App\Enums\ReviewStatus;
 use App\Models\Category;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 
@@ -20,7 +21,27 @@ class ReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
+    {
+        try {
+            $ttl = 5 * 60;
+
+            $recentReviews = Cache::remember('recent_reviews', $ttl, function () {
+                return Review::with('categorizedReview')->orderBy('created_at', 'desc')->limit(5)->get();
+            });
+
+            $mostHelpfulReviews = Cache::remember('most_helpful_reviews', $ttl, function () {
+                return Review::with('categorizedReview')->orderBy('likes', 'desc')->limit(5)->get();
+            });
+
+            return response()->json(["recent_reviews" => $recentReviews, "most_helpful_reviews" => $mostHelpfulReviews]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function allReviews(Request $request)
     {
         try {
             $allowedSorts = ['created_at', 'likes'];
