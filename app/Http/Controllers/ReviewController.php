@@ -12,6 +12,7 @@ use App\Enums\ReviewStatus;
 use App\Models\Category;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
@@ -26,23 +27,45 @@ class ReviewController extends Controller
         try {
             $ttl = 5 * 60;
 
-            $topCategories = Cache::remember('top_categories', $ttl, function () {
-                return Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->limit(5)->get();
-            });
+            if (Auth::user()->hasRole('department_admin')) {
+                $recentReviews = Cache::remember('recent_reviews' . Crypt::encryptString(Auth::user()->id), $ttl, function () {
+                    return Review::with('categorizedReview')
+                        ->whereHas('categorizedReview', function ($query) {
+                            $query->where('user_id', Auth::user()->id);
+                        })
+                        ->orderBy('created_at', 'desc')->limit(5)->get();
+                });
+                $mostHelpfulReviews = Cache::remember('most_helpful_reviews' . Crypt::encryptString(Auth::user()->id), $ttl, function () {
+                    return Review::with('categorizedReview')
+                        ->whereHas('categorizedReview', function ($query) {
+                            $query->where('user_id', Auth::user()->id);
+                        })
+                        ->orderBy('likes', 'desc')->limit(5)->get();
+                });
 
-            $recentReviews = Cache::remember('recent_reviews', $ttl, function () {
-                return Review::with('categorizedReview.category')->orderBy('created_at', 'desc')->limit(5)->get();
-            });
+                return response()->json([
+                    "recent_reviews" => $recentReviews,
+                    "most_helpful_reviews" => $mostHelpfulReviews
+                ]);
+            }
 
-            $mostHelpfulReviews = Cache::remember('most_helpful_reviews', $ttl, function () {
-                return Review::with('categorizedReview.category')->orderBy('likes', 'desc')->limit(5)->get();
-            });
+            else {
+                $topCategories = Cache::remember('top_categories', $ttl, function () {
+                    return Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->limit(5)->get();
+                });
+                $recentReviews = Cache::remember('recent_reviews', $ttl, function () {
+                    return Review::with('categorizedReview.category')->orderBy('created_at', 'desc')->limit(5)->get();
+                });
+                $mostHelpfulReviews = Cache::remember('most_helpful_reviews', $ttl, function () {
+                    return Review::with('categorizedReview.category')->orderBy('likes', 'desc')->limit(5)->get();
+                });
 
-            return response()->json([
-                "topCategories" => $topCategories,
-                "recent_reviews" => $recentReviews,
-                "most_helpful_reviews" => $mostHelpfulReviews
-            ]);
+                return response()->json([
+                    "topCategories" => $topCategories,
+                    "recent_reviews" => $recentReviews,
+                    "most_helpful_reviews" => $mostHelpfulReviews
+                ]);
+            }
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -62,15 +85,54 @@ class ReviewController extends Controller
             $sortMethod = in_array($sortMethod, $allowedSortMethods) ? $sortMethod : 'desc';
 
             $filter = $request->query('filter');
-            $query = DB::table('reviews');
+
+            if ($request->query('category')) {
+                try {
+                    $categoryId = Crypt::decryptString($request->query('category'));
+
+                    $query = DB::table('reviews')
+                        ->join('categorized_reviews', function ($join) use ($categoryId) {
+                            $join
+                                ->on('reviews.id', '=', 'categorized_reviews.review_id')
+                                ->join('categories', 'categorized_reviews.category_id', '=', 'categories.id')
+                                ->where('categorized_reviews.category_id', $categoryId);
+                        })
+                        ->select([
+                            'reviews.*',
+                            'categorized_reviews.review_status',
+                            'categorized_reviews.action_status',
+                            'categorized_reviews.answer_status',
+                            'categories.name',
+                        ]);
+                } catch (\Exception $e) {
+                    abort(400, 'Invalid category token');
+                }
+            } else {
+                $query = DB::table('reviews')
+                    ->join('categorized_reviews', function ($join) {
+                        $join
+                            ->on('reviews.id', '=', 'categorized_reviews.review_id')
+                            ->join('categories', 'categorized_reviews.category_id', '=', 'categories.id');
+                    })
+                    ->select([
+                        'reviews.*',
+                        'categorized_reviews.review_status',
+                        'categorized_reviews.action_status',
+                        'categorized_reviews.answer_status',
+                        'categories.name',
+                    ]);
+            }
+
+
+            if (Auth::user()->hasRole('department_admin')) {
+                $query->where('categorized_reviews.user_id', Auth::user()->id);
+            }
 
             if ($filter) {
                 if ($filter === "rating") {
                     $rating = $request->query('rating');
                     $query->where('rating', $rating);
                 } else {
-                    $query->join('categorized_reviews', 'reviews.id', '=', 'categorized_reviews.review_id');
-
                     if ($filter == 'review-status') {
                         $query->where("categorized_reviews.review_status", $request->query('status'));
                     } elseif ($filter == 'action-status') {

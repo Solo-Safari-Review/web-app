@@ -22,47 +22,7 @@ class CategorizedReviewController extends Controller
      */
     public function index(Request $request)
     {
-        try {
-            $categoryId = Crypt::decryptString($request->query('category'));
-        } catch (\Exception $e) {
-            abort(400, 'Invalid category token');
-        }
-
-        // Validasi sorting
-        $allowedSorts = ['date', 'likes'];
-        $allowedSortMethods = ['asc', 'desc'];
-
-        $sort = $request->query('sort');
-        if (in_array($sort, $allowedSorts)) {
-            $sort = $sort == "date" ? "created_at" : "likes";
-        } else {
-            $sort = "created_at";
-        }
-
-        $sortMethod = strtolower($request->query('sort-method'));
-        $sortMethod = in_array($sortMethod, $allowedSortMethods) ? $sortMethod : 'desc';
-
-        $filter = $request->query('filter');
-        $categorizedReviews = DB::table('categorized_reviews')
-            ->join('reviews', 'categorized_reviews.review_id', '=', 'reviews.id')
-            ->where('categorized_reviews.category_id', $categoryId);
-
-        // Filter handling
-        if ($filter === "rating" && $request->has('rating')) {
-            $categorizedReviews->where('reviews.rating', $request->query('rating'));
-        } elseif ($filter === "action-status") {
-            $categorizedReviews->where('categorized_reviews.action_status', $request->query('status'));
-        } elseif ($filter === "review-status") {
-            $categorizedReviews->where('categorized_reviews.review_status', $request->query('status'));
-        } elseif ($filter === "answer-status") {
-            $categorizedReviews->where('categorized_reviews.answer_status', $request->query('status'));
-        }
-
-        $categorizedReviews = $categorizedReviews
-            ->orderBy('reviews.' . $sort, $sortMethod)
-            ->cursorPaginate(20);
-
-        return response()->json($categorizedReviews);
+        //
     }
 
     /**

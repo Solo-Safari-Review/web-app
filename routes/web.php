@@ -6,11 +6,16 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TopicController;
+use App\Models\Category;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // return view('home');
-    return csrf_token();
+    return response()->json([
+        'csrf_token' => csrf_token(),
+        'category2id' => Crypt::encryptString(Category::find(2)->id),
+    ]);
 });
 
 Route::get('/login', [LoginController::class, 'show'])->name('login.show');
@@ -23,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('topics', TopicController::class);
     });
     Route::middleware(['role:department_admin|review_admin'])->group(function () {
+        Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
         Route::resource('reviews', ReviewController::class);
         Route::resource('categorized-reviews', CategorizedReviewController::class);
         Route::get('/search', [SearchController::class, 'search'])->name('search');
