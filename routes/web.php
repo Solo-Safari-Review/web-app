@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\HashidsHelper;
 use App\Http\Controllers\CategorizedReviewController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController;
@@ -14,7 +15,7 @@ Route::get('/', function () {
     // return view('home');
     return response()->json([
         'csrf_token' => csrf_token(),
-        'category2id' => Crypt::encryptString(Category::find(2)->id),
+        'category1id' => HashidsHelper::encode(Category::find(1)->id),
     ]);
 });
 

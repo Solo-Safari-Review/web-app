@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HashidsHelper;
 use App\Models\Topic;
 use Carbon\Carbon;
 use Exception;
@@ -93,7 +94,7 @@ class TopicController extends Controller
     {
         if (Auth::user()->hasPermissionTo('delete_topic')) {
             try {
-                $topicId = Crypt::decryptString($request->query('topic'));
+                $topicId = HashidsHelper::decode($request->route('topic'));
             } catch (\Exception $e) {
                 abort(400, 'Invalid topic token');
             }

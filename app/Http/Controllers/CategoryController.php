@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HashidsHelper;
 use App\Models\Category;
 use Carbon\Carbon;
 use Exception;
@@ -92,7 +93,7 @@ class CategoryController extends Controller
     {
         if (Auth::user()->hasPermissionTo('delete_category')) {
             try {
-                $categoryId = Crypt::decryptString($request->query('category'));
+                $categoryId = HashidsHelper::decode($request->route('category'));
             } catch (\Exception $e) {
                 abort(400, 'Invalid category token');
             }

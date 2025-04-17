@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Enums\ReviewStatus;
+use App\Helpers\HashidsHelper;
 use App\Models\Category;
 use App\Models\User;
 use Exception;
@@ -88,7 +89,7 @@ class ReviewController extends Controller
 
             if ($request->query('category')) {
                 try {
-                    $categoryId = Crypt::decryptString($request->query('category'));
+                    $categoryId = HashidsHelper::decode($request->query('category'));
 
                     $query = DB::table('reviews')
                         ->join('categorized_reviews', function ($join) use ($categoryId) {
@@ -166,8 +167,8 @@ class ReviewController extends Controller
     {
         try {
             if (Auth::user()->hasPermissionTo('send_review')) {
-                if ($request->filled('review_id')) {$request['review_id'] = Crypt::decryptString($request->review_id);}
-                if ($request->filled('user_id')) {$request['user_id'] = Crypt::decryptString($request->user_id);}
+                if ($request->filled('review_id')) {$request['review_id'] = HashidsHelper::decode($request->review_id);}
+                if ($request->filled('user_id')) {$request['user_id'] = HashidsHelper::decode($request->user_id);}
 
                 $validated = $request->validate([
                     'review_id' => [Rule::exists(Review::class, 'id'), 'required'],
@@ -201,7 +202,7 @@ class ReviewController extends Controller
     public function show(Request $request)
     {
         try {
-            $reviewId = Crypt::decryptString($request->route('reviews'));
+            $reviewId = HashidsHelper::decode($request->route('reviews'));
         } catch (\Exception $e) {
             abort(400, 'Invalid review token');
         }
@@ -233,12 +234,12 @@ class ReviewController extends Controller
     public function update(Request $request)
     {
         try {
-            $reviewId = Crypt::decryptString($request->route('review'));
+            $reviewId = HashidsHelper::decode($request->route('review'));
             $review = Review::find($reviewId);
 
             $categorizedReview = $review->categorizedReview;
 
-            if ($request->filled('category_id')) {$request['category_id'] = Crypt::decryptString($request->category_id);}
+            if ($request->filled('category_id')) {$request['category_id'] = HashidsHelper::decode($request->category_id);}
 
             $validated = $request->validate([
                 'category_id' => [Rule::exists(Category::class, 'id')],
@@ -277,7 +278,7 @@ class ReviewController extends Controller
     {
         if (Auth::user()->hasPermissionTo('delete_review')) {
             try {
-                $reviewId = Crypt::decryptString($request->query('review'));
+                $reviewId = HashidsHelper::decode($request->route('review'));
             } catch (\Exception $e) {
                 abort(400, 'Invalid review token');
             }

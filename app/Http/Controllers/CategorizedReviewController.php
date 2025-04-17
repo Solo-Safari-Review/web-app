@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ActionStatus;
 use App\Enums\AnswerStatus;
 use App\Enums\ReviewStatus;
+use App\Helpers\HashidsHelper;
 use App\Models\CategorizedReview;
 use App\Models\Category;
 use App\Models\Review;
@@ -41,9 +42,9 @@ class CategorizedReviewController extends Controller
     {
         try {
             if (Auth::user()->hasPermissionTo('categorizing_review')) {
-                if ($request->filled('review_id')){$request['review_id'] = Crypt::decryptString($request->review_id);}
-                if ($request->filled('category_id')){$request['category_id'] = Crypt::decryptString($request->category_id);}
-                if ($request->filled('user_id')){$request['user_id'] = Crypt::decryptString($request->user_id);}
+                if ($request->filled('review_id')){$request['review_id'] = HashidsHelper::decode($request->review_id);}
+                if ($request->filled('category_id')){$request['category_id'] = HashidsHelper::decode($request->category_id);}
+                if ($request->filled('user_id')){$request['user_id'] = HashidsHelper::decode($request->user_id);}
 
                 $validated = $request->validate([
                     'review_id' => 'required|unique:categorized_reviews,review_id',
