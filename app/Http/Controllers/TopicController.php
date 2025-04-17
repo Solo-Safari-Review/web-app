@@ -6,6 +6,7 @@ use App\Models\Topic;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 
@@ -41,21 +42,24 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'name' => 'required|unique:topics,name',
-            ]);
+        if (Auth::user()->hasPermissionTo('make_topic')) {
+            try {
+                $validated = $request->validate([
+                    'name' => 'required|unique:topics,name',
+                ]);
 
-            Topic::create([
-                'name' => $validated['name'],
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
-        } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+                Topic::create([
+                    'name' => $validated['name'],
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+                return response()->json(['message' => 'Category created successfully'], 200);
+
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
         }
-
-        return response()->json(['message' => 'Category created successfully'], 200);
     }
 
     /**
@@ -87,18 +91,20 @@ class TopicController extends Controller
      */
     public function destroy(Request $request)
     {
-        try {
-            $topicId = Crypt::decryptString($request->query('topic'));
-        } catch (\Exception $e) {
-            abort(400, 'Invalid topic token');
-        }
+        if (Auth::user()->hasPermissionTo('delete_topic')) {
+            try {
+                $topicId = Crypt::decryptString($request->query('topic'));
+            } catch (\Exception $e) {
+                abort(400, 'Invalid topic token');
+            }
 
-        try {
-            Topic::find($topicId)->delete();
-        } catch (Exception $e) {
-            abort(400, 'Topic cannot be deleted');
-        }
+            try {
+                Topic::find($topicId)->delete();
+            } catch (Exception $e) {
+                abort(400, 'Topic cannot be deleted');
+            }
 
-        return response()->json(['message' => 'Topic deleted successfully'], 200);
+            return response()->json(['message' => 'Topic deleted successfully'], 200);
+        }
     }
 }

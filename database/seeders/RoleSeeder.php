@@ -17,15 +17,17 @@ class RoleSeeder extends Seeder
         $reviewAdmin = Role::create(['name' => 'review_admin']);
         $departmentAdmin = Role::create(['name' => 'department_admin']);
 
-        $makeCategory = Permission::create(['name' => 'make_category']);
-        $makeTopic = Permission::create(['name' => 'make_topic']);
         $flaggingReview = Permission::create(['name' => 'flagging_review']);
         $sendReview = Permission::create(['name' => 'send_review']);
         $categorizingReview = Permission::create(['name' => 'categorizing_review']);
         $commentReview = Permission::create(['name' => 'comment_review']);
-        $seeReview = Permission::create(['name' => 'see_review']);
         $updateReviewDatabase = Permission::create(['name' => 'update_review_database']);
-        $updateReviewStatus = Permission::create(['name' => 'update_review_status']);
+        $deleteReview = Permission::create(['name' => 'delete_review']);
+
+        $makeCategory = Permission::create(['name' => 'make_category']);
+        $makeTopic = Permission::create(['name' => 'make_topic']);
+        $deleteCategory = Permission::create(['name' => 'delete_category']);
+        $deleteTopic = Permission::create(['name' => 'delete_topic']);
 
         $reviewAdmin->givePermissionTo($makeCategory);
         $reviewAdmin->givePermissionTo($makeTopic);
@@ -33,11 +35,11 @@ class RoleSeeder extends Seeder
         $reviewAdmin->givePermissionTo($sendReview);
         $reviewAdmin->givePermissionTo($categorizingReview);
         $reviewAdmin->givePermissionTo($commentReview);
-        $reviewAdmin->givePermissionTo($seeReview);
         $reviewAdmin->givePermissionTo($updateReviewDatabase);
-        $reviewAdmin->givePermissionTo($updateReviewStatus);
+        $reviewAdmin->givePermissionTo($deleteReview);
+        $reviewAdmin->givePermissionTo($deleteCategory);
+        $reviewAdmin->givePermissionTo($deleteTopic);
 
         $departmentAdmin->givePermissionTo($commentReview);
-        $departmentAdmin->givePermissionTo($seeReview);
     }
 }

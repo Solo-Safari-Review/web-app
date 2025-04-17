@@ -11,6 +11,7 @@ use App\Models\Review;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -39,45 +40,50 @@ class CategorizedReviewController extends Controller
     public function store(Request $request)
     {
         try {
-            if ($request->filled('review_id')){$request['review_id'] = Crypt::decryptString($request->review_id);}
-            if ($request->filled('category_id')){$request['category_id'] = Crypt::decryptString($request->category_id);}
-            if ($request->filled('user_id')){$request['user_id'] = Crypt::decryptString($request->user_id);}
+            if (Auth::user()->hasPermissionTo('categorizing_review')) {
+                if ($request->filled('review_id')){$request['review_id'] = Crypt::decryptString($request->review_id);}
+                if ($request->filled('category_id')){$request['category_id'] = Crypt::decryptString($request->category_id);}
+                if ($request->filled('user_id')){$request['user_id'] = Crypt::decryptString($request->user_id);}
 
-            $validated = $request->validate([
-                'review_id' => 'required|unique:categorized_reviews,review_id',
-                'category_id' => 'required',
-                'user_id' => [
-                    'nullable',
-                    Rule::requiredIf(fn () =>
-                        data_get($request, 'status.review') === ReviewStatus::Sended->value
-                        || data_get($request, 'status.action') === ActionStatus::InProgress->value
-                        || data_get($request, 'status.action') === ActionStatus::Finished->value
-                    ),
-                ],
-                'status.review' => [Rule::enum(ReviewStatus::class)],
-                'status.action' => [Rule::enum(ActionStatus::class)],
-                'status.answer' => [Rule::enum(AnswerStatus::class)],
-                'comment.review_admin' => 'nullable|max:65535',
-                'comment.department_admin' => 'nullable|max:65535',
-            ]);
+                $validated = $request->validate([
+                    'review_id' => 'required|unique:categorized_reviews,review_id',
+                    'category_id' => 'required',
+                    'user_id' => [
+                        'nullable',
+                        Rule::requiredIf(fn () =>
+                            data_get($request, 'status.review') === ReviewStatus::Sended->value
+                            || data_get($request, 'status.action') === ActionStatus::InProgress->value
+                            || data_get($request, 'status.action') === ActionStatus::Finished->value
+                        ),
+                    ],
+                    'status.review' => [Rule::enum(ReviewStatus::class)],
+                    'status.action' => [Rule::enum(ActionStatus::class)],
+                    'status.answer' => [Rule::enum(AnswerStatus::class)],
+                    'comment.review_admin' => 'nullable|max:65535',
+                    'comment.department_admin' => 'nullable|max:65535',
+                ]);
 
-            CategorizedReview::create([
-                'review_id' => $validated['review_id'],
-                'category_id' => $validated['category_id'],
-                'user_id' => $validated['user_id'] ?? null,
-                'review_status' => $validated['status']['review'] ?? ReviewStatus::Unsended,
-                'action_status' => $validated['status']['action'] ?? ActionStatus::Unfinished,
-                'answer_status' => $validated['status']['answer'] ?? AnswerStatus::Unanswered,
-                'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
-                'department_admin_comment' => $validated['comment']['department_admin'] ?? null,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ]);
+                CategorizedReview::create([
+                    'review_id' => $validated['review_id'],
+                    'category_id' => $validated['category_id'],
+                    'user_id' => $validated['user_id'] ?? null,
+                    'review_status' => $validated['status']['review'] ?? ReviewStatus::Unsended,
+                    'action_status' => $validated['status']['action'] ?? ActionStatus::Unfinished,
+                    'answer_status' => $validated['status']['answer'] ?? AnswerStatus::Unanswered,
+                    'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
+                    'department_admin_comment' => $validated['comment']['department_admin'] ?? null,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+                return response()->json(['message' => 'Review categorized successfully'], 200);
+            } else {
+                abort(403, 'You do not have permission to categorize a review');
+            }
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        return response()->json(['message' => 'Review categorized successfully'], 200);
     }
 
     /**
@@ -109,18 +115,6 @@ class CategorizedReviewController extends Controller
      */
     public function destroy(Request $request)
     {
-        try {
-            $categorizedReviewId = Crypt::decryptString($request->query('categorizedReview'));
-        } catch (\Exception $e) {
-            abort(400, 'Invalid categorized review token');
-        }
-
-        try {
-            CategorizedReview::find($categorizedReviewId)->delete();
-        } catch (Exception $e) {
-            abort(400, 'Categorized review cannot be deleted');
-        }
-
-        return response()->json(['message' => 'Categorized review deleted successfully'], 200);
+        //
     }
 }
