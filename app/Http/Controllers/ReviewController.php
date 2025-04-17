@@ -165,8 +165,8 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            if (Auth::user()->hasPermissionTo('send_review')) {
+        if (Auth::user()->hasPermissionTo('send_review')) {
+            try {
                 if ($request->filled('review_id')) {$request['review_id'] = HashidsHelper::decode($request->review_id);}
                 if ($request->filled('user_id')) {$request['user_id'] = HashidsHelper::decode($request->user_id);}
 
@@ -183,17 +183,18 @@ class ReviewController extends Controller
                         'user_id' => $validated['user_id'],
                         'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
                     ]);
+
+                    return response()->json(['message' => 'Status updated successfully'], 200);
                 } else {
                     return response()->json(['error' => 'This review has not been categorized yet'], 500);
                 }
-            } else {
-                abort(403, 'You do not have permission to send a review');
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
             }
-        } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        } else {
+            abort(403, 'You do not have permission to send a review');
         }
 
-        return response()->json(['message' => 'Status updated successfully'], 200);
     }
 
     /**
