@@ -4,6 +4,7 @@ use App\Http\Controllers\CategorizedReviewController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:department_admin|review_admin'])->group(function () {
         Route::resource('reviews', ReviewController::class);
         Route::resource('categorized-reviews', CategorizedReviewController::class);
+        Route::get('/search', [SearchController::class, 'search'])->name('search');
     });
 });
 
