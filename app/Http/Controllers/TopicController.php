@@ -19,7 +19,7 @@ class TopicController extends Controller
         try {
             $ttl = 5 * 60;
             $topics = Cache::remember('topics', $ttl, function () {
-                return Topic::with('reviews')->get();
+                return Topic::withCount('reviews')->orderBy('reviews_count', 'desc')->get();
             });
 
             return $topics;

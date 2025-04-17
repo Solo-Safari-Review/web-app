@@ -19,7 +19,7 @@ class CategoryController extends Controller
         try {
             $ttl = 5 * 60;
             $categories = Cache::remember('categories', $ttl, function () {
-                return Category::with('categorizedReviews')->get();
+                return Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->get();
             });
 
             return $categories;

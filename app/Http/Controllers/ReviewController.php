@@ -26,15 +26,23 @@ class ReviewController extends Controller
         try {
             $ttl = 5 * 60;
 
+            $topCategories = Cache::remember('top_categories', $ttl, function () {
+                return Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->limit(5)->get();
+            });
+
             $recentReviews = Cache::remember('recent_reviews', $ttl, function () {
-                return Review::with('categorizedReview')->orderBy('created_at', 'desc')->limit(5)->get();
+                return Review::with('categorizedReview.category')->orderBy('created_at', 'desc')->limit(5)->get();
             });
 
             $mostHelpfulReviews = Cache::remember('most_helpful_reviews', $ttl, function () {
-                return Review::with('categorizedReview')->orderBy('likes', 'desc')->limit(5)->get();
+                return Review::with('categorizedReview.category')->orderBy('likes', 'desc')->limit(5)->get();
             });
 
-            return response()->json(["recent_reviews" => $recentReviews, "most_helpful_reviews" => $mostHelpfulReviews]);
+            return response()->json([
+                "topCategories" => $topCategories,
+                "recent_reviews" => $recentReviews,
+                "most_helpful_reviews" => $mostHelpfulReviews
+            ]);
 
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
