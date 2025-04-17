@@ -65,25 +65,54 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show(Request $request)
     {
-        //
+        try {
+            $categoryId = HashidsHelper::decode($request->route('category'));
+            $category = Category::with('categorizedReviews')->find($categoryId);
+
+            return response()->json($category);
+        } catch (\Exception $e) {
+            abort(400, 'Invalid category token');
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit(Request $request)
     {
-        //
+        try {
+            $categoryId = HashidsHelper::decode($request->route('category'));
+            $category = Category::find($categoryId);
+
+            return response()->json($category);
+        } catch (\Exception $e) {
+            abort(400, 'Invalid category token');
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'name' => 'required|unique:categories,name',
+            ]);
+
+            $categoryId = HashidsHelper::decode($request->route('category'));
+            $category = Category::find($categoryId);
+
+            $category->update([
+               'name' => $validated['name'],
+            ]);
+
+            return response()->json(['message' => 'Category updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**

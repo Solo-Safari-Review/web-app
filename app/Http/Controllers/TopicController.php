@@ -66,25 +66,54 @@ class TopicController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Topic $topic)
+    public function show(Request $request)
     {
-        //
+        try {
+            $topicId = HashidsHelper::decode($request->route('topic'));
+            $topic = Topic::with('reviews')->find($topicId);
+
+            return response()->json($topic);
+        } catch (\Exception $e) {
+            abort(400, 'Invalid topic token');
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Topic $topic)
+    public function edit(Request $request)
     {
-        //
+        try {
+            $topicId = HashidsHelper::decode($request->route('topic'));
+            $topic = Topic::find($topicId);
+
+            return response()->json($topic);
+        } catch (\Exception $e) {
+            abort(400, 'Invalid topic token');
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Topic $topic)
+    public function update(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'name' => 'required|unique:topics,name',
+            ]);
+
+            $topicId = HashidsHelper::decode($request->route('topic'));
+            $topic = Topic::find($topicId);
+
+            $topic->update([
+               'name' => $validated['name'],
+            ]);
+
+            return response()->json(['message' => 'Topic updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
