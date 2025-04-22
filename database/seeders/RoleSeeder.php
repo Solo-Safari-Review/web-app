@@ -14,8 +14,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $reviewAdmin = Role::create(['name' => 'review_admin']);
-        $departmentAdmin = Role::create(['name' => 'department_admin']);
+        $reviewAdmin = Role::create(['name' => 'Admin Review']);
+        $departmentAdmin = Role::create(['name' => 'Admin Departemen']);
 
         $flaggingReview = Permission::create(['name' => 'flagging_review']);
         $sendReview = Permission::create(['name' => 'send_review']);

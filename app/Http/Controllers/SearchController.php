@@ -18,7 +18,7 @@ class SearchController extends Controller
     {
         $query = $request->input('q');
 
-        if (Auth::user()->hasRole('department_admin')) {
+        if (Auth::user()->hasRole('Admin Departemen')) {
             $searchResults = (new Search())
                 ->registerAspect(ReviewSearchAspect::class)
                 ->search($query)

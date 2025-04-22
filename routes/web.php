@@ -15,7 +15,6 @@ Route::get('/', function () {
     // return view('home');
     return response()->json([
         'csrf_token' => csrf_token(),
-        'category1id' => HashidsHelper::encode(Category::find(1)->id),
     ]);
 });
 
