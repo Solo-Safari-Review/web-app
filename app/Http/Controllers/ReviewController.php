@@ -28,7 +28,7 @@ class ReviewController extends Controller
         try {
             $ttl = 5 * 60;
 
-            if (Auth::user()->hasRole('department_admin')) {
+            if (Auth::user()->hasRole('Admin Departemen')) {
                 $recentReviews = Cache::remember('recent_reviews' . Crypt::encryptString(Auth::user()->id), $ttl, function () {
                     return Review::with('categorizedReview')
                         ->whereHas('categorizedReview', function ($query) {
@@ -125,7 +125,7 @@ class ReviewController extends Controller
             }
 
 
-            if (Auth::user()->hasRole('department_admin')) {
+            if (Auth::user()->hasRole('Admin Departemen')) {
                 $query->where('categorized_reviews.user_id', Auth::user()->id);
             }
 
@@ -208,7 +208,7 @@ class ReviewController extends Controller
             abort(400, 'Invalid review token');
         }
 
-        if (Auth::user()->hasRole('department_admin')) {
+        if (Auth::user()->hasRole('Admin Departemen')) {
             $review = Review::with('categorizedReview')
                 ->whereHas('categorizedReview', function ($query) {
                     $query->where('user_id', Auth::user()->id);

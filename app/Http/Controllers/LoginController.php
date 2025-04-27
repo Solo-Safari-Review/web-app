@@ -32,7 +32,7 @@ class LoginController extends Controller
         // Redirect berdasarkan role
         if ($user->hasRole('Admin Review')) {
             return redirect()->route('admin.review.dashboard');
-        } elseif ($user->hasRole('department_admin')) {
+        } elseif ($user->hasRole('Admin Departemen')) {
             return redirect()->route('admin.departemen.dashboard');
         }
 
