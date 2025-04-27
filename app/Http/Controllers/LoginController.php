@@ -35,8 +35,6 @@ class LoginController extends Controller
         } elseif ($user->hasRole('Admin Departemen')) {
             return redirect()->route('admin.departemen.dashboard');
         }
-
-        return redirect()->route('home');
     }
 
     public function logout(Request $request)
