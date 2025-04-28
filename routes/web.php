@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // return view('home');
-    return response()->json([
-        'csrf_token' => csrf_token(),
-    ]);
+    return view('home');
+    // return response()->json([
+    //     'csrf_token' => csrf_token(),
+    // ]);
 });
 
 Route::middleware(['guest'])->group(function () {

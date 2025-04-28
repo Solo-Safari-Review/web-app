@@ -5,9 +5,9 @@
 @endsection
 
 @section('main')
-    <div class="bg-red">Header</div>
+
 @endsection
 
 @section('footer')
-    <div>Footer</div>
+
 @endsection
