@@ -64,7 +64,7 @@ $sidebarItems = [
 @endphp
 
 {{-- narrow sidebar --}}
-<div class="z-40 w-32 px-4 py-10 transition-transform bg-[#1E1E1E] flex flex-col gap-12 min-h-screen h-fit">
+<div class="z-40 w-32 px-4 py-10 transition-transform bg-[#1E1E1E] flex flex-col gap-12 min-h-screen">
    <div class="flex flex-col gap-8 mx-auto">
         <a href="{{ url()->previous() }}" type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]">
            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
