@@ -1,4 +1,4 @@
- <!-- wide sidebar -->
+<!-- wide sidebar -->
 <div id="wide-sidebar" class="fixed top-0 left-0 z-40 w-[296px] min-h-full px-4 py-12 transition-transform -translate-x-full bg-[#1E1E1E] flex flex-col gap-12" tabindex="-1" aria-labelledby="wide-sidebar-label">
     <div class="flex justify-between">
         <button type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]">

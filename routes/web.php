@@ -9,10 +9,13 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TopicController;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    if (!Auth::check()) {return redirect('/login');}
+
     return view('home');
     // return response()->json([
     //     'csrf_token' => csrf_token(),

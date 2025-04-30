@@ -22,6 +22,9 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'email'    => ['required', 'email'],
             'password' => ['required'],
+        ], [
+            'email.required' => 'Email harus diisi!',
+            'password.required' => 'Password harus diisi!',
         ]);
 
         $user = User::where('email', $credentials['email'])->first();
@@ -33,11 +36,11 @@ class LoginController extends Controller
         Auth::login($user);
 
         // Redirect berdasarkan role
-        if ($user->hasRole('Admin Review')) {
-            return redirect()->route('admin.review.dashboard');
-        } elseif ($user->hasRole('Admin Departemen')) {
-            return redirect()->route('admin.departemen.dashboard');
-        }
+        // if ($user->hasRole('Admin Review')) {
+        //     return redirect()->route('admin.review.dashboard');
+        // } elseif ($user->hasRole('Admin Departemen')) {
+        //     return redirect()->route('admin.departemen.dashboard');
+        // }
     }
 
     public function logout(Request $request)

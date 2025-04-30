@@ -7,10 +7,10 @@
   @include('layouts.header')
   @yield('header')
 </head>
-<body class="d-flex flex-row">
-  @yield('left-sidebar')
+<body class="flex">
+  @include('layouts.left-sidebar')
 
-  <main class="d-flex flex-column">
+  <main class="flex flex-col">
     @yield('main')
 
     <footer>
