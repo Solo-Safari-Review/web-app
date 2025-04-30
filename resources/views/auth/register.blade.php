@@ -23,15 +23,15 @@
             <div class="flex flex-col gap-4 w-full">
                 <div class="flex flex-col xl:flex-row gap-4 w-full">
                     <div class="flex flex-col gap-2 w-full">
-                        <label for="first-name" class="xl:text-lg text-sm">Nama Depan</label>
-                        <input type="text" name="first-name" id="first-name" class="bg-[#D9D9D9] rounded-2xl px-4 py-2">
+                        <label for="first_name" class="xl:text-lg text-sm">Nama Depan</label>
+                        <input type="text" name="first_name" id="first_name" class="bg-[#D9D9D9] rounded-2xl px-4 py-2">
                         @error('first_name')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="flex flex-col gap-2 w-full">
-                        <label for="last-name" class="xl:text-lg text-sm">Nama Belakang</label>
-                        <input type="text" name="last-name" id="last-name" class="bg-[#D9D9D9] rounded-2xl px-4 py-2">
+                        <label for="last_name" class="xl:text-lg text-sm">Nama Belakang</label>
+                        <input type="text" name="last_name" id="last_name" class="bg-[#D9D9D9] rounded-2xl px-4 py-2">
                         @error('last_name')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -54,7 +54,7 @@
             </div>
             <div class="flex flex-col gap-4 w-full">
                 <label for="password_confirmation" class="xl:text-lg text-sm">Ulangi Kata Sandi</label>
-                <input type="password_confirmation" name="password_confirmation" id="password_confirmation" class="bg-[#D9D9D9] rounded-2xl px-4 py-2">
+                <input type="password" name="password_confirmation" id="password_confirmation" class="bg-[#D9D9D9] rounded-2xl px-4 py-2">
                 @error('password_confirmation')
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror

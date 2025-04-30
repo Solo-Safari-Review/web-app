@@ -64,21 +64,21 @@ $sidebarItems = [
 @endphp
 
 {{-- narrow sidebar --}}
-<div class="z-40 w-32 px-4 py-10 transition-transform bg-[#1E1E1E] flex flex-col gap-12 h-screen">
+<div class="z-40 w-32 px-4 py-10 transition-transform bg-[#1E1E1E] flex flex-col gap-12 min-h-screen h-fit">
    <div class="flex flex-col gap-8 mx-auto">
-       <button type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]">
+        <a href="{{ url()->previous() }}" type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]">
            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
              </svg>
            <span class="sr-only">Back</span>
-       </button>
-       <button type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]" data-drawer-target="wide-sidebar" data-drawer-show="wide-sidebar" aria-controls="wide-sidebar">
+        </a>
+        <button type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]" data-drawer-target="wide-sidebar" data-drawer-show="wide-sidebar" aria-controls="wide-sidebar">
            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
              </svg>
            <span class="sr-only">Menu</span>
-       </button>
-   </div>
+        </button>
+    </div>
 
    <a href="/" type="button" class="bg-[#E9D9C7] text-[#1E1E1E] rounded-full flex flex-col px-4 py-4 items-center hover:bg-[#1e1e1e] hover:text-[#E9D9C7] hover:outline-2 hover:outline-[#E9D9C7] mx-auto">
        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -100,11 +100,16 @@ $sidebarItems = [
            @endif
            @endforeach
        </div>
-       <x-sidebar-narrow-button href="{{ route('logout') }}">
-           <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="None" viewBox="0 0 24 24">
-               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
-           </svg>
-       </x-sidebar-narrow-button>
+       <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="px-4 py-4 bg-[#E9D9C7] text-black hover:bg-[#1e1e1e] hover:text-[#e9d9c7] hover:outline-2 hover:outline-[#e9d9c7] rounded-full">
+            <span class="flex gap-2">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="None" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
+                </svg>
+            </span>
+        </button>
+       </form>
    </div>
 </div>
 

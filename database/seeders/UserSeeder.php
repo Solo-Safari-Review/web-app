@@ -26,12 +26,14 @@ class UserSeeder extends Seeder
 
         foreach ($userType as $type) {
             $user = User::create([
-                'name' => $type,
+                'first_name' => '',
+                'last_name' => $type,
                 'email' => $type . '@example.com',
+                'phone' => '088888888888',
                 'password' => bcrypt('S0loSAFARI@password'),
             ]);
 
-            if ($type == 'admin-review') {$user->assignRole('review_admin');} else {$user->assignRole('department_admin');}
+            if ($type == 'admin-review') {$user->assignRole('Admin Review');} else {$user->assignRole('Admin Departemen');}
         }
     }
 }
