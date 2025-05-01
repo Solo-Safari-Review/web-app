@@ -63,8 +63,18 @@ $sidebarItems = [
 ];
 @endphp
 
+<div class="z-30 fixed top-0 left-0 w-full px-2 py-2 transition-transform bg-[#1E1E1E] flex lg:hidden gap-12 items-center justify-end">
+    <button type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]" data-drawer-target="wide-sidebar" data-drawer-show="wide-sidebar" aria-controls="wide-sidebar">
+       <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+           <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
+         </svg>
+       <span class="sr-only">Menu</span>
+    </button>
+</div>
+
+
 {{-- narrow sidebar --}}
-<div class="z-40 w-32 px-4 py-10 transition-transform bg-[#1E1E1E] flex flex-col gap-12 min-h-screen">
+<div class="z-30 w-32 px-4 py-10 transition-transform bg-[#1E1E1E] hidden lg:flex flex-col gap-12 min-h-screen">
    <div class="flex flex-col gap-8 mx-auto">
         <a href="{{ url()->previous() }}" type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]">
            <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
