@@ -1,5 +1,5 @@
 <!-- wide sidebar -->
-<div id="wide-sidebar" class="fixed top-0 left-0 z-40 w-[296px] min-h-full px-4 py-12 transition-transform -translate-x-full bg-[#1E1E1E] flex flex-col gap-12" tabindex="-1" aria-labelledby="wide-sidebar-label">
+<div id="wide-sidebar" class="fixed top-0 left-0 z-40 w-[296px] h-screen px-4 py-12 overflow-y-scroll xl:overflow-y-clip transition-transform -translate-x-full bg-[#1E1E1E] flex flex-col gap-12" tabindex="-1" aria-labelledby="wide-sidebar-label">
     <div class="hidden xl:flex justify-between">
         <a href="{{ url()->previous() }}" type="button" class="text-white bg-transparent hover:bg-[#E9D9C7] rounded-lg text-sm p-1.5 items-center hover:text-[#1E1E1E]">
             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
