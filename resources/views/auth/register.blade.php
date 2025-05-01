@@ -59,7 +59,7 @@
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
-            <button type="submit" class="bg-[#907B60] text-white rounded-3xl px-4 py-2 text-center w-full xl:w-[400px] mt-8">Masuk</button>
+            <button type="submit" class="bg-[#907B60] text-white rounded-3xl px-4 py-2 text-center w-full xl:w-[400px] mt-8">Daftar</button>
         </form>
         <div class="w-full text-center xl:text-[16px] text-sm">
             <span>Sudah memiliki akun? <a href="{{ route('login.show') }}" class="underline text-[#4E1F00]">Masuk Akun</a></span>
