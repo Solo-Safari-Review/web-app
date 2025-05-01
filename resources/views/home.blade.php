@@ -11,7 +11,6 @@
     <x-card-category label="Area Parkir" number="25"></x-card-category>
     <x-card-category label="Hewan" number="7"></x-card-category>
     <x-card-category label="Pegawai" number="5"></x-card-category>
-    <x-action-button></x-action-button>
     <div class="flex flex-col gap-2">
         <div class="flex">
             <x-badge-status-review status="Belum diteruskan"></x-badge-status-review>
@@ -34,6 +33,9 @@
         <x-badge-rating-review rating="4"></x-badge-rating-review>
         <x-badge-rating-review rating="5"></x-badge-rating-review>
     </div>
+</div>
+<div class="flex flex-col gap-4 px-8 py-4">
+    <x-review-item></x-review-item>
 </div>
 @endsection
 

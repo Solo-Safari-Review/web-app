@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::middleware(['role:department_admin|review_admin'])->group(function () {
         Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
-        Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'store', 'update', 'destroy']);
+        Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'store', 'edit', 'update', 'destroy']);
         Route::get('/search', [SearchController::class, 'search'])->name('search');
     });
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

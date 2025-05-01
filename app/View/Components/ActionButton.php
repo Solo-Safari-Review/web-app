@@ -8,15 +8,20 @@ use Illuminate\View\Component;
 
 class ActionButton extends Component
 {
+    public $review, $showUrl, $editUrl, $deleteUrl;
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public $showUrl = "",
-        public $editUrl = "",
-        public $deleteUrl = "")
+        $review,
+        $showUrl = "",
+        $editUrl = "",
+        $deleteUrl = "")
     {
-        //
+        $this->review = $review;
+        $this->showUrl = $showUrl;
+        $this->editUrl = $editUrl;
+        $this->deleteUrl = $deleteUrl;
     }
 
     /**

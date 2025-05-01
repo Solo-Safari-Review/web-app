@@ -1,6 +1,6 @@
 @auth()
 <div class="w-full flex flex-col py-4 text-white bg-[#1e1e1e] align-middle items-start">
-    <div class="w-full flex flex-col align-middle items-start gap-6 px-[72px] py-4">
+    <div class="w-full flex flex-col align-middle items-start gap-6 px-8 xl:px-[72px] py-4">
         <span class="font-bold text-2xl">Solo Safari</span>
         <div class="flex flex-col gap-2 text-sm">
             <span>Jalan. Ir. Sutami No.109 Kentingan Kentingan, Kecamatan Jebres, Kota Surakarta, Jawa Tengah 57126</span>
