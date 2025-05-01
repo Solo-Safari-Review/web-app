@@ -11,6 +11,7 @@
     <x-card-category label="Area Parkir" number="25"></x-card-category>
     <x-card-category label="Hewan" number="7"></x-card-category>
     <x-card-category label="Pegawai" number="5"></x-card-category>
+    <x-action-button></x-action-button>
 </div>
 @endsection
 
