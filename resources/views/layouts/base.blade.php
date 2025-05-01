@@ -10,10 +10,12 @@
 <body class="flex">
   @include('layouts.left-sidebar')
 
-  <main class="flex flex-col h-screen">
-    @yield('main')
+  <main class="flex flex-col min-h-screen w-full">
+    <div class="flex flex-col min-h-screen">
+      @yield('main')
+    </div>
 
-    <footer class="absolute bottom-0">
+    <footer class="w-full">
       @include('layouts.footer')
     </footer>
   </main>
