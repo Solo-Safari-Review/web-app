@@ -27,6 +27,13 @@
             <x-badge-answer-status status="Sudah dijawab"></x-badge-answer-status>
         </div>
     </div>
+    <div class="flex flex-col gap-2">
+        <x-badge-rating-review rating="1"></x-badge-rating-review>
+        <x-badge-rating-review rating="2"></x-badge-rating-review>
+        <x-badge-rating-review rating="3"></x-badge-rating-review>
+        <x-badge-rating-review rating="4"></x-badge-rating-review>
+        <x-badge-rating-review rating="5"></x-badge-rating-review>
+    </div>
 </div>
 @endsection
 
