@@ -31,8 +31,7 @@ class ReviewItem extends Component
             $this->deleteUrl = route('reviews.destroy', HashidsHelper::encode($id));
             $this->review = HashidsHelper::encode($id);
         } else {
-            $encodedId = $review;
-            $reviewId = HashidsHelper::decode($review);
+            $reviewId = HashidsHelper::encode($review->id);
             $review = Review::find($reviewId);
 
             $this->username = $review->username;
@@ -42,10 +41,10 @@ class ReviewItem extends Component
             $this->reviewStatus = $review->categorizedReview->review_status;
             $this->actionStatus = $review->categorizedReview->action_status;
             $this->answerStatus = $review->categorizedReview->answer_status;
-            $this->showUrl = route('reviews.show', $encodedId);
-            $this->editUrl = route('reviews.edit', $encodedId);
-            $this->deleteUrl = route('reviews.destroy', $encodedId);
-            $this->review = $encodedId;
+            $this->showUrl = route('reviews.show', $reviewId);
+            $this->editUrl = route('reviews.edit', $reviewId);
+            $this->deleteUrl = route('reviews.destroy', $reviewId);
+            $this->review = $reviewId;
         }
 
     }
