@@ -19,12 +19,9 @@ class TopicController extends Controller
     public function index()
     {
         try {
-            $ttl = 5 * 60;
-            $topics = Cache::remember('topics', $ttl, function () {
-                return Topic::withCount('reviews')->orderBy('reviews_count', 'desc')->get();
-            });
+            $topics = Topic::withCount('reviews')->orderBy('reviews_count', 'desc')->paginate(15);
 
-            return $topics;
+            return view('topics.index', compact('topics'));
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

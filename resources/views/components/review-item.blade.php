@@ -17,10 +17,10 @@
             <x-badge-answer-status status="{{ $answerStatus }}"></x-badge-answer-status>
         </div>
         <x-action-button
-            review="{{ $info }}{{ $review }}"
+            id="{{ $info }}{{ $review }}"
             show-url="{{ $showUrl }}"
-            edit-url="{{ $editUrl }}"
-            delete-url="{{ $deleteUrl }}">
+            delete-url="{{ $deleteUrl }}"
+            type="review">
         </x-action-button>
     </div>
 </div>

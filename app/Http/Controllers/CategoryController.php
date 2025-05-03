@@ -19,12 +19,9 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         try {
-            $ttl = 5 * 60;
-            $categories = Cache::remember('categories', $ttl, function () {
-                return Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->get();
-            });
+            $categories = Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->paginate(15);
 
-            return $categories;
+            return view('categories.index', compact('categories'));
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
