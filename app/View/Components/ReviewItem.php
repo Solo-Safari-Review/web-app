@@ -11,25 +11,26 @@ use Illuminate\View\Component;
 
 class ReviewItem extends Component
 {
-    public $username, $category, $content, $rating, $reviewStatus, $actionStatus, $answerStatus, $showUrl, $editUrl, $deleteUrl, $review;
+    public $username, $category, $content, $rating, $reviewStatus, $actionStatus, $answerStatus, $showUrl, $editUrl, $deleteUrl, $review, $info;
     /**
      * Create a new component instance.
      */
-    public function __construct(Review $review)
+    public function __construct(Review $review, $info = null)
     {
         $reviewId = HashidsHelper::encode($review->id);
 
         $this->username = $review->username;
-        $this->category = $review->categorizedReview->category->name;
+        $this->category = $review->categorizedReview->category->name ?? "Belum Terkategori";
         $this->content = $review->content;
         $this->rating = $review->rating;
-        $this->reviewStatus = $review->categorizedReview->review_status;
-        $this->actionStatus = $review->categorizedReview->action_status;
-        $this->answerStatus = $review->categorizedReview->answer_status;
+        $this->reviewStatus = $review->categorizedReview->review_status ?? null;
+        $this->actionStatus = $review->categorizedReview->action_status ?? null;
+        $this->answerStatus = $review->categorizedReview->answer_status ?? null;
         $this->showUrl = route('reviews.show', $reviewId);
         $this->editUrl = route('reviews.edit', $reviewId);
         $this->deleteUrl = route('reviews.destroy', $reviewId);
         $this->review = $reviewId;
+        $this->info = $info;
     }
 
     /**

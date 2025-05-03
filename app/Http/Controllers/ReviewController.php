@@ -59,10 +59,10 @@ class ReviewController extends Controller
                         ->get();
                 });
 
-                return response()->json([
-                    "recent_reviews" => $recentReviews,
-                    "most_helpful_reviews" => $mostHelpfulReviews,
-                    "top_topics" => $topTopics
+                return view('home', [
+                    'topTopics' => $topTopics,
+                    'recentReviews' => $recentReviews,
+                    'mostHelpfulReviews' => $mostHelpfulReviews
                 ]);
             }
 
@@ -80,11 +80,11 @@ class ReviewController extends Controller
                     return Review::with('categorizedReview.category')->orderBy('likes', 'desc')->limit(5)->get();
                 });
 
-                return response()->json([
-                    "topTopics" => $topTopics,
-                    "topCategories" => $topCategories,
-                    "recent_reviews" => $recentReviews,
-                    "most_helpful_reviews" => $mostHelpfulReviews
+                return view('home', [
+                    'topTopics' => $topTopics,
+                    'topCategories' => $topCategories,
+                    'recentReviews' => $recentReviews,
+                    'mostHelpfulReviews' => $mostHelpfulReviews
                 ]);
             }
 

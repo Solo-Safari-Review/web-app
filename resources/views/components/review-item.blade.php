@@ -17,7 +17,7 @@
             <x-badge-answer-status status="{{ $answerStatus }}"></x-badge-answer-status>
         </div>
         <x-action-button
-            review="{{ $review }}"
+            review="{{ $info }}{{ $review }}"
             show-url="{{ $showUrl }}"
             edit-url="{{ $editUrl }}"
             delete-url="{{ $deleteUrl }}">

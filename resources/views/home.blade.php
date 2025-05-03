@@ -5,22 +5,57 @@
 @endsection
 
 @section('main')
-<div class="flex flex-wrap gap-8 w-full items-center justify-center">
-    @foreach ($topTopics as $topic)
-        <x-card-topic :topic="$topic"></x-card-topic>
-    @endforeach
+<div class="flex flex-col gap-8 px-8 py-8 w-full">
+    <x-search-bar></x-search-bar>
+    <div class="flex flex-col gap-6 w-full">
+        <div class="flex gap-2 w-full items-center justify-start">
+            <span class="grow px-2 py-1 text-2xl font-semibold">Topik yang dibicarakan</span>
+            <a href="{{ route('topics.index') }}" type="button" class="button px-8 py-1 rounded-full bg-[#FFE4B7] text-[16px] hover:bg-[#FFE4B7]/80">Lihat Semua</a>
+        </div>
+        <div class="flex flex-wrap gap-8 w-full items-center justify-center">
+            @foreach ($topTopics as $topic)
+                <x-card-topic :topic="$topic"></x-card-topic>
+            @endforeach
+        </div>
+    </div>
+
+    @if(Auth::user()->hasRole('Admin Review'))
+    <div class="flex flex-col gap-6 w-full">
+        <div class="flex gap-2 w-full items-center justify-start">
+            <span class="grow px-2 py-1 text-2xl font-semibold">Kategori</span>
+            <a href="{{ route('categories.index') }}" type="button" class="button px-8 py-1 rounded-full bg-[#FFE4B7] text-[16px] hover:bg-[#FFE4B7]/80">Lihat Semua</a>
+        </div>
+        <div class="flex flex-wrap gap-8 w-full items-center justify-center">
+            @foreach ($topCategories as $category)
+                <x-card-category :category="$category"></x-card-category>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    <div class="flex flex-col gap-4 w-full">
+        <div class="flex gap-2 items-center w-full">
+            <span class="grow px-2 py-1 text-2xl font-semibold">Ulasan Terbaru</span>
+            <a href="{{ route('reviews.all', ['sort' => 'time']) }}" type="button" class="button px-8 py-1 rounded-full bg-[#FFE4B7] text-[16px] hover:bg-[#FFE4B7]/80">Lihat Semua</a>
+        </div>
+        <div class="flex flex-col w-full gap-2 py-2">
+            @foreach ($recentReviews as $review)
+                <x-review-item info="recent" :review="$review"></x-review-item>
+            @endforeach
+        </div>
+    </div>
+    <div class="flex flex-col gap-4 w-full">
+        <div class="flex gap-2 items-center w-full">
+            <span class="grow px-2 py-1 text-2xl font-semibold">Ulasan Paling Membantu</span>
+            <a href="{{ route('reviews.all', ['sort' => 'likes']) }}" type="button" class="button px-8 py-1 rounded-full bg-[#FFE4B7] text-[16px] hover:bg-[#FFE4B7]/80">Lihat Semua</a>
+        </div>
+        <div class="flex flex-col w-full gap-2 py-2">
+            @foreach ($mostHelpfulReviews as $review)
+                <x-review-item info="helpful" :review="$review"></x-review-item>
+            @endforeach
+        </div>
+    </div>
 </div>
-<div class="flex flex-wrap gap-8 w-full items-center justify-center">
-    @foreach ($topCategories as $category)
-        <x-card-category :category="$category"></x-card-category>
-    @endforeach
-</div>
-<div class="flex flex-col gap-4 px-8 py-4">
-    @foreach ($reviews as $review)
-        <x-review-item :review="$review"></x-review-item>
-    @endforeach
-</div>
-<x-search-bar></x-search-bar>
 @endsection
 
 @section('footer')
