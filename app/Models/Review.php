@@ -16,7 +16,7 @@ class Review extends Model implements Searchable
     {
         return new SearchResult(
             $this,
-            Str::limit($this->content, 100, '...'),
+            Str::limit($this->content, 200, '...'),
             route('reviews.show', HashidsHelper::encode($this->id))
         );
     }

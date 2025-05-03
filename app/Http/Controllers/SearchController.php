@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\Topic;
 use App\SearchAspects\ReviewSearchAspect;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Searchable\ModelSearchAspect;
@@ -45,14 +46,27 @@ class SearchController extends Controller
         if (Auth::user()->hasRole('Admin Departemen')) {
             $searchResults = (new Search())
                 ->registerAspect(ReviewSearchAspect::class)
-                ->search($query);
+                ->search($query)
+                ->collect();
         } else {
             $searchResults = (new Search())
                 ->registerModel(Category::class, ['name'])
                 ->registerModel(Topic::class, ['name'])
                 ->registerAspect(ReviewSearchAspect::class)
-                ->search($query);
+                ->search($query)
+                ->collect();
         }
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $perPage = 15;
+
+        $searchResults = new LengthAwarePaginator(
+            $searchResults->forPage($currentPage, $perPage),
+            $searchResults->count(),
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         if (!$searchResults->isEmpty()) {
             $recentSearches = Cache::get('recent_searches', []);
