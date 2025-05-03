@@ -32,6 +32,28 @@ class SearchController extends Controller
                 ->take(5);
         }
 
+        return response()->json([
+            "search_results" => $searchResults,
+            "recent_searches" => Cache::get('recent_searches')
+        ]);
+    }
+
+    public function searchView(Request $request)
+    {
+        $query = $request->input('q');
+
+        if (Auth::user()->hasRole('Admin Departemen')) {
+            $searchResults = (new Search())
+                ->registerAspect(ReviewSearchAspect::class)
+                ->search($query);
+        } else {
+            $searchResults = (new Search())
+                ->registerModel(Category::class, ['name'])
+                ->registerModel(Topic::class, ['name'])
+                ->registerAspect(ReviewSearchAspect::class)
+                ->search($query);
+        }
+
         if (!$searchResults->isEmpty()) {
             $recentSearches = Cache::get('recent_searches', []);
             array_unshift($recentSearches, $query);
@@ -42,18 +64,13 @@ class SearchController extends Controller
             Cache::forever('recent_searches', $recentSearches);
         }
 
-        return response()->json([
-            "search_results" => $searchResults,
-            "recent_searches" => Cache::get('recent_searches')
+        return view('search.index', [
+            'searchResults' => $searchResults,
+            'query' => $query
         ]);
     }
 
-    public function searchView(Request $request)
-    {
-
-    }
-
-    public function getRecentSearches(Request $request)
+    public static function getRecentSearches()
     {
         $recentSearches = Cache::rememberForever('recent_searches', function () {
             return [];

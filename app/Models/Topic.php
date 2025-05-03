@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers\HashidsHelper;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Crypt;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
@@ -13,7 +13,7 @@ class Topic extends Model implements Searchable
 
     public function getSearchResult(): SearchResult
     {
-        $url = route('topics.show', Crypt::encryptString($this->id));
+        $url = route('topics.show', HashidsHelper::encode($this->id));
 
         return new SearchResult(
             $this,

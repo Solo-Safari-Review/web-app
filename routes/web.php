@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
         Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'store', 'edit', 'update', 'destroy']);
         Route::get('/search', [SearchController::class, 'search'])->name('search');
+        Route::get('/search/show', [SearchController::class, 'searchView'])->name('search.show');
     });
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });

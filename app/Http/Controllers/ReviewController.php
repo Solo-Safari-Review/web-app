@@ -203,7 +203,7 @@ class ReviewController extends Controller
     public function show(Request $request)
     {
         try {
-            $reviewId = HashidsHelper::decode($request->route('reviews'));
+            $reviewId = HashidsHelper::decode($request->route('review'));
         } catch (\Exception $e) {
             abort(400, 'Invalid review token');
         }

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Helpers\HashidsHelper;
 use Illuminate\Support\Str;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model implements Searchable
@@ -17,7 +17,7 @@ class Review extends Model implements Searchable
         return new SearchResult(
             $this,
             Str::limit($this->content, 100, '...'),
-            route('reviews.show', Crypt::encryptString($this->id))
+            route('reviews.show', HashidsHelper::encode($this->id))
         );
     }
 

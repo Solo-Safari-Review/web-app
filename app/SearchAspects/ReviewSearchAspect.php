@@ -10,7 +10,7 @@ class ReviewSearchAspect extends SearchAspect
 {
     public function getResults(string $term): \Illuminate\Support\Collection
     {
-        if (Auth::user()->hasRole('department_admin')) {
+        if (Auth::user()->hasRole('Admin Departemen')) {
             return Review::query()
                 ->join('categorized_reviews', 'reviews.id', '=', 'categorized_reviews.review_id')
                 ->where('reviews.username', 'like', "%{$term}%")
