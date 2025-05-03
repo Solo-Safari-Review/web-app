@@ -37,12 +37,12 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::middleware(['role:review_admin'])->group(function () {
+    Route::middleware(['role:Admin Review'])->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('topics', TopicController::class);
         Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['store']);
     });
-    Route::middleware(['role:department_admin|review_admin'])->group(function () {
+    Route::middleware(['role:Admin Departemen|Admin Review'])->group(function () {
         Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
         Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'store', 'edit', 'update', 'destroy']);
         Route::get('/search', [SearchController::class, 'search'])->name('search');

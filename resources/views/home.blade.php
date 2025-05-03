@@ -36,6 +36,7 @@
 </div>
 <div class="flex flex-col gap-4 px-8 py-4">
     <x-review-item></x-review-item>
+    <x-search-bar></x-search-bar>
 </div>
 @endsection
 
