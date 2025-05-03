@@ -18,9 +18,11 @@ Route::get('/', function () {
     if (!Auth::check()) {return redirect('/login');}
 
     $reviews = Review::with('categorizedReview', 'topics')->limit(5)->get();
+    $topCategories = Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->limit(5)->get();
 
     return view('home', [
         'reviews' => $reviews,
+        'topCategories' => $topCategories
     ]);
     // return response()->json([
     //     'csrf_token' => csrf_token(),

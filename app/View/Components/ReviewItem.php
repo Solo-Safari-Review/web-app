@@ -30,7 +30,6 @@ class ReviewItem extends Component
         $this->editUrl = route('reviews.edit', $reviewId);
         $this->deleteUrl = route('reviews.destroy', $reviewId);
         $this->review = $reviewId;
-
     }
 
     /**
