@@ -1,4 +1,4 @@
-<a href="{{ $topicUrl }}" class="flex flex-col px-4 py-4 rounded-2xl bg-[#907B60] text-white items-start align-bottom min-w-[160px] max-w-[224px]">
+<a href="{{ $topicUrl }}" class="flex flex-col px-4 py-4 rounded-2xl bg-[#907B60] text-white items-start align-bottom min-w-[160px] max-w-[224px] shadow-black/25 shadow-lg">
     <span class="font-bold text-[20px]">{{ $topic->name }}</span>
     <div class="flex gap-2 items-end align-bottom">
         <span class="font-bold text-[72px]">{{ $topic->reviews_count }}</span>
