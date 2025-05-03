@@ -86,67 +86,37 @@ class ReviewController extends Controller
             $sortMethod = in_array($sortMethod, $allowedSortMethods) ? $sortMethod : 'desc';
 
             $filter = $request->query('filter');
+            $categoryId = $request->query('category') ? HashidsHelper::decode($request->query('category')) : null;
+            $topicId = $request->query('topic') ? HashidsHelper::decode($request->query('topic')) : null;
 
-            if ($request->query('category')) {
-                try {
-                    $categoryId = HashidsHelper::decode($request->query('category'));
-
-                    $query = DB::table('reviews')
-                        ->join('categorized_reviews', function ($join) use ($categoryId) {
-                            $join
-                                ->on('reviews.id', '=', 'categorized_reviews.review_id')
-                                ->join('categories', 'categorized_reviews.category_id', '=', 'categories.id')
-                                ->where('categorized_reviews.category_id', $categoryId);
-                        })
-                        ->select([
-                            'reviews.*',
-                            'categorized_reviews.review_status',
-                            'categorized_reviews.action_status',
-                            'categorized_reviews.answer_status',
-                            'categories.name',
-                        ]);
-                } catch (\Exception $e) {
-                    abort(400, 'Invalid category token');
-                }
-            } else {
-                $query = DB::table('reviews')
-                    ->join('categorized_reviews', function ($join) {
-                        $join
-                            ->on('reviews.id', '=', 'categorized_reviews.review_id')
-                            ->join('categories', 'categorized_reviews.category_id', '=', 'categories.id');
-                    })
-                    ->select([
-                        'reviews.*',
-                        'categorized_reviews.review_status',
-                        'categorized_reviews.action_status',
-                        'categorized_reviews.answer_status',
-                        'categories.name',
-                    ]);
-            }
-
+            $reviews = Review::with('categorizedReview', 'topics')->orderBy('reviews.'.$sort, $sortMethod);
 
             if (Auth::user()->hasRole('Admin Departemen')) {
-                $query->where('categorized_reviews.user_id', Auth::user()->id);
+                $reviews->whereHas('categorizedReview', function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                });
             }
+
+            if ($categoryId) {$reviews->whereHas('categorizedReview', function ($query) use ($categoryId) {$query->where('category_id', $categoryId);});}
+            if ($topicId) {$reviews->whereHas('topics', function ($query) use ($topicId) {$query->where('topic_id', $topicId);});}
 
             if ($filter) {
                 if ($filter === "rating") {
                     $rating = $request->query('rating');
-                    $query->where('rating', $rating);
+                    $reviews->where('rating', $rating);
                 } else {
                     if ($filter == 'review-status') {
-                        $query->where("categorized_reviews.review_status", $request->query('status'));
+                        $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('review_status', $request->query('status'));});
                     } elseif ($filter == 'action-status') {
-                        $query->where("categorized_reviews.action_status", $request->query('status'));
+                        $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('action_status', $request->query('status'));});
                     } elseif ($filter == 'answer-status') {
-                        $query->where("categorized_reviews.answer_status", $request->query('status'));
+                        $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('answer_status', $request->query('status'));});
                     }
                 }
             }
 
-            $reviews = $query->orderBy('reviews.'.$sort, $sortMethod)->cursorPaginate(20);
+            $reviews = $reviews->paginate(15);
             return response()->json($reviews);
-
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

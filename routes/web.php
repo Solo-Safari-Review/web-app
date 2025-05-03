@@ -10,6 +10,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TopicController;
 use App\Models\Category;
 use App\Models\Review;
+use App\Models\Topic;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
@@ -19,10 +20,12 @@ Route::get('/', function () {
 
     $reviews = Review::with('categorizedReview', 'topics')->limit(5)->get();
     $topCategories = Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->limit(5)->get();
+    $topTopics = Topic::withCount('reviews')->orderBy('reviews_count', 'desc')->limit(5)->get();
 
     return view('home', [
         'reviews' => $reviews,
-        'topCategories' => $topCategories
+        'topCategories' => $topCategories,
+        'topTopics' => $topTopics
     ]);
     // return response()->json([
     //     'csrf_token' => csrf_token(),
