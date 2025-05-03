@@ -11,7 +11,7 @@ use Illuminate\View\Component;
 
 class ReviewItem extends Component
 {
-    public $username, $category, $content, $rating, $reviewStatus, $actionStatus, $answerStatus, $showUrl, $editUrl, $deleteUrl, $review, $info;
+    public $username, $category, $content, $rating, $reviewStatus, $actionStatus, $answerStatus, $showUrl, $editUrl, $deleteUrl, $reviewId, $info;
     /**
      * Create a new component instance.
      */
@@ -29,7 +29,7 @@ class ReviewItem extends Component
         $this->showUrl = route('reviews.show', $reviewId);
         $this->editUrl = route('reviews.edit', $reviewId);
         $this->deleteUrl = route('reviews.destroy', $reviewId);
-        $this->review = $reviewId;
+        $this->reviewId = $reviewId;
         $this->info = $info;
     }
 
