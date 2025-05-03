@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use App\Enums\ReviewStatus;
 use App\Helpers\HashidsHelper;
 use App\Models\Category;
+use App\Models\Topic;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -26,31 +27,49 @@ class ReviewController extends Controller
     public function index()
     {
         try {
-            $ttl = 5 * 60;
+            $ttl = 60;
 
             if (Auth::user()->hasRole('Admin Departemen')) {
+                $topTopics = Cache::remember('top_topics' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
+                    return Topic::with('reviews')
+                        ->whereHas('reviews.categorizedReview', function ($query) {
+                            $query->where('user_id', Auth::user()->id);
+                        })
+                        ->withCount('reviews')
+                        ->orderBy('reviews_count', 'desc')
+                        ->limit(5)
+                        ->get();
+                });
                 $recentReviews = Cache::remember('recent_reviews' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
                     return Review::with('categorizedReview')
                         ->whereHas('categorizedReview', function ($query) {
                             $query->where('user_id', Auth::user()->id);
                         })
-                        ->orderBy('created_at', 'desc')->limit(5)->get();
+                        ->orderBy('created_at', 'desc')
+                        ->limit(5)
+                        ->get();
                 });
                 $mostHelpfulReviews = Cache::remember('most_helpful_reviews' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
                     return Review::with('categorizedReview')
                         ->whereHas('categorizedReview', function ($query) {
                             $query->where('user_id', Auth::user()->id);
                         })
-                        ->orderBy('likes', 'desc')->limit(5)->get();
+                        ->orderBy('likes', 'desc')
+                        ->limit(5)
+                        ->get();
                 });
 
                 return response()->json([
                     "recent_reviews" => $recentReviews,
-                    "most_helpful_reviews" => $mostHelpfulReviews
+                    "most_helpful_reviews" => $mostHelpfulReviews,
+                    "top_topics" => $topTopics
                 ]);
             }
 
             else {
+                $topTopics = Cache::remember('top_topics', $ttl, function () {
+                    return Topic::withCount('reviews')->orderBy('reviews_count', 'desc')->limit(5)->get();
+                });
                 $topCategories = Cache::remember('top_categories', $ttl, function () {
                     return Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->limit(5)->get();
                 });
@@ -62,6 +81,7 @@ class ReviewController extends Controller
                 });
 
                 return response()->json([
+                    "topTopics" => $topTopics,
                     "topCategories" => $topCategories,
                     "recent_reviews" => $recentReviews,
                     "most_helpful_reviews" => $mostHelpfulReviews
