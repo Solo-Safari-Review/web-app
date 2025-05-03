@@ -5,7 +5,7 @@
 @endsection
 
 @section('main')
-<div class="flex flex-wrap gap-8 w-full items-center justify-center">
+{{-- <div class="flex flex-wrap gap-8 w-full items-center justify-center">
     <x-card-category label="Toilet" number="150"></x-card-category>
     <x-card-category label="Keamanan & Kebersihan" number="87"></x-card-category>
     <x-card-category label="Area Parkir" number="25"></x-card-category>
@@ -33,11 +33,13 @@
         <x-badge-rating-review rating="4"></x-badge-rating-review>
         <x-badge-rating-review rating="5"></x-badge-rating-review>
     </div>
-</div>
+</div> --}}
 <div class="flex flex-col gap-4 px-8 py-4">
-    <x-review-item></x-review-item>
-    <x-search-bar></x-search-bar>
+    @foreach ($reviews as $review)
+        <x-review-item :review="$review"></x-review-item>
+    @endforeach
 </div>
+<x-search-bar></x-search-bar>
 @endsection
 
 @section('footer')

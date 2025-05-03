@@ -29,14 +29,14 @@ class ReviewController extends Controller
             $ttl = 5 * 60;
 
             if (Auth::user()->hasRole('Admin Departemen')) {
-                $recentReviews = Cache::remember('recent_reviews' . Crypt::encryptString(Auth::user()->id), $ttl, function () {
+                $recentReviews = Cache::remember('recent_reviews' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
                     return Review::with('categorizedReview')
                         ->whereHas('categorizedReview', function ($query) {
                             $query->where('user_id', Auth::user()->id);
                         })
                         ->orderBy('created_at', 'desc')->limit(5)->get();
                 });
-                $mostHelpfulReviews = Cache::remember('most_helpful_reviews' . Crypt::encryptString(Auth::user()->id), $ttl, function () {
+                $mostHelpfulReviews = Cache::remember('most_helpful_reviews' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
                     return Review::with('categorizedReview')
                         ->whereHas('categorizedReview', function ($query) {
                             $query->where('user_id', Auth::user()->id);

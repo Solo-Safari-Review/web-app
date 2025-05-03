@@ -9,6 +9,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TopicController;
 use App\Models\Category;
+use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     if (!Auth::check()) {return redirect('/login');}
 
-    return view('home');
+    $reviews = Review::with('categorizedReview', 'topics')->limit(5)->get();
+
+    return view('home', [
+        'reviews' => $reviews,
+    ]);
     // return response()->json([
     //     'csrf_token' => csrf_token(),
     // ]);
