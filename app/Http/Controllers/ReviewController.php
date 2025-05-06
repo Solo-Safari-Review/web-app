@@ -96,16 +96,24 @@ class ReviewController extends Controller
     public function allReviews(Request $request)
     {
         try {
-            $allowedSorts = ['created_at', 'likes'];
-            $allowedSortMethods = ['asc', 'desc'];
+            $allowedSorts = ['Waktu', 'Jumlah Suka'];
+            $allowedSortMethods = ['Turun', 'Naik'];
+            $allowedReviewStatus = ['Belum diteruskan', 'Sudah diteruskan'];
+            $allowedActionStatus = ['Belum dikerjakan', 'Dalam proses', 'Selesai'];
+            $allowedAnswerStatus = ['Belum dijawab', 'Sudah dijawab'];
+            $allowedRatings = ['5', '4', '3', '2', '1'];
+
 
             $sort = $request->query('sort');
-            $sort = in_array($sort, $allowedSorts) ? $sort : 'created_at';
+            $sort = in_array($sort, $allowedSorts) ? $sort : 'Waktu';
+            if ($sort == 'Waktu') {$sort = 'created_at';}
+            if ($sort == 'Jumlah Suka') {$sort = 'likes';}
 
-            $sortMethod = strtolower($request->query('sort-method'));
-            $sortMethod = in_array($sortMethod, $allowedSortMethods) ? $sortMethod : 'desc';
+            $sortMethod = $request->query('sort-method');
+            $sortMethod = in_array($sortMethod, $allowedSortMethods) ? $sortMethod : 'Turun';
+            if ($sortMethod == 'Naik') {$sortMethod = 'asc';}
+            if ($sortMethod == 'Turun') {$sortMethod = 'desc';}
 
-            $filter = $request->query('filter');
             $categoryId = $request->query('category') ? HashidsHelper::decode($request->query('category')) : null;
             $topicId = $request->query('topic') ? HashidsHelper::decode($request->query('topic')) : null;
 
@@ -117,26 +125,30 @@ class ReviewController extends Controller
                 });
             }
 
-            if ($categoryId) {$reviews->whereHas('categorizedReview', function ($query) use ($categoryId) {$query->where('category_id', $categoryId);});}
-            if ($topicId) {$reviews->whereHas('topics', function ($query) use ($topicId) {$query->where('topic_id', $topicId);});}
+            if ($categoryId) {
+                $reviews->whereHas('categorizedReview', function ($query) use ($categoryId) {$query->where('category_id', $categoryId);});
+            }
+            if ($topicId) {
+                $reviews->whereHas('topics', function ($query) use ($topicId) {$query->where('topic_id', $topicId);});
+            }
 
-            if ($filter) {
-                if ($filter === "rating") {
-                    $rating = $request->query('rating');
-                    $reviews->where('rating', $rating);
-                } else {
-                    if ($filter == 'review-status') {
-                        $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('review_status', $request->query('status'));});
-                    } elseif ($filter == 'action-status') {
-                        $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('action_status', $request->query('status'));});
-                    } elseif ($filter == 'answer-status') {
-                        $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('answer_status', $request->query('status'));});
-                    }
-                }
+            if ($request->query('rating') != "") {
+                $rating = $request->query('rating');
+                $reviews->where('rating', $rating);
+            }
+            if ($request->query('reviewStatus') != "") {
+                $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('review_status', $request->query('reviewStatus'));});
+            }
+            if ($request->query('actionStatus') != "") {
+                $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('action_status', $request->query('actionStatus'));});
+            }
+            if ($request->query('answerStatus') != "") {
+                $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('answer_status', $request->query('answerStatus'));});
             }
 
             $reviews = $reviews->paginate(15);
-            return response()->json($reviews);
+
+            return view('reviews.all', compact('reviews', 'allowedSorts', 'allowedSortMethods', 'allowedReviewStatus', 'allowedActionStatus', 'allowedAnswerStatus', 'allowedRatings'));
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
