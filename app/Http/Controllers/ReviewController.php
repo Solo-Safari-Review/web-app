@@ -132,17 +132,17 @@ class ReviewController extends Controller
                 $reviews->whereHas('topics', function ($query) use ($topicId) {$query->where('topic_id', $topicId);});
             }
 
-            if ($request->query('rating') != "") {
+            if (in_array($request->query('rating'), $allowedRatings)) {
                 $rating = $request->query('rating');
                 $reviews->where('rating', $rating);
             }
-            if ($request->query('reviewStatus') != "") {
+            if (in_array($request->query('reviewStatus'), $allowedReviewStatus)) {
                 $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('review_status', $request->query('reviewStatus'));});
             }
-            if ($request->query('actionStatus') != "") {
+            if (in_array($request->query('actionStatus'), $allowedReviewStatus)) {
                 $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('action_status', $request->query('actionStatus'));});
             }
-            if ($request->query('answerStatus') != "") {
+            if (in_array($request->query('answerStatus'), $allowedReviewStatus)) {
                 $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('answer_status', $request->query('answerStatus'));});
             }
 
@@ -293,6 +293,29 @@ class ReviewController extends Controller
             }
 
             return response()->json(['message' => 'Review deleted successfully'], 200);
+        } else {
+            abort(403, 'You do not have permission to delete a review');
+        }
+    }
+
+    public function destroySome(Request $request)
+    {
+        if (Auth::user()->hasPermissionTo('delete_review')) {
+            foreach ($request->reviews as $id) {
+                try {
+                    $reviewId = HashidsHelper::decode($id);
+                } catch (\Exception $e) {
+                    abort(400, 'Invalid review token');
+                }
+
+                try {
+                    Review::find($reviewId)->delete();
+                } catch (Exception $e) {
+                    abort(400, 'Review cannot be deleted');
+                }
+            }
+
+            return response()->json(['message' => 'All Reviews deleted successfully'], 200);
         } else {
             abort(403, 'You do not have permission to delete a review');
         }

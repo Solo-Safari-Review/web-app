@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('topics', TopicController::class);
         Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['store']);
+        Route::delete('reviews/destroy-some', [ReviewController::class, 'destroySome'])->name('reviews.destroy-some');
     });
     Route::middleware(['role:Admin Departemen|Admin Review'])->group(function () {
         Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
