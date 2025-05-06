@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class SelectAll extends Component
+class ConfirmDelete extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class SelectAll extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.select-all');
+        return view('components.confirm-delete');
     }
 }
