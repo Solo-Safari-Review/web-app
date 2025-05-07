@@ -37,27 +37,34 @@
     </div>
     @endif
 
-    <div class="flex flex-col gap-4 w-full">
-        <div class="flex gap-2 items-center w-full">
-            <span class="grow px-2 py-1 text-2xl font-semibold">Ulasan Terbaru</span>
-            <a href="{{ route('reviews.all', ['sort' => 'time']) }}" type="button" class="button px-8 py-1 rounded-full bg-[#FFE4B7] text-[16px] hover:bg-[#FFE4B7]/80">Lihat Semua</a>
+    <form action="{{ route('reviews.destroy-some') }}" method="POST" class="flex flex-col gap-6 w-full">
+        @csrf
+        @method('DELETE')
+        <div class="flex gap-4 items-center justify-end">
+            <x-select-all item="Ulasan"></x-select-all>
         </div>
-        <div class="flex flex-col w-full gap-2 py-2">
-            @foreach ($recentReviews as $review)
-                <x-review-item info="recent" :review="$review"></x-review-item>
-            @endforeach
+        <div class="flex flex-col gap-4 w-full">
+            <div class="flex gap-2 items-center w-full">
+                <span class="grow px-2 py-1 text-2xl font-semibold">Ulasan Terbaru</span>
+                <a href="{{ route('reviews.all', ['sort' => 'time']) }}" type="button" class="button px-8 py-1 rounded-full bg-[#FFE4B7] text-[16px] hover:bg-[#FFE4B7]/80">Lihat Semua</a>
+            </div>
+            <div class="flex flex-col w-full gap-2 py-2">
+                @foreach ($recentReviews as $review)
+                    <x-review-item info="recent" :review="$review"></x-review-item>
+                @endforeach
+            </div>
         </div>
-    </div>
-    <div class="flex flex-col gap-4 w-full">
-        <div class="flex gap-2 items-center w-full">
-            <span class="grow px-2 py-1 text-2xl font-semibold">Ulasan Paling Membantu</span>
-            <a href="{{ route('reviews.all', ['sort' => 'likes']) }}" type="button" class="button px-8 py-1 rounded-full bg-[#FFE4B7] text-[16px] hover:bg-[#FFE4B7]/80">Lihat Semua</a>
+        <div class="flex flex-col gap-4 w-full">
+            <div class="flex gap-2 items-center w-full">
+                <span class="grow px-2 py-1 text-2xl font-semibold">Ulasan Paling Membantu</span>
+                <a href="{{ route('reviews.all', ['sort' => 'likes']) }}" type="button" class="button px-8 py-1 rounded-full bg-[#FFE4B7] text-[16px] hover:bg-[#FFE4B7]/80">Lihat Semua</a>
+            </div>
+            <div class="flex flex-col w-full gap-2 py-2">
+                @foreach ($mostHelpfulReviews as $review)
+                    <x-review-item info="helpful" :review="$review"></x-review-item>
+                @endforeach
+            </div>
         </div>
-        <div class="flex flex-col w-full gap-2 py-2">
-            @foreach ($mostHelpfulReviews as $review)
-                <x-review-item info="helpful" :review="$review"></x-review-item>
-            @endforeach
-        </div>
-    </div>
+    </form>
 </div>
 @endsection
