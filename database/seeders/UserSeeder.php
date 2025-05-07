@@ -31,6 +31,7 @@ class UserSeeder extends Seeder
                 'email' => $type . '@example.com',
                 'phone' => '088888888888',
                 'password' => bcrypt('S0loSAFARI@password'),
+                'is_validated' => 1
             ]);
 
             if ($type == 'admin-review') {$user->assignRole('Admin Review');} else {$user->assignRole('Admin Departemen');}
