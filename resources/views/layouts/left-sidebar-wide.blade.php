@@ -33,7 +33,7 @@
                 {{ $item['name'] }}
             </x-sidebar-wide-multi-button>
             @else
-            <x-sidebar-wide-button href="{{ $item['href'] }}">
+            <x-sidebar-wide-button route="{{ $item['route'] }}">
                 <x-slot name="icon">{!! $item['icon'] !!}</x-slot>
                 {{ $item['name'] }}
             </x-sidebar-wide-button>

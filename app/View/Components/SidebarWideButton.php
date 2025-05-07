@@ -8,13 +8,12 @@ use Illuminate\View\Component;
 
 class SidebarWideButton extends Component
 {
-    public $href;
     /**
      * Create a new component instance.
      */
-    public function __construct($href = '#')
+    public function __construct(public $route = '#')
     {
-        $this->href = $href;
+        //
     }
 
     /**
