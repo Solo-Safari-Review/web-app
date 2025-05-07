@@ -7,9 +7,12 @@ use Illuminate\Support\Str;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Review extends Model implements Searchable
 {
+    use SoftDeletes;
+
     protected $guarded = ['id'];
 
     public function getSearchResult(): SearchResult

@@ -15,7 +15,7 @@
     <div id="{{ $dropdownId }}" class="hidden px-8">
         <div class="flex flex-col gap-2">
             @foreach ($multiItems as $item)
-            <x-sidebars.sidebar-wide-button href="{{ $item['href'] }}">
+            <x-sidebars.sidebar-wide-button route="{{ $item['route'] }}">
                 <x-slot name="icon">{!! $item['icon'] !!}</x-slot>
                 {{ $item['name'] }}
             </x-sidebars.sidebar-wide-button>

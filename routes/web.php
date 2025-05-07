@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TopicController;
+use App\Http\Controllers\TrashController;
 use App\Models\Category;
 use App\Models\Review;
 use App\Models\Topic;
@@ -41,6 +42,10 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('topics', TopicController::class);
         Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['store']);
         Route::delete('reviews/destroy-some', [ReviewController::class, 'destroySome'])->name('reviews.destroy-some');
+
+        Route::get('trash', [TrashController::class, 'index'])->name('trash.index');
+        Route::get('trash/{trash}', [TrashController::class, 'show'])->name('trash.show');
+        Route::delete('trash/destroy', [TrashController::class, 'destroy'])->name('trash.destroy');
     });
     Route::middleware(['role:Admin Departemen|Admin Review'])->group(function () {
         Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');

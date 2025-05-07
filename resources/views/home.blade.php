@@ -37,7 +37,7 @@
     </div>
     @endif
 
-    <form action="{{ route('reviews.destroy-some') }}" method="POST" class="flex flex-col gap-6 w-full">
+    <form id="deleteSomeForm" action="{{ route('reviews.destroy-some') }}" method="POST" class="flex flex-col gap-6 w-full">
         @csrf
         @method('DELETE')
         <div class="flex gap-4 items-center justify-end">

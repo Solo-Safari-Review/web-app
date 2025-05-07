@@ -20,7 +20,7 @@
             id="{{ $reviewId }}"
             show-url="{{ $showUrl }}"
             delete-url="{{ $deleteUrl }}"
-            type="review"
+            type="{{ $type ?? 'review' }}"
             info="{{ $info }}">
         </x-buttons.action-button>
     </div>

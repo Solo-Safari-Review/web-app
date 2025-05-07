@@ -15,7 +15,7 @@ class ReviewItem extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(Review $review, $info = null)
+    public function __construct(Review $review, $info = null, public $type = null)
     {
         $reviewId = HashidsHelper::encode($review->id);
 
@@ -26,7 +26,11 @@ class ReviewItem extends Component
         $this->reviewStatus = $review->categorizedReview->review_status ?? null;
         $this->actionStatus = $review->categorizedReview->action_status ?? null;
         $this->answerStatus = $review->categorizedReview->answer_status ?? null;
-        $this->showUrl = route('reviews.show', $reviewId);
+        if ($this->type == 'sampah') {
+            $this->showUrl = route('trash.show', $reviewId);
+        } else {
+            $this->showUrl = route('reviews.show', $reviewId);
+        }
         $this->editUrl = route('reviews.edit', $reviewId);
         $this->deleteUrl = route('reviews.destroy', $reviewId);
         $this->reviewId = $reviewId;
