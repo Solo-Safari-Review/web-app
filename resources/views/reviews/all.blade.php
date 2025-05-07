@@ -5,7 +5,7 @@
 @endsection
 
 @section('main')
-<form action="{{ route('reviews.destroy-some') }}" method="POST">
+<form id="deleteSomeForm" action="{{ route('reviews.destroy-some') }}" method="POST">
     @csrf
     @method('DELETE')
     <div class="flex flex-col gap-8 px-8 py-8 mt-10 xl:mt-0 w-full">

@@ -6,12 +6,12 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class ConfirmDelete extends Component
+class ConfirmSendReview extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public $item = "")
+    public function __construct(public $form = "")
     {
         //
     }
@@ -21,6 +21,6 @@ class ConfirmDelete extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.confirm-delete');
+        return view('components.confirm-send-review');
     }
 }

@@ -9,6 +9,8 @@
 </head>
 <body class="flex">
   @include('layouts.left-sidebar')
+  <x-confirm-send-review></x-confirm-send-review>
+  <x-confirm-delete-review></x-confirm-delete>
 
   <main class="flex flex-col min-h-screen w-full">
     <div class="flex flex-col min-h-screen">

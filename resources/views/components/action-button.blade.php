@@ -19,20 +19,20 @@
         <div id="departemenList{{ $id }}{{ $info }}" class="z-10 hidden bg-[#F1EADA] divide-y divide-[#C1B6AE] rounded-lg shadow-lg py-2 min-w-[160px]">
           <ul class="py-2 text-[16px] text-[#1D1B20]" aria-labelledby="departemenList{{ $id }}{{ $info }}">
             @foreach ($users as $user)
-            <form action="{{ route('reviews.store') }}" method="POST">
+            <form action="{{ route('reviews.store') }}" id="sendReview{{ $id }}{{ $user->id }}" method="POST">
               @csrf
               <input type="hidden" name="review_id" value="{{ $id }}">
               <input type="hidden" name="user_id" value="{{ App\Helpers\HashidsHelper::encode($user->id) }}">
-              <button type="submit" class="btn block px-4 py-2 hover:bg-[#C1B6AE] w-full text-start">{{ $user->first_name }} {{ $user->last_name }}</button>
+              <button type="button" class="btn block px-4 py-2 hover:bg-[#C1B6AE] w-full text-start" onclick="confirmSendReview('sendReview{{ $id }}{{ $user->id }}')">{{ $user->first_name }} {{ $user->last_name }}</button>
             </form>
             @endforeach
           </ul>
         </div>
       </li>
-      <form action="{{ $deleteUrl }}" method="POST">
+      <form id="deleteReview{{ $id }}" action="{{ $deleteUrl }}" method="POST">
         @csrf
         @method('DELETE')
-        <button type="submit" class="block px-4 py-2 hover:bg-[#C1B6AE] w-full text-start">Hapus</button>
+        <button type="button" class="block px-4 py-2 hover:bg-[#C1B6AE] w-full text-start" onclick="confirmDeleteReview('deleteReview{{ $id }}')">Hapus</button>
       </form>
       @endif
     </ul>
