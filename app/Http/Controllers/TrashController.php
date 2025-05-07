@@ -6,7 +6,6 @@ use App\Helpers\HashidsHelper;
 use App\Models\Review;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TrashController extends Controller
 {
