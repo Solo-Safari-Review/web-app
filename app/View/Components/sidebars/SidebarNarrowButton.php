@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\sidebars;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class SidebarWideButton extends Component
+class SidebarNarrowButton extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class SidebarWideButton extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.sidebar-wide-button');
+        return view('components.sidebars.sidebar-narrow-button');
     }
 }

@@ -28,15 +28,15 @@
         <div class="flex flex-col gap-4">
             @foreach ($sidebarItems as $item)
             @if ($item['name'] == 'Pengaturan')
-            <x-sidebar-wide-multi-button dropdown-id="setting-menu-wide" :multi-items="$multiItems">
+            <x-sidebars.sidebar-wide-multi-button dropdown-id="setting-menu-wide" :multi-items="$multiItems">
                 <x-slot name="icon">{!! $item['icon'] !!}</x-slot>
                 {{ $item['name'] }}
-            </x-sidebar-wide-multi-button>
+            </x-sidebars.sidebar-wide-multi-button>
             @else
-            <x-sidebar-wide-button route="{{ $item['route'] }}">
+            <x-sidebars.sidebar-wide-button route="{{ $item['route'] }}">
                 <x-slot name="icon">{!! $item['icon'] !!}</x-slot>
                 {{ $item['name'] }}
-            </x-sidebar-wide-button>
+            </x-sidebars.sidebar-wide-button>
             @endif
             @endforeach
         </div>

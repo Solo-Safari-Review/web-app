@@ -18,7 +18,7 @@
         </div>
         <div class="flex flex-wrap gap-8 w-full items-center justify-center">
             @foreach ($topTopics as $topic)
-                <x-card-topic :topic="$topic"></x-card-topic>
+                <x-cards.card-topic :topic="$topic"></x-cards.card-topic>
             @endforeach
         </div>
     </div>
@@ -31,7 +31,7 @@
         </div>
         <div class="flex flex-wrap gap-8 w-full items-center justify-center">
             @foreach ($topCategories as $category)
-                <x-card-category :category="$category"></x-card-category>
+                <x-cards.card-category :category="$category"></x-cards.card-category>
             @endforeach
         </div>
     </div>
@@ -50,7 +50,7 @@
             </div>
             <div class="flex flex-col w-full gap-2 py-2">
                 @foreach ($recentReviews as $review)
-                    <x-review-item info="recent" :review="$review"></x-review-item>
+                    <x-items.review-item info="recent" :review="$review"></x-items.review-item>
                 @endforeach
             </div>
         </div>
@@ -61,7 +61,7 @@
             </div>
             <div class="flex flex-col w-full gap-2 py-2">
                 @foreach ($mostHelpfulReviews as $review)
-                    <x-review-item info="helpful" :review="$review"></x-review-item>
+                    <x-items.review-item info="helpful" :review="$review"></x-items.review-item>
                 @endforeach
             </div>
         </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\cards;
 
 use App\Helpers\HashidsHelper;
 use App\Models\Category;
@@ -25,6 +25,6 @@ class CardCategory extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.card-category');
+        return view('components.cards.card-category');
     }
 }

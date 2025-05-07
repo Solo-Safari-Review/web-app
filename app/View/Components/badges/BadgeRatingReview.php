@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\badges;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -21,6 +21,6 @@ class BadgeRatingReview extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.badge-rating-review');
+        return view('components.badges.badge-rating-review');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\items;
 
 use App\Helpers\HashidsHelper;
 use App\Models\Review;
@@ -38,6 +38,6 @@ class ReviewItem extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.review-item');
+        return view('components.items.review-item');
     }
 }

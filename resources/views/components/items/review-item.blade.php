@@ -10,18 +10,18 @@
         <span class="grow">{{ \Illuminate\Support\Str::limit($content, 240) }}</span>
     </div>
     <div class="flex gap-2 items-center justify-between xl:justify-start w-full xl:w-fit h-full">
-        <x-badge-rating-review rating="{{ $rating }}"></x-badge-rating-review>
+        <x-badges.badge-rating-review rating="{{ $rating }}"></x-badges.badge-rating-review>
         <div class="flex flex-wrap xl:flex-col gap-2 items-center align-middle justify-center">
-            <x-badge-status-review status="{{ $reviewStatus }}"></x-badge-status-review>
-            <x-badge-action-review status="{{ $actionStatus }}"></x-badge-action-review>
-            <x-badge-answer-status status="{{ $answerStatus }}"></x-badge-answer-status>
+            <x-badges.badge-status-review status="{{ $reviewStatus }}"></x-badges.badge-status-review>
+            <x-badges.badge-action-review status="{{ $actionStatus }}"></x-badges.badge-action-review>
+            <x-badges.badge-answer-status status="{{ $answerStatus }}"></x-badges.badge-answer-status>
         </div>
-        <x-action-button
+        <x-buttons.action-button
             id="{{ $reviewId }}"
             show-url="{{ $showUrl }}"
             delete-url="{{ $deleteUrl }}"
             type="review"
             info="{{ $info }}">
-        </x-action-button>
+        </x-buttons.action-button>
     </div>
 </div>

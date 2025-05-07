@@ -21,7 +21,7 @@
                 </div>
                 <div class="flex flex-col w-full gap-2 py-2">
                     @foreach ($reviews as $review)
-                        <x-review-item info="recent" :review="$review"></x-review-item>
+                        <x-items.review-item info="recent" :review="$review"></x-items.review-item>
                     @endforeach
                 </div>
                 <div>

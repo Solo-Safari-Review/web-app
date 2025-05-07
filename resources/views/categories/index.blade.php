@@ -8,7 +8,7 @@
         <span class="grow px-2 py-1 text-2xl font-semibold w-full">Semua Kategori</span>
         <div class="flex flex-col w-full gap-2 py-2">
             @foreach ($categories as $category)
-                <x-category-topic-item-setting :category="$category" type="category"></x-category-topic-item-setting>
+                <x-items.category-topic-item-setting :category="$category" type="category"></x-items.category-topic-item-setting>
             @endforeach
         </div>
     </div>

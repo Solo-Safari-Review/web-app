@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\badges;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class BadgeAnswerStatus extends Component
+class BadgeActionReview extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class BadgeAnswerStatus extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.badge-answer-status');
+        return view('components.badges.badge-action-review');
     }
 }

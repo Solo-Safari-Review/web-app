@@ -12,9 +12,9 @@
     <div id="{{ $dropdownId }}" class="hidden">
         <div class="flex flex-col gap-4">
             @foreach ($multiItems as $item)
-            <x-sidebar-narrow-button href="{{ $item['href'] }}">
+            <x-sidebars.sidebar-narrow-button href="{{ $item['href'] }}">
                 {!! $item['icon'] !!}
-            </x-sidebar-narrow-button>
+            </x-sidebars.sidebar-narrow-button>
             @endforeach
         </div>
     </div>

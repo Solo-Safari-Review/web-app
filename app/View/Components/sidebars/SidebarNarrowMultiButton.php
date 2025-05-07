@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\sidebars;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class SidebarWideMultiButton extends Component
+class SidebarNarrowMultiButton extends Component
 {
     public $dropdownId, $multiItems;
     /**
@@ -23,6 +23,6 @@ class SidebarWideMultiButton extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.sidebar-wide-multi-button');
+        return view('components.sidebars.sidebar-narrow-multi-button');
     }
 }

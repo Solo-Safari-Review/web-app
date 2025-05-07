@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\modals;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -21,6 +21,6 @@ class ConfirmSendReview extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.confirm-send-review');
+        return view('components.modals.confirm-send-review');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\items;
 
 use App\Helpers\HashidsHelper;
 use App\Models\Category;
@@ -33,6 +33,6 @@ class CategoryTopicItemSetting extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.category-topic-item-setting');
+        return view('components.items.category-topic-item-setting');
     }
 }

@@ -1,18 +1,17 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\sidebars;
 
-use App\Enums\ReviewStatus;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class BadgeStatusReview extends Component
+class SidebarWideButton extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public $status)
+    public function __construct(public $route = '#')
     {
         //
     }
@@ -22,6 +21,6 @@ class BadgeStatusReview extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.badge-status-review');
+        return view('components.sidebars.sidebar-wide-button');
     }
 }

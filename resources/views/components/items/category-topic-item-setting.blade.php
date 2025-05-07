@@ -5,7 +5,7 @@
         <span>{{ $topic->name }}</span>
     </div>
     <span>{{ $topic->reviews_count }} Ulasan</span>
-    <x-action-button id="{{ $topic->id }}" show-url="{{ $showUrl }}" delete-url="{{ $deleteUrl }}" type="{{ $type }}"></x-action-button>
+    <x-buttons.action-button id="{{ $topic->id }}" show-url="{{ $showUrl }}" delete-url="{{ $deleteUrl }}" type="{{ $type }}"></x-buttons.action-button>
 </div>
 @endif
 
@@ -16,6 +16,6 @@
         <span>{{ $category->name }}</span>
     </div>
     <span>{{ $category->categorized_reviews_count }} Ulasan</span>
-    <x-action-button id="{{ $category->id }}" show-url="{{ $showUrl }}" delete-url="{{ $deleteUrl }}" type="{{ $type }}"></x-action-button>
+    <x-buttons.action-button id="{{ $category->id }}" show-url="{{ $showUrl }}" delete-url="{{ $deleteUrl }}" type="{{ $type }}"></x-buttons.action-button>
 </div>
 @endif

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\buttons;
 
 use App\Models\User;
 use Closure;
@@ -35,6 +35,6 @@ class ActionButton extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.action-button');
+        return view('components.buttons.action-button');
     }
 }

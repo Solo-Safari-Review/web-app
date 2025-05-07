@@ -1,17 +1,17 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\modals;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class BadgeActionReview extends Component
+class ConfirmDeleteReview extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public $status)
+    public function __construct(public $form = "")
     {
         //
     }
@@ -21,6 +21,6 @@ class BadgeActionReview extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.badge-action-review');
+        return view('components.modals.confirm-delete-review');
     }
 }
