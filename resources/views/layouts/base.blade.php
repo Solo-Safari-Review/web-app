@@ -13,6 +13,10 @@
   <x-modals.confirm-delete-review></x-modals.confirm-delete>
   <x-modals.confirm></x-modals.confirm>
 
+  @if (session()->has('success'))
+  <x-modals.success message="{{ session('success') }}"></x-modals.success>
+  @endif
+
   <main class="flex flex-col min-h-screen w-full">
     <div class="flex flex-col min-h-screen">
       @yield('main')
