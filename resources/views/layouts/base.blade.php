@@ -11,6 +11,7 @@
   @include('layouts.left-sidebar')
   <x-modals.confirm-send-review></x-modals.confirm-send-review>
   <x-modals.confirm-delete-review></x-modals.confirm-delete>
+  <x-modals.confirm></x-modals.confirm>
 
   <main class="flex flex-col min-h-screen w-full">
     <div class="flex flex-col min-h-screen">

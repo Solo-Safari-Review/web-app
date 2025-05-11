@@ -1,6 +1,5 @@
 <?php
 
-use App\Helpers\HashidsHelper;
 use App\Http\Controllers\CategorizedReviewController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController;
@@ -9,11 +8,8 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TrashController;
-use App\Models\Category;
-use App\Models\Review;
-use App\Models\Topic;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,10 +44,13 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('trash/destroy', [TrashController::class, 'destroy'])->name('trash.destroy');
     });
     Route::middleware(['role:Admin Departemen|Admin Review'])->group(function () {
-        Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
         Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'store', 'edit', 'update', 'destroy']);
+        Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
+
         Route::get('/search', [SearchController::class, 'search'])->name('search');
         Route::get('/search/show', [SearchController::class, 'searchView'])->name('search.show');
+
+        Route::resource('user', UserController::class);
     });
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
