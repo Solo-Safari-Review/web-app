@@ -50,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/search', [SearchController::class, 'search'])->name('search');
         Route::get('/search/show', [SearchController::class, 'searchView'])->name('search.show');
 
-        Route::resource('user', UserController::class);
+        Route::resource('user', UserController::class)->only(['index', 'update']);
     });
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
