@@ -12,6 +12,7 @@
   <x-modals.confirm-send-review></x-modals.confirm-send-review>
   <x-modals.confirm-delete-review></x-modals.confirm-delete>
   <x-modals.confirm></x-modals.confirm>
+  <x-modals.confirm-delete></x-modals.confirm-delete>
 
   @if (session()->has('success'))
   <x-modals.success message="{{ session('success') }}"></x-modals.success>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategorizedReviewController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ConfirmAccountsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReviewController;
@@ -42,6 +43,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('trash', [TrashController::class, 'index'])->name('trash.index');
         Route::get('trash/{trash}', [TrashController::class, 'show'])->name('trash.show');
         Route::delete('trash/destroy', [TrashController::class, 'destroy'])->name('trash.destroy');
+
+        Route::get('confirm-accounts', [ConfirmAccountsController::class, 'index'])->name('confirm-accounts.index');
+        Route::get('confirm-accounts/{confirm-accounts}', [ConfirmAccountsController::class, 'show'])->name('confirm-accounts.show');
+        Route::put('confirm-accounts/confirm-some', [ConfirmAccountsController::class, 'confirmSome'])->name('confirm-accounts.confirm-some');
+        Route::delete('confirm-accounts/destroy-some', [ConfirmAccountsController::class, 'destroySome'])->name('confirm-accounts.destroy-some');
     });
     Route::middleware(['role:Admin Departemen|Admin Review'])->group(function () {
         Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'store', 'edit', 'update', 'destroy']);

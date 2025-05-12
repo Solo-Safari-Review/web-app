@@ -5,7 +5,7 @@
         </svg>
     </div>
     <div class="w-full flex flex-col gap-8 text-center">
-        <p class="font-semibold text-2xl" id="successMessage">{{ $message }}Informasi akun berhasil diperbarui!</p>
+        <p class="font-semibold text-2xl" id="successMessage">{{ $message }}</p>
     </div>
 </div>
 
