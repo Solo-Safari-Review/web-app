@@ -19,7 +19,7 @@
   @endif
 
   <main class="flex flex-col min-h-screen w-full">
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-screen mt-10 xl:mt-0">
       @yield('main')
     </div>
 

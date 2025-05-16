@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('main')
-<div class="flex flex-col gap-8 px-8 py-8 mt-10 xl:mt-0 w-full">
+<div class="flex flex-col gap-8 px-8 py-8 w-full">
     <div class="w-full">
         <x-search-bar></x-search-bar>
     </div>

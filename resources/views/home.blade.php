@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('main')
-<div class="flex flex-col gap-8 px-8 py-8 mt-10 xl:mt-0 w-full">
+<div class="flex flex-col gap-8 px-8 py-8 w-full">
     <x-search-bar></x-search-bar>
     <div class="flex flex-col w-full px-8 py-6 text-[14px] bg-[#DCD7C9] rounded-2xl gap-4 min-h-[160px] shadow-black/25 shadow-lg">
         <span>Di balik setiap ulasan, tersimpan cerita dan pengalaman unik dari para pengunjung. Reveazy membantu kamu memahami lebih dalam apa yang paling sering dibahas dan dipikirkan oleh pengunjung kamu.</span>

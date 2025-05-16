@@ -67,7 +67,7 @@ class ReviewController extends Controller
                 ]);
             }
 
-            else {
+            if (Auth::user()->hasRole('Admin Review')) {
                 $topTopics = Cache::remember('top_topics', $ttl, function () {
                     return Topic::withCount('reviews')->orderBy('reviews_count', 'desc')->limit(5)->get();
                 });

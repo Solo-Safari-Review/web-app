@@ -4,7 +4,7 @@
 <form id="deleteSomeForm" action="{{ route('reviews.destroy-some') }}" method="POST">
     @csrf
     @method('DELETE')
-    <div class="flex flex-col gap-8 px-8 py-8 mt-10 xl:mt-0 w-full">
+    <div class="flex flex-col gap-8 px-8 py-8 w-full">
         <x-search-bar></x-search-bar>
 
         <div class="flex flex-col xl:flex-row gap-8 w-full">
