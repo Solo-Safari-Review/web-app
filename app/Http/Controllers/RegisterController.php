@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HashidsHelper;
+use App\Models\Department;
 use App\Models\User;
 use Exception;
 use Illuminate\Auth\Events\Validated;
@@ -12,7 +14,9 @@ class RegisterController extends Controller
 {
     public function show()
     {
-        return view('auth.register');
+        $departments = Department::where('name', '!=', 'Admin Review')->get();
+
+        return view('auth.register', compact('departments'));
     }
 
     public function register(Request $request) {
@@ -23,7 +27,7 @@ class RegisterController extends Controller
             'phone' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|string|min:8',
-            // 'isAdminReview' => 'required|boolean',
+            'department' => 'required|string',
         ], [
             'first_name.required' => 'Nama depan harus diisi!',
             'first_name.max' => 'Nama depan maksimal 255 karakter!',
@@ -38,6 +42,7 @@ class RegisterController extends Controller
             'password.min' => 'Password minimal 8 karakter!',
             'password_confirmation.required' => 'Konfirmasi password harus diisi!',
             'password_confirmation.min' => 'Konfirmasi password minimal 8 karakter!',
+            'department.required' => 'Posisi departemen harus diisi!',
         ]);
 
         try {
@@ -47,6 +52,7 @@ class RegisterController extends Controller
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
                 'password' => bcrypt($validated['password']),
+                'department' => HashidsHelper::decode($validated['department']),
             ]);
         } catch (Exception $e) {
             return back()->with('error', 'Registrasi gagal! Silahkan coba kembali.');

@@ -15,7 +15,7 @@
             @csrf
             <div class="flex flex-col gap-4 w-full">
                 <label for="email" class="xl:text-lg text-sm">Email</label>
-                <input type="email" name="email" id="email" class="bg-[#D9D9D9] rounded-2xl px-4 py-2">
+                <input type="email" name="email" id="email" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]">
                 @error('email')
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -23,7 +23,7 @@
             <div class="flex flex-col gap-4 w-full items-end">
                 <div class="flex flex-col gap-4 w-full">
                     <label for="password" class="xl:text-lg text-sm">Kata Sandi</label>
-                    <input type="password" name="password" id="password" class="bg-[#D9D9D9] rounded-2xl px-4 py-2">
+                    <input type="password" name="password" id="password" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]">
                     @error('password')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
