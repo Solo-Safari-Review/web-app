@@ -31,7 +31,7 @@
                             <td class="py-4 px-4">
                                 <input type="checkbox" name="users[]" value="{{ \App\Helpers\HashidsHelper::encode($user->id) }}" class="w-[18px] h-[18px] me-4 text-[#907B60] bg-gray-100 border-gray-300 focus:ring-[#907B60]">
                             </td>
-                            <td class="py-4 px-4"></td>
+                            <td class="py-4 px-4">{{ $user->department->name }}</td>
                             <td class="py-4 px-4">{{ $user->first_name }} {{ $user->last_name }}</td>
                             <td class="py-4 px-4">{{ $user->email }}</td>
                             <td class="py-4 px-4">

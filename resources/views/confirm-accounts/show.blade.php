@@ -30,7 +30,7 @@
             </tr>
             <tr>
                 <th class="px-6 py-3">Posisi</th>
-                <td class="px-6 py-3"></td>
+                <td class="px-6 py-3">{{ $user->department->name }}</td>
             </tr>
         </tbody>
     </table>
