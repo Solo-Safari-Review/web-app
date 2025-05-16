@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\HashidsHelper;
+use App\Models\Category;
 use App\Models\Topic;
 use Carbon\Carbon;
 use Exception;
@@ -19,9 +20,15 @@ class TopicController extends Controller
     public function index()
     {
         try {
-            $topics = Topic::withCount('reviews')->orderBy('reviews_count', 'desc')->paginate(15);
+            if (Auth::user()->hasRole('Admin Review')) {
+                $categories = Category::with('topics')->withCount('topics')->orderBy('topics_count', 'desc')->paginate(15);
+            }
 
-            return view('topics.index', compact('topics'));
+            if (Auth::user()->hasRole('Admin Departemen')) {
+                $categories = Category::where('department_id', Auth::user()->department_id)->with('topics')->withCount('topics')->orderBy('topics_count', 'desc')->paginate(15);
+            }
+
+            return view('topics.index', compact('categories'));
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

@@ -7,8 +7,8 @@
     <div class="flex flex-col gap-4 w-full">
         <span class="grow px-2 py-1 text-2xl font-semibold w-full">Semua Topik</span>
         <div class="flex flex-col w-full gap-2 py-2">
-            @foreach ($topics as $topic)
-                <x-items.category-topic-item-setting :topic="$topic" type="topic"></x-items.category-topic-item-setting>
+            @foreach ($categories as $category)
+                <x-sections.topics-on-category :topics="$category->topics" categoryName="{!! $category->name !!}"></x-sections.topics-on-category>
             @endforeach
         </div>
     </div>

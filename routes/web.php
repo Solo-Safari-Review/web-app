@@ -36,7 +36,6 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin Review'])->group(function () {
         Route::resource('categories', CategoryController::class);
-        Route::resource('topics', TopicController::class);
         Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['store']);
         Route::delete('reviews/destroy-some', [ReviewController::class, 'destroySome'])->name('reviews.destroy-some');
 
@@ -52,6 +51,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin Departemen|Admin Review'])->group(function () {
         Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'store', 'edit', 'update', 'destroy']);
         Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
+
+        Route::resource('topics', TopicController::class);
 
         Route::get('/search', [SearchController::class, 'search'])->name('search');
         Route::get('/search/show', [SearchController::class, 'searchView'])->name('search.show');
