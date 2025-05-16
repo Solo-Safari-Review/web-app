@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_validated')->default(0);
-            $table->foreignIdFor(Department::class)->nullable()->nullOnDelete();
+            $table->foreignIdFor(Department::class)->constrained()->cascadeOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

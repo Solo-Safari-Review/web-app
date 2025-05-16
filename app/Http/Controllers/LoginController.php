@@ -30,7 +30,7 @@ class LoginController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            return back()->withErrors(['email' => 'Email atau password salah.']);
+            return back()->withErrors(['email' => 'Email atau password salah.'])->withInput();
         }
 
         Auth::login($user);

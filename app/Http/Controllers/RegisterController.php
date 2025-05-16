@@ -52,12 +52,12 @@ class RegisterController extends Controller
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
                 'password' => bcrypt($validated['password']),
-                'department' => HashidsHelper::decode($validated['department']),
+                'department_id' => HashidsHelper::decode($validated['department']),
             ]);
         } catch (Exception $e) {
-            return back()->with('error', 'Registrasi gagal! Silahkan coba kembali.');
+            return back()->with('error', 'Registrasi gagal! Silahkan coba kembali.')->withInput();
         }
 
-        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silahkan login.');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silahkan login.')->withInput(['email' => $validated['email']]);
     }
 }

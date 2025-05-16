@@ -15,7 +15,7 @@
             @csrf
             <div class="flex flex-col gap-4 w-full">
                 <label for="email" class="xl:text-lg text-sm">Email</label>
-                <input type="email" name="email" id="email" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]">
+                <input type="email" name="email" id="email" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]" value="{{ old('email') }}">
                 @error('email')
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -30,7 +30,7 @@
                 </div>
                 <a href="{{ route('forgot-password.show') }}" class="underline xl:text-lg text-sm">Lupa kata sandi?</a>
             </div>
-            <button type="submit" class="bg-[#907B60] text-white rounded-3xl px-4 py-2 text-center w-full xl:w-[400px] mt-8">Masuk</button>
+            <button type="submit" class="bg-[#907B60] text-white rounded-3xl px-4 py-2 text-center w-full xl:w-[400px] mt-8 hover:bg-[#907B60]/80">Masuk</button>
         </form>
         <div class="w-full text-center xl:text-[16px] text-sm">
             <span>Belum memiliki akun? <a href="{{ route('register.show') }}"" class="underline text-[#4E1F00]">Daftar Akun</a></span>

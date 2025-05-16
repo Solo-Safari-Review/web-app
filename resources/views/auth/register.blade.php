@@ -15,7 +15,7 @@
             @csrf
             <div class="flex flex-col gap-4 w-full">
                 <label for="email" class="xl:text-lg text-sm">Email</label>
-                <input type="email" name="email" id="email" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]">
+                <input type="email" name="email" id="email" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]" value="{{ old('email') }}">
                 @error('email')
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -24,14 +24,14 @@
                 <div class="flex flex-col xl:flex-row gap-4 w-full">
                     <div class="flex flex-col gap-2 w-full">
                         <label for="first_name" class="xl:text-lg text-sm">Nama Depan</label>
-                        <input type="text" name="first_name" id="first_name" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]">
+                        <input type="text" name="first_name" id="first_name" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]" value="{{ old('first_name') }}">
                         @error('first_name')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="flex flex-col gap-2 w-full">
                         <label for="last_name" class="xl:text-lg text-sm">Nama Belakang</label>
-                        <input type="text" name="last_name" id="last_name" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]">
+                        <input type="text" name="last_name" id="last_name" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]" value="{{ old('last_name') }}">
                         @error('last_name')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -40,7 +40,7 @@
             </div>
             <div class="flex flex-col gap-4 w-full">
                 <label for="phone" class="xl:text-lg text-sm">Nomor Handphone</label>
-                <input type="text" name="phone" id="phone" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]">
+                <input type="text" name="phone" id="phone" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 focus:border-[#907B60] focus:ring-[#907B60]" value="{{ old('phone') }}">
                 @error('phone')
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -70,7 +70,7 @@
                 <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
-            <button type="submit" class="bg-[#907B60] text-white rounded-3xl px-4 py-2 text-center w-full xl:w-[400px] mt-8">Daftar</button>
+            <button type="submit" class="bg-[#907B60] text-white rounded-3xl px-4 py-2 text-center w-full xl:w-[400px] mt-8 hover:bg-[#907B60]/80">Daftar</button>
         </form>
         <div class="w-full text-center xl:text-[16px] text-sm">
             <span>Sudah memiliki akun? <a href="{{ route('login.show') }}" class="underline text-[#4E1F00]">Masuk Akun</a></span>
