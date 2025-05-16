@@ -130,7 +130,28 @@ class CategoryController extends Controller
                 abort(400, 'Category cannot be deleted');
             }
 
-            return response()->json(['message' => 'Category deleted successfully'], 200);
+            return redirect()->route('categories.index')->with('success', 'Kategori yang dipilih berhasil dihapus');
+        }
+    }
+
+    public function destroySome(Request $request)
+    {
+        if (Auth::user()->hasPermissionTo('delete_category')) {
+            foreach ($request->categories as $category) {
+                try {
+                    $categoryId = HashidsHelper::decode($category);
+                } catch (\Exception $e) {
+                    abort(400, 'Kategori tidak ditemukan!');
+                }
+
+                try {
+                    Category::find($categoryId)->delete();
+                } catch (Exception $e) {
+                    abort(400, 'Gagal menghapus kategori!');
+                }
+            }
+
+            return redirect()->route('categories.index')->with('success', 'Kategori yang dipilih berhasil dihapus');
         }
     }
 }
