@@ -17,7 +17,8 @@ class TopicSeeder extends Seeder
 
         foreach ($data as $value) {
             Topic::create([
-                'name' => $value
+                'name' => $value,
+                'category_id' => rand(1, 4)
             ]);
         }
     }

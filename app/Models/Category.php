@@ -27,4 +27,12 @@ class Category extends Model implements Searchable
     {
         return $this->hasMany(CategorizedReview::class);
     }
+
+    public function topics() {
+        return $this->hasMany(Topic::class);
+    }
+
+    public function department() {
+        return $this->belongsTo(Department::class);
+    }
 }

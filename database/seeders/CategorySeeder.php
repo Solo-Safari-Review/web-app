@@ -17,7 +17,8 @@ class CategorySeeder extends Seeder
 
         foreach ($data as $value) {
             Category::create([
-                'name' => $value
+                'name' => $value,
+                'department_id' => rand(2, 5)
             ]);
         }
     }
