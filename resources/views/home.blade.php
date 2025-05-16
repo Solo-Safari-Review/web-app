@@ -1,9 +1,5 @@
 @extends('layouts.base')
 
-@section('left-sidebar')
-
-@endsection
-
 @section('main')
 <div class="flex flex-col gap-8 px-8 py-8 mt-10 xl:mt-0 w-full">
     <x-search-bar></x-search-bar>
