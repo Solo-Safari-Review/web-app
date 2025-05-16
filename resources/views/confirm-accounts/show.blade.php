@@ -34,11 +34,11 @@
             </tr>
         </tbody>
     </table>
-    <form action="{{ route('confirm-accounts.confirm-some') }}" method="POST" class="flex justify-center w-full">
+    <form id="confirmForm" action="{{ route('confirm-accounts.confirm-some') }}" method="POST" class="flex justify-center w-full">
         @csrf
         @method('PUT')
         <input type="hidden" name="users[]" value="{{ \App\Helpers\HashidsHelper::encode($user->id) }}">
-        <button type="submit" class="bg-[#4E1F00] text-white px-4 py-2 rounded-lg min-w-[324px] hover:bg-[#4E1F00]/80">Konfirmasi Akun</button>
+        <button type="button" class="bg-[#4E1F00] text-white px-4 py-2 rounded-lg min-w-[324px] hover:bg-[#4E1F00]/80" onclick="confirm('confirmForm', 'Konfirmasi Akun', 'Apakah Anda yakin untuk mengkonfirmasi akun ini?')">Konfirmasi Akun</button>
     </form>
 </div>
 @endsection
