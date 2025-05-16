@@ -47,14 +47,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('user', [UserController::class, 'index'])->name('user.index');
 
     Route::middleware(['role:Admin Review'])->group(function () {
-        Route::resource('reviews', ReviewController::class)->except('index', 'show', 'all');
         Route::delete('reviews/destroy-some', [ReviewController::class, 'destroySome'])->name('reviews.destroy-some');
+        Route::resource('reviews', ReviewController::class)->except('index', 'show', 'all');
 
         Route::resource('categories', CategoryController::class);
         Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['store']);
 
-        Route::resource('topics', TopicController::class)->except('index', 'show');
         Route::delete('topics/destroy-some', [TopicController::class, 'destroySome'])->name('topics.destroy-some');
+        Route::resource('topics', TopicController::class)->except('index', 'show');
 
         Route::get('trash', [TrashController::class, 'index'])->name('trash.index');
         Route::get('trash/{trash}', [TrashController::class, 'show'])->name('trash.show');
