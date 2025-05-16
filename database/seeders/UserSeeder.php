@@ -14,7 +14,6 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $userType = [
-            'admin-review',
             'admin-operasional',
             'admin-satwa',
             'admin-konservasi-pendidikan',
@@ -24,6 +23,18 @@ class UserSeeder extends Seeder
             'admin-inovasi-pengembangan'
         ];
 
+        $user = User::create([
+            'first_name' => '',
+            'last_name' => 'admin-review',
+            'email' => 'admin-review' . '@example.com',
+            'phone' => '088888888888',
+            'password' => bcrypt('S0loSAFARI@password'),
+            'is_validated' => 1,
+            'department_id' => 1,
+        ]);
+
+        $user->assignRole('Admin Review');
+
         foreach ($userType as $type) {
             $user = User::create([
                 'first_name' => '',
@@ -31,10 +42,11 @@ class UserSeeder extends Seeder
                 'email' => $type . '@example.com',
                 'phone' => '088888888888',
                 'password' => bcrypt('S0loSAFARI@password'),
-                'is_validated' => 1
+                'is_validated' => 1,
+                'department_id' => rand(2, 3),
             ]);
 
-            if ($type == 'admin-review') {$user->assignRole('Admin Review');} else {$user->assignRole('Admin Departemen');}
+            $user->assignRole('Admin Departemen');
         }
     }
 }
