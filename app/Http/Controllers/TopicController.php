@@ -138,7 +138,28 @@ class TopicController extends Controller
                 abort(400, 'Topic cannot be deleted');
             }
 
-            return response()->json(['message' => 'Topic deleted successfully'], 200);
+            return redirect()->route('topics.index')->with('success', 'Topik berhasil dihapus');
+        }
+    }
+
+    public function destroySome(Request $request)
+    {
+        if (Auth::user()->hasPermissionTo('delete_topic')) {
+            foreach ($request->topics as $topic) {
+                try {
+                    $topicId = HashidsHelper::decode($topic);
+                } catch (\Exception $e) {
+                    abort(400, 'Topik tidak ditemukan!');
+                }
+
+                try {
+                    Topic::find($topicId)->delete();
+                } catch (Exception $e) {
+                    abort(400, 'Gagal menghapus topik!');
+                }
+            }
+
+            return redirect()->route('topics.index')->with('success', 'Topik yang dipilih berhasil dihapus');
         }
     }
 }

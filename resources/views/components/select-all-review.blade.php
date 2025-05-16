@@ -1,6 +1,6 @@
 @if ($item == "confirmAccounts")
 <div class="flex gap-1 items-center text-sm">
-    <input type="checkbox" id='select-all' class="w-[18px] h-[18px] me-2 text-[#907B60] bg-gray-100 border-gray-300 focus:ring-[#907B60]">
+    <input type="checkbox" id='select-all-review' class="w-[18px] h-[18px] me-2 text-[#907B60] bg-gray-100 border-gray-300 focus:ring-[#907B60]">
     <span>Pilih semua</span>
 </div>
 <button type="button" id="confirm-selected-all" class="text-center text-sm px-6 py-1 rounded-lg bg-[#FFE4B7] border-1 border-gray-300">
@@ -12,7 +12,7 @@
 @push('scripts')
 <script>
     $(function () {
-        $('#select-all').click(function () {
+        $('#select-all-review').click(function () {
             if ($(this).is(':checked')) {
                 $('input[type="checkbox"]').prop('checked', true);
             } else {
@@ -64,7 +64,7 @@
 
 @else
 <div class="flex gap-1 items-center text-sm">
-    <input type="checkbox" id='select-all' class="w-[18px] h-[18px] me-4 text-[#907B60] bg-gray-100 border-gray-300 focus:ring-[#907B60]">
+    <input type="checkbox" id='select-all-review' class="w-[18px] h-[18px] me-4 text-[#907B60] bg-gray-100 border-gray-300 focus:ring-[#907B60]">
     <span>Pilih semua</span>
 </div>
 <button type="button" id="delete-selected-all" class="text-center text-sm px-6 py-1 rounded-lg bg-[#FFE4B7] border-1 border-gray-300">
@@ -78,7 +78,7 @@
 @push('scripts')
 <script>
     $(function () {
-        $('#select-all').click(function () {
+        $('#select-all-review').click(function () {
             if ($(this).is(':checked')) {
                 $('input[type="checkbox"]').prop('checked', true);
             } else {

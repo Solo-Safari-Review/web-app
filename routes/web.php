@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['store']);
 
         Route::resource('topics', TopicController::class)->except('index', 'show');
+        Route::delete('topics/destroy-some', [TopicController::class, 'destroySome'])->name('topics.destroy-some');
 
         Route::get('trash', [TrashController::class, 'index'])->name('trash.index');
         Route::get('trash/{trash}', [TrashController::class, 'show'])->name('trash.show');

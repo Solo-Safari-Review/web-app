@@ -15,7 +15,7 @@
                     <span class="grow px-2 py-1 text-2xl font-semibold">Semua Ulasan</span>
 
                     @if (Auth::user()->hasRole('Admin Review'))
-                    <x-select-all item="Ulasan"></x-select-all>
+                    <x-select-all-review item="Ulasan"></x-select-all-review>
                     @endif
 
                 </div>

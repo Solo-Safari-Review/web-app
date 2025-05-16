@@ -38,7 +38,7 @@
         @method('DELETE')
         <div class="flex gap-4 items-center justify-end">
             @if (Auth::user()->hasRole('Admin Review'))
-            <x-select-all item="Ulasan"></x-select-all>
+            <x-select-all-review item="Ulasan"></x-select-all-review>
             @endif
         </div>
         <div class="flex flex-col gap-4 w-full">

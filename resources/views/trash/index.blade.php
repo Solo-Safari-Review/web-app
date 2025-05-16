@@ -8,7 +8,7 @@
         @csrf
         @method('DELETE')
         <div class="flex gap-4 items-center justify-end">
-            <x-select-all item="Sampah"></x-select-all>
+            <x-select-all-review item="Sampah"></x-select-all-review>
         </div>
         <div class="flex flex-col gap-4 w-full">
             <div class="flex gap-2 items-center w-full justify-between">

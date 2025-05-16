@@ -10,7 +10,7 @@
             <div class="flex flex-col gap-4 w-full">
                 <span class="py-1 text-lg xl:text-2xl font-semibold">Konfirmasi Akun Baru</span>
                 <div class="flex gap-6 items-center justify-start">
-                    <x-select-all item="confirmAccounts"></x-select-all>
+                    <x-select-all-review item="confirmAccounts"></x-select-all-review>
                 </div>
             </div>
             <div class="flex flex-col w-full gap-4 py-2">
