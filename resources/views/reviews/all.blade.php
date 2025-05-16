@@ -1,9 +1,5 @@
 @extends('layouts.base')
 
-@section('left-sidebar')
-
-@endsection
-
 @section('main')
 <form id="deleteSomeForm" action="{{ route('reviews.destroy-some') }}" method="POST">
     @csrf
@@ -17,7 +13,11 @@
             <div class="flex flex-col gap-4 grow">
                 <div class="flex gap-4 items-center w-full">
                     <span class="grow px-2 py-1 text-2xl font-semibold">Semua Ulasan</span>
+
+                    @if (Auth::user()->hasRole('Admin Review'))
                     <x-select-all item="Ulasan"></x-select-all>
+                    @endif
+
                 </div>
                 <div class="flex flex-col w-full gap-2 py-2">
                     @foreach ($reviews as $review)
