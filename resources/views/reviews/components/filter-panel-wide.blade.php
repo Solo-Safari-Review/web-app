@@ -1,5 +1,11 @@
 <div class="hidden xl:flex">
     <form action="{{ route('reviews.all') }}" method="GET" class="flex flex-col gap-6 py-4 px-4 border-l rounded-2xl h-fit w-[200px] text-center text-sm">
+        @if ($category)
+            <input type="hidden" name="category" value="{{ $category }}">
+        @endif
+        @if ($topic)
+            <input type="hidden" name="topic" value="{{ $topic }}">
+        @endif
         <div class="border-b flex flex-col gap-6 pb-4">
             <span class="font-bold text-lg">Urutkan</span>
             <div class="flex flex-col gap-4 w-full text-left">

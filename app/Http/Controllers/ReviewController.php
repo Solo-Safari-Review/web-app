@@ -149,7 +149,7 @@ class ReviewController extends Controller
 
             $reviews = $reviews->paginate(15);
 
-            return view('reviews.all', compact('reviews', 'allowedSorts', 'allowedSortMethods', 'allowedReviewStatus', 'allowedActionStatus', 'allowedAnswerStatus', 'allowedRatings'));
+            return view('reviews.all', compact('reviews', 'allowedSorts', 'allowedSortMethods', 'allowedReviewStatus', 'allowedActionStatus', 'allowedAnswerStatus', 'allowedRatings'))->with('category', $request->query('category'))->with('topic', $request->query('topic'));
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
