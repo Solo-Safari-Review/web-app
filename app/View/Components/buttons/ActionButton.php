@@ -2,6 +2,7 @@
 
 namespace App\View\Components\buttons;
 
+use App\Models\Department;
 use App\Models\User;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -9,7 +10,7 @@ use Illuminate\View\Component;
 
 class ActionButton extends Component
 {
-    public $users;
+    public $departments;
 
     /**
      * Create a new component instance.
@@ -26,7 +27,7 @@ class ActionButton extends Component
         $this->deleteUrl = $deleteUrl;
 
         if ($type == "review") {
-            $this->users = User::role('Admin Departemen')->get();
+            $this->departments = Department::where('name', '!=', 'Admin Review')->get();
         }
     }
 

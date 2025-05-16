@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use App\Enums\ReviewStatus;
 use App\Helpers\HashidsHelper;
 use App\Models\Category;
+use App\Models\Department;
 use App\Models\Topic;
 use App\Models\User;
 use Exception;
@@ -33,7 +34,7 @@ class ReviewController extends Controller
                 $topTopics = Cache::remember('top_topics' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
                     return Topic::with('reviews')
                         ->whereHas('reviews.categorizedReview', function ($query) {
-                            $query->where('user_id', Auth::user()->id);
+                            $query->where('department_id', Auth::user()->department_id);
                         })
                         ->withCount('reviews')
                         ->orderBy('reviews_count', 'desc')
@@ -43,7 +44,7 @@ class ReviewController extends Controller
                 $recentReviews = Cache::remember('recent_reviews' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
                     return Review::with('categorizedReview')
                         ->whereHas('categorizedReview', function ($query) {
-                            $query->where('user_id', Auth::user()->id);
+                            $query->where('department_id', Auth::user()->department_id);
                         })
                         ->orderBy('created_at', 'desc')
                         ->limit(5)
@@ -52,7 +53,7 @@ class ReviewController extends Controller
                 $mostHelpfulReviews = Cache::remember('most_helpful_reviews' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
                     return Review::with('categorizedReview')
                         ->whereHas('categorizedReview', function ($query) {
-                            $query->where('user_id', Auth::user()->id);
+                            $query->where('department_id', Auth::user()->department_id);
                         })
                         ->orderBy('likes', 'desc')
                         ->limit(5)
@@ -121,7 +122,7 @@ class ReviewController extends Controller
 
             if (Auth::user()->hasRole('Admin Departemen')) {
                 $reviews->whereHas('categorizedReview', function ($query) {
-                    $query->where('user_id', Auth::user()->id);
+                    $query->where('department_id', Auth::user()->department_id);
                 });
             }
 
@@ -170,11 +171,11 @@ class ReviewController extends Controller
         if (Auth::user()->hasPermissionTo('send_review')) {
             try {
                 if ($request->filled('review_id')) {$request['review_id'] = HashidsHelper::decode($request->review_id);}
-                if ($request->filled('user_id')) {$request['user_id'] = HashidsHelper::decode($request->user_id);}
+                if ($request->filled('department_id')) {$request['department_id'] = HashidsHelper::decode($request->department_id);}
 
                 $validated = $request->validate([
                     'review_id' => [Rule::exists(Review::class, 'id'), 'required'],
-                    'user_id' => [Rule::exists(User::class, 'id'), 'required'],
+                    'department_id' => [Rule::exists(Department::class, 'id'), 'required'],
                     'comment.review_admin' => 'nullable|max:65535',
                 ]);
 
@@ -182,13 +183,13 @@ class ReviewController extends Controller
 
                 if ($review->categorizedReview) {
                     $review->categorizedReview()->update([
-                        'user_id' => $validated['user_id'],
+                        'department_id' => $validated['department_id'],
                         'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
                     ]);
 
-                    return response()->json(['message' => 'Status updated successfully'], 200);
+                    return response()->json(['success' => 'Ulasan berhasil dikirimkan'], 200);
                 } else {
-                    return response()->json(['error' => 'This review has not been categorized yet'], 500);
+                    return response()->json(['error' => 'Ulasan belum terkategorikan'], 500);
                 }
             } catch (Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 500);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Department;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -18,13 +19,12 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Review::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(User::class)->nullOnDelete()->nullable();
+            $table->foreignIdFor(Department::class)->nullOnDelete()->nullable();
             $table->enum('review_status', ['Belum diteruskan', 'Sudah diteruskan']);
             $table->enum('action_status', ['Belum dikerjakan', 'Dalam proses', 'Selesai']);
             $table->enum('answer_status', ['Belum dijawab', 'Sudah dijawab']);
             $table->text('review_admin_comment')->nullable();
-            $table->text('departement_admin_comment')->nullable();
-            $table->boolean('is_deleted')->default(false);
+            $table->text('department_admin_comment')->nullable();
             $table->timestamps();
         });
     }

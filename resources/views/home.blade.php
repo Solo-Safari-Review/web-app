@@ -41,7 +41,9 @@
         @csrf
         @method('DELETE')
         <div class="flex gap-4 items-center justify-end">
+            @if (Auth::user()->hasRole('Admin Review'))
             <x-select-all item="Ulasan"></x-select-all>
+            @endif
         </div>
         <div class="flex flex-col gap-4 w-full">
             <div class="flex gap-2 items-center w-full justify-between">

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('review_context_4')->nullable();
             $table->integer('predicted_rating')->nullable();
             $table->text('answer')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
