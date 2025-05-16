@@ -24,9 +24,17 @@ class ConfirmAccountsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function showConfirm(Request $request)
     {
-        //
+        try {
+            $userId = HashidsHelper::decode($request->route('account'));
+        } catch (Exception $e) {
+            abort(404, 'Akun tidak ditemukan');
+        }
+
+        $user = User::find($userId);
+
+        return view('confirm-accounts.show', compact('user'));
     }
 
     public function destroySome(Request $request)
@@ -45,7 +53,7 @@ class ConfirmAccountsController extends Controller
             }
         }
 
-        return redirect()->route('confirm-accounts.index')->with('success', 'Berhasil mengkonfirmasi akun');
+        return redirect()->route('confirm-accounts.index')->with('success', 'Berhasil menghapus akun');
     }
 
     public function confirmSome(Request $request)
@@ -69,6 +77,6 @@ class ConfirmAccountsController extends Controller
             }
         }
 
-        return redirect()->route('confirm-accounts.index')->with('success', 'Berhasil menghapus akun');
+        return redirect()->route('confirm-accounts.index')->with('success', 'Berhasil mengkonfirmasi akun');
     }
 }

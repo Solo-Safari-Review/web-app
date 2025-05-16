@@ -46,7 +46,7 @@
                                 @endif
                             </td>
                             <td class="py-4 px-4">
-                                <a type="button" href="{{ route('confirm-accounts.show', \App\Helpers\HashidsHelper::encode($user->id)) }}" class="bg-[#E9D9C7] rounded-lg px-4 py-2 hover:bg-[#E9D9C7]/80">
+                                <a type="button" href="{{ route('confirm-accounts.show-confirm', \App\Helpers\HashidsHelper::encode($user->id)) }}" class="bg-[#E9D9C7] rounded-lg px-4 py-2 hover:bg-[#E9D9C7]/80">
                                     Rincian
                                 </a>
                             </td>
