@@ -7,14 +7,12 @@ use App\Enums\AnswerStatus;
 use App\Enums\ReviewStatus;
 use App\Helpers\HashidsHelper;
 use App\Models\CategorizedReview;
-use App\Models\Category;
+use App\Models\Department;
 use App\Models\Review;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class CategorizedReviewController extends Controller
@@ -24,7 +22,9 @@ class CategorizedReviewController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        $departments = Department::withCount('categorizedReviews')->paginate(15);
+
+        return view('categorized-reviews.index', compact('departments'));
     }
 
     /**
@@ -92,7 +92,65 @@ class CategorizedReviewController extends Controller
      */
     public function show(Request $request)
     {
-        //
+        try {
+            $departmentId = HashidsHelper::decode($request->route('categorized_review'));
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+
+        try {
+            $allowedSorts = ['Waktu', 'Jumlah Suka'];
+            $allowedSortMethods = ['Turun', 'Naik'];
+            $allowedReviewStatus = ['Belum diteruskan', 'Sudah diteruskan'];
+            $allowedActionStatus = ['Belum dikerjakan', 'Dalam proses', 'Selesai'];
+            $allowedAnswerStatus = ['Belum dijawab', 'Sudah dijawab'];
+            $allowedRatings = ['5', '4', '3', '2', '1'];
+
+
+            $sort = $request->query('sort');
+            $sort = in_array($sort, $allowedSorts) ? $sort : 'Waktu';
+            if ($sort == 'Waktu') {$sort = 'created_at';}
+            if ($sort == 'Jumlah Suka') {$sort = 'likes';}
+
+            $sortMethod = $request->query('sort-method');
+            $sortMethod = in_array($sortMethod, $allowedSortMethods) ? $sortMethod : 'Turun';
+            if ($sortMethod == 'Naik') {$sortMethod = 'asc';}
+            if ($sortMethod == 'Turun') {$sortMethod = 'desc';}
+
+            $categoryId = $request->query('category') ? HashidsHelper::decode($request->query('category')) : null;
+            $topicId = $request->query('topic') ? HashidsHelper::decode($request->query('topic')) : null;
+
+            $reviews = Review::whereHas('categorizedReview', function ($query) use ($departmentId) {
+                    $query->where('department_id', $departmentId);
+                })->with('categorizedReview', 'topics')->orderBy('reviews.'.$sort, $sortMethod);
+
+            if ($categoryId) {
+                $reviews->whereHas('categorizedReview', function ($query) use ($categoryId) {$query->where('category_id', $categoryId);});
+            }
+            if ($topicId) {
+                $reviews->whereHas('topics', function ($query) use ($topicId) {$query->where('topic_id', $topicId);});
+            }
+
+            if (in_array($request->query('rating'), $allowedRatings)) {
+                $rating = $request->query('rating');
+                $reviews->where('rating', $rating);
+            }
+            if (in_array($request->query('reviewStatus'), $allowedReviewStatus)) {
+                $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('review_status', $request->query('reviewStatus'));});
+            }
+            if (in_array($request->query('actionStatus'), $allowedReviewStatus)) {
+                $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('action_status', $request->query('actionStatus'));});
+            }
+            if (in_array($request->query('answerStatus'), $allowedReviewStatus)) {
+                $reviews->whereHas('categorizedReview', function ($query) use ($request) {$query->where('answer_status', $request->query('answerStatus'));});
+            }
+
+            $reviews = $reviews->paginate(15);
+
+            return view('categorized-reviews.sended', compact('reviews', 'allowedSorts', 'allowedSortMethods', 'allowedReviewStatus', 'allowedActionStatus', 'allowedAnswerStatus', 'allowedRatings'))->with('department', $request->route('categorized_review'))->with('category', $request->query('category'))->with('topic', $request->query('topic'));
+        } catch (\Exception $e) {
+            return view('categorized-reviews.sended', compact('reviews', 'allowedSorts', 'allowedSortMethods', 'allowedReviewStatus', 'allowedActionStatus', 'allowedAnswerStatus', 'allowedRatings'))->with('department', $request->route('categorized_review'))->with('category', $request->query('category'))->with('topic', $request->query('topic'))->with('error', 'Terjadi kesalahan pada sistem');
+        }
     }
 
     /**

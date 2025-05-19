@@ -51,7 +51,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::delete('categories/destroy-some', [CategoryController::class, 'destroySome'])->name('categories.destroy-some');
         Route::resource('categories', CategoryController::class)->except('destroySome');
-        Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['store']);
+
+        Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['index', 'store', 'show']);
 
         Route::delete('topics/destroy-some', [TopicController::class, 'destroySome'])->name('topics.destroy-some');
 

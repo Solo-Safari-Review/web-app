@@ -17,4 +17,8 @@ class Department extends Model
     public function categories() {
         return $this->hasMany(Category::class);
     }
+
+    public function categorizedReviews() {
+        return $this->hasMany(CategorizedReview::class);
+    }
 }
