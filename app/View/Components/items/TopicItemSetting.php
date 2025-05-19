@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 
 class TopicItemSetting extends Component
 {
-    public $reviewsCount, $showUrl, $deleteUrl, $type;
+    public $reviewsCount, $showUrl, $editUrl, $deleteUrl, $type;
     /**
      * Create a new component instance.
      */
@@ -17,6 +17,7 @@ class TopicItemSetting extends Component
     {
         $this->reviewsCount = $topic->reviews()->count();
         $this->showUrl = route('topics.show', HashidsHelper::encode($topic->id));
+        $this->editUrl = route('topics.edit', HashidsHelper::encode($topic->id));
         $this->deleteUrl = route('topics.destroy', HashidsHelper::encode($topic->id));
         $this->type = "topic";
     }

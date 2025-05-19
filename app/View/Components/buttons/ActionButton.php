@@ -18,6 +18,7 @@ class ActionButton extends Component
     public function __construct(
         public $id,
         public $showUrl = "",
+        public $editUrl = "",
         public $deleteUrl = "",
         public $type,
         public $info = "")
