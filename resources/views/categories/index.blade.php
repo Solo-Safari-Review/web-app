@@ -15,8 +15,8 @@
             <a href="{{ route('categories.create') }}" class="text-center text-sm px-6 py-1 w-full xl:w-fit rounded-lg bg-[#FFE4B7] border-1 border-gray-300 hover:bg-[#FFE4B7]/80">Tambah Kategori</a>
         </div>
         <div class="flex flex-col w-full gap-2 py-2">
-            @foreach ($categories as $category)
-                <x-items.category-item-setting :category="$category"></x-items.category-item-setting>
+            @foreach ($departments as $department)
+                <x-sections.category-on-department :categories="$department->categories" departmentName="{!! $department->name !!}"></x-sections.category-on-department>
             @endforeach
         </div>
     </form>

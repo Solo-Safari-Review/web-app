@@ -20,9 +20,9 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         try {
-            $categories = Category::withCount('categorizedReviews')->orderBy('categorized_reviews_count', 'desc')->paginate(15);
+            $departments = Department::where('name', '!=', 'Admin Review')->with('categories')->withCount('categories')->orderBy('categories_count', 'desc')->paginate(15);
 
-            return view('categories.index', compact('categories'));
+            return view('categories.index', compact('departments'));
         } catch (\Throwable $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }

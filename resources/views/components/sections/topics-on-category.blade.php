@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col">
     <div class="px-2 py-4 w-full bg-[#E9D9C7]/50">
-        <span>{{ $categoryName }}</span>
+        <span>Kategori: {{ $categoryName }}</span>
     </div>
 
     @foreach ($topics as $topic)
