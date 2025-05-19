@@ -45,12 +45,11 @@ class CategoryController extends Controller
     {
         if (Auth::user()->hasPermissionTo('make_category')) {
             $validated = $request->validate([
-                'name' => 'required|unique:categories,name',
+                'name' => 'required',
                 'department' => 'required',
                 'description' => '',
             ], [
                 'name.required' => 'Nama kategori harus diisi',
-                'name.unique' => 'Kategori sudah ada',
                 'department' => 'Departemen harus dipilih'
             ]);
 
@@ -109,12 +108,11 @@ class CategoryController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:categories,name',
+            'name' => 'required',
             'department' => 'required',
             'description' => '',
         ], [
             'name.required' => 'Nama kategori harus diisi',
-            'name.unique' => 'Kategori sudah ada',
             'department.required' => 'Departemen harus dipilih'
         ]);
 
