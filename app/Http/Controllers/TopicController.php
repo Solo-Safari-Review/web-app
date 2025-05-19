@@ -90,8 +90,9 @@ class TopicController extends Controller
         try {
             $topicId = HashidsHelper::decode($request->route('topic'));
             $topic = Topic::find($topicId);
+            $categories = Category::all();
 
-            return view('topics.edit', compact('topic'));
+            return view('topics.edit', compact('topic', 'categories'));
         } catch (\Exception $e) {
             abort(400, 'Invalid topic token');
         }
@@ -102,21 +103,30 @@ class TopicController extends Controller
      */
     public function update(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'name' => 'required|unique:topics,name',
-            ]);
+        $validated = $request->validate([
+            'name' => 'required',
+            'category' => 'required',
+            'description' => '',
+        ], [
+            'name.required' => 'Nama topik harus diisi',
+            'category.required' => 'Kategori harus dipilih',
+        ]);
 
+        try {
             $topicId = HashidsHelper::decode($request->route('topic'));
             $topic = Topic::find($topicId);
 
+            $categoryId = HashidsHelper::decode($validated['category']);
+
             $topic->update([
                'name' => $validated['name'],
+               'category_id' => $categoryId,
+               'description' => $validated['description'],
             ]);
 
-            return response()->json(['message' => 'Topic updated successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return redirect()->route('topics.index')->with('success', 'Topik berhasil diperbarui');
+        } catch (Exception $e) {
+            return redirect()->route('topics.index')->with('error', 'Topik gagal diperbarui');
         }
     }
 

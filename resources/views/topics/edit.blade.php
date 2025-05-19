@@ -16,15 +16,31 @@
         <tbody class="bg-[#E9D9C7]">
             <tr>
                 <th class="px-6 py-3">Nama Topik</th>
-                <td class="px-6 py-3">{{ $topic->name }}</td>
+                <td class="px-6 py-3">
+                    <input type="text" name="name" id="name" class="bg-[#E9D9C7] border-0 border-b border-[#907B60] px-4 py-2 focus:ring-0 w-full" value="{{ $topic->name }}" autofocus>
+                    @error('name')
+                    <span class="text-red-500 text-sm px-4">{{ $message }}</span>
+                    @enderror
+                </td>
             </tr>
             <tr>
                 <th class="px-6 py-3">Kategori</th>
-                <td class="px-6 py-3"></td>
+                <td class="px-6 py-3">
+                    <select name="category" class="border-0 border-b border-[#907B60] focus:ring-0 w-full">
+                        @foreach ($categories as $category)
+                            <option value="{{ \App\Helpers\HashidsHelper::encode($category->id) }}" {{ $category->id == $topic->category_id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('category')
+                    <span class="text-red-500 text-sm px-4">{{ $message }}</span>
+                    @enderror
+                </td>
             </tr>
             <tr>
-                <th class="px-6 py-3">Keterangan</th>
-                <td class="px-6 py-3"></td>
+                <th class="px-6 py-3">Keterangan<br>(opsional)</th>
+                <td class="px-6 py-3">
+                    <input type="text" name="description" id="description" class="bg-[#E9D9C7] border-0 border-b border-[#907B60] px-4 py-2 focus:ring-0 w-full" value="{{ $topic->description }}">
+                </td>
             </tr>
         </tbody>
     </table>
