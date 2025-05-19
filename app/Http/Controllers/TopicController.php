@@ -39,7 +39,9 @@ class TopicController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('topics.create', compact('categories'));
     }
 
     /**
@@ -48,21 +50,29 @@ class TopicController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->hasPermissionTo('make_topic')) {
+            $validated = $request->validate([
+                'name' => 'required',
+                'category' => 'required',
+                'description' => '',
+            ], [
+                'name.required' => 'Nama topik harus diisi',
+                'category.required' => 'Kategori harus dipilih',
+            ]);
+
             try {
-                $validated = $request->validate([
-                    'name' => 'required|unique:topics,name',
-                ]);
+                $categoryId = HashidsHelper::decode($validated['category']);
 
                 Topic::create([
                     'name' => $validated['name'],
+                    'category_id' => $categoryId,
+                    'description' => $validated['description'],
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
 
-                return response()->json(['message' => 'Category created successfully'], 200);
-
+                return redirect()->route('topics.index')->with('success', 'Topik berhasil dibuat');
             } catch (Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 500);
+                return redirect()->route('topics.index')->with('error', 'Topik gagal dibuat');
             }
         }
     }

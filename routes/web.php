@@ -38,8 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::get('reviews/{review}', [ReviewController::class, 'show'])->name('reviews.show');
 
-    Route::get('topics', [TopicController::class, 'index'])->name('topics.index');
-    Route::get('topics/{topic}', [TopicController::class, 'show'])->name('topics.show');
+    Route::resource('topics', TopicController::class);
 
     Route::get('/search', [SearchController::class, 'search'])->name('search');
     Route::get('/search/show', [SearchController::class, 'searchView'])->name('search.show');
@@ -55,7 +54,6 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('categorized-reviews', CategorizedReviewController::class)->only(['store']);
 
         Route::delete('topics/destroy-some', [TopicController::class, 'destroySome'])->name('topics.destroy-some');
-        Route::resource('topics', TopicController::class)->except('index', 'show');
 
         Route::get('trash', [TrashController::class, 'index'])->name('trash.index');
         Route::get('trash/{trash}', [TrashController::class, 'show'])->name('trash.show');
