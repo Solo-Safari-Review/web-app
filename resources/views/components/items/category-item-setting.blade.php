@@ -8,5 +8,5 @@
         <span class="block xl:hidden min-w-[80px] text-right">{{ $category->categorized_reviews_count }} Ulasan</span>
     </div>
     <span class="hidden xl:block">{{ $category->categorized_reviews_count }} Ulasan</span>
-    <x-buttons.action-button id="{{ \App\Helpers\HashidsHelper::encode($category->id) }}" edit-url="{{ $editUrl }}" show-url="{{ $showUrl }}" delete-url="{{ $deleteUrl }}" type="{{ $type }}"></x-buttons.action-button>
+    <x-buttons.action-button id="{{ \App\Helpers\HashidsHelper::encode($category->id) }}" edit-url="{{ $editUrl }}" show-url="{!! $showUrl !!}" delete-url="{{ $deleteUrl }}" type="{{ $type }}"></x-buttons.action-button>
 </div>

@@ -16,7 +16,7 @@ class TopicItemSetting extends Component
     public function __construct(public $topic)
     {
         $this->reviewsCount = $topic->reviews()->count();
-        $this->showUrl = route('reviews.all', ['topic' => HashidsHelper::encode($topic->id)]);
+        $this->showUrl = route('reviews.all', ['topic' => HashidsHelper::encode($topic->id), 'sort' => 'Jumlah Suka', 'sort-method' => 'Turun']);
         $this->editUrl = route('topics.edit', HashidsHelper::encode($topic->id));
         $this->deleteUrl = route('topics.destroy', HashidsHelper::encode($topic->id));
         $this->type = "topic";

@@ -17,7 +17,7 @@ class CategoryItemSetting extends Component
      */
     public function __construct(public ?Category $category)
     {
-        $this->showUrl = route('reviews.all', ['category' => HashidsHelper::encode($category->id)]);
+        $this->showUrl = route('reviews.all', ['category' => HashidsHelper::encode($category->id), 'sort' => 'Jumlah Suka', 'sort-method' => 'Turun']);
         $this->deleteUrl = route('categories.destroy', HashidsHelper::encode($category->id));
         $this->editUrl = route('categories.edit', HashidsHelper::encode($category->id));
         $this->type = "category";
