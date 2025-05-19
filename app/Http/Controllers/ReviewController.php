@@ -28,7 +28,7 @@ class ReviewController extends Controller
     public function index()
     {
         try {
-            $ttl = 60;
+            $ttl = 20;
 
             if (Auth::user()->hasRole('Admin Departemen')) {
                 $topTopics = Cache::remember('top_topics' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {
@@ -90,7 +90,12 @@ class ReviewController extends Controller
             }
 
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return view('home', [
+                    'topTopics' => [],
+                    'topCategories' => [],
+                    'recentReviews' => [],
+                    'mostHelpfulReviews' => []
+                ])->with('error', 'Terjadi kesalahan sistem');
         }
     }
 
@@ -151,7 +156,7 @@ class ReviewController extends Controller
 
             return view('reviews.all', compact('reviews', 'allowedSorts', 'allowedSortMethods', 'allowedReviewStatus', 'allowedActionStatus', 'allowedAnswerStatus', 'allowedRatings'))->with('category', $request->query('category'))->with('topic', $request->query('topic'));
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return view('reviews.all', compact('reviews', 'allowedSorts', 'allowedSortMethods', 'allowedReviewStatus', 'allowedActionStatus', 'allowedAnswerStatus', 'allowedRatings'))->with('category', $request->query('category'))->with('topic', $request->query('topic'))->with('error', 'Terjadi kesalahan pada sistem');
         }
     }
 
@@ -187,12 +192,12 @@ class ReviewController extends Controller
                         'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
                     ]);
 
-                    return response()->json(['success' => 'Ulasan berhasil dikirimkan'], 200);
+                    return redirect()->back()->with(['success' => 'Ulasan berhasil dikirimkan']);
                 } else {
-                    return response()->json(['error' => 'Ulasan belum terkategorikan'], 500);
+                    return redirect()->back()->with(['error' => 'Ulasan belum terkategorikan']);
                 }
             } catch (Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 500);
+                return redirect()->back()->with(['error' => 'Ulasan gagal dikirim']);
             }
         } else {
             abort(403, 'You do not have permission to send a review');
@@ -267,10 +272,10 @@ class ReviewController extends Controller
                 if (!empty($validated['comment']['department_admin'])) {$categorizedReview->update(['department_admin_comment' => $validated['comment']['department_admin']]);}
             }
 
-            return response()->json(['message' => 'Review updated successfully'], 200);
+            return redirect()->back()->with(['success' => 'Ulasan berhasil diupdate']);
 
         } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return redirect()->back()->with(['error' => 'Ulasan gagal diupdate']);
         }
 
     }
@@ -293,7 +298,7 @@ class ReviewController extends Controller
                 abort(400, 'Review cannot be deleted');
             }
 
-            return response()->json(['message' => 'Review deleted successfully'], 200);
+            return redirect()->back()->with(['success' => 'Ulasan berhasil dihapus']);
         } else {
             abort(403, 'You do not have permission to delete a review');
         }
@@ -316,7 +321,7 @@ class ReviewController extends Controller
                 }
             }
 
-            return response()->json(['message' => 'All Reviews deleted successfully'], 200);
+            return redirect()->back()->with(['success' => 'Semua ulasan yang dipilih berhasil dihapus']);
         } else {
             abort(403, 'You do not have permission to delete a review');
         }
