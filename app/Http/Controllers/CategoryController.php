@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\HashidsHelper;
 use App\Models\Category;
+use App\Models\Department;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -82,8 +83,9 @@ class CategoryController extends Controller
         try {
             $categoryId = HashidsHelper::decode($request->route('category'));
             $category = Category::find($categoryId);
+            $departments = Department::where('name', '!=', 'Admin Review')->get();
 
-            return response()->json($category);
+            return view('categories.edit', compact('category', 'departments'));
         } catch (\Exception $e) {
             abort(400, 'Invalid category token');
         }
@@ -94,21 +96,26 @@ class CategoryController extends Controller
      */
     public function update(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'name' => 'required|unique:categories,name',
-            ]);
+        $validated = $request->validate([
+            'name' => 'required|unique:categories,name',
+            'description' => '',
+        ], [
+            'name.required' => 'Nama kategori harus diisi',
+            'name.unique' => 'Kategori sudah ada',
+        ]);
 
+        try {
             $categoryId = HashidsHelper::decode($request->route('category'));
             $category = Category::find($categoryId);
 
             $category->update([
                'name' => $validated['name'],
+               'description' => $validated['description'],
             ]);
 
-            return response()->json(['message' => 'Category updated successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return redirect()->route('categories.index')->with('success', 'Kategori berhasil diperbarui');
+        } catch (Exception $e) {
+            return redirect()->route('categories.index')->with('error', 'Kategori gagal diperbarui');
         }
     }
 

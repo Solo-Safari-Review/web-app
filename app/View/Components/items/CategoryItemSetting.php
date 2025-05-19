@@ -11,7 +11,7 @@ use Illuminate\View\Component;
 
 class CategoryItemSetting extends Component
 {
-    public $showUrl, $deleteUrl, $type;
+    public $showUrl, $deleteUrl, $editUrl, $type;
     /**
      * Create a new component instance.
      */
@@ -19,6 +19,7 @@ class CategoryItemSetting extends Component
     {
         $this->showUrl = route('reviews.all', ['category' => HashidsHelper::encode($category->id)]);
         $this->deleteUrl = route('categories.destroy', HashidsHelper::encode($category->id));
+        $this->editUrl = route('categories.edit', HashidsHelper::encode($category->id));
         $this->type = "category";
     }
 
