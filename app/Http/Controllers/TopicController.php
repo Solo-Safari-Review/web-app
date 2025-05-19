@@ -91,7 +91,7 @@ class TopicController extends Controller
             $topicId = HashidsHelper::decode($request->route('topic'));
             $topic = Topic::find($topicId);
 
-            return response()->json($topic);
+            return view('topics.edit', compact('topic'));
         } catch (\Exception $e) {
             abort(400, 'Invalid topic token');
         }
