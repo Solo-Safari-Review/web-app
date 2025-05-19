@@ -33,7 +33,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $departments = Department::where('name', '!=', 'Admin Review')->get();
+
+        return view('categories.create', compact('departments'));
     }
 
     /**
@@ -42,20 +44,30 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         if (Auth::user()->hasPermissionTo('make_category')) {
+            $validated = $request->validate([
+                'name' => 'required|unique:categories,name',
+                'department' => 'required',
+                'description' => '',
+            ], [
+                'name.required' => 'Nama kategori harus diisi',
+                'name.unique' => 'Kategori sudah ada',
+                'department' => 'Departemen harus dipilih'
+            ]);
+
             try {
-                $validated = $request->validate([
-                    'name' => 'required|unique:categories,name',
-                ]);
+                $departmentId = HashidsHelper::decode($validated['department']);
 
                 Category::create([
                     'name' => $validated['name'],
+                    'department_id' => $departmentId,
+                    'description' => $validated['description'],
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
-                return response()->json(['message' => 'Category created successfully'], 200);
-
+                return redirect()->route('categories.index')->with('success', 'Kategori berhasil dibuat');
             } catch (Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 500);
+                dd($e);
+                return redirect()->route('categories.index')->with('error', 'Kategori gagal dibuat');
             }
         }
     }
@@ -98,19 +110,24 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|unique:categories,name',
+            'department' => 'required',
             'description' => '',
         ], [
             'name.required' => 'Nama kategori harus diisi',
             'name.unique' => 'Kategori sudah ada',
+            'department.required' => 'Departemen harus dipilih'
         ]);
 
         try {
             $categoryId = HashidsHelper::decode($request->route('category'));
             $category = Category::find($categoryId);
 
+            $departmentId = HashidsHelper::decode($validated['department']);
+
             $category->update([
-               'name' => $validated['name'],
-               'description' => $validated['description'],
+                'name' => $validated['name'],
+                'department_id' => $departmentId,
+                'description' => $validated['description'],
             ]);
 
             return redirect()->route('categories.index')->with('success', 'Kategori berhasil diperbarui');
