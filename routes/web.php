@@ -35,8 +35,7 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('reviews/all', [ReviewController::class, 'allReviews'])->name('reviews.all');
-    Route::get('reviews', [ReviewController::class, 'index'])->name('reviews.index');
-    Route::get('reviews/{review}', [ReviewController::class, 'show'])->name('reviews.show');
+    Route::resource('reviews', ReviewController::class);
 
     Route::resource('topics', TopicController::class);
 
@@ -47,7 +46,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['role:Admin Review'])->group(function () {
         Route::delete('reviews/destroy-some', [ReviewController::class, 'destroySome'])->name('reviews.destroy-some');
-        Route::resource('reviews', ReviewController::class)->except('index', 'show', 'all');
 
         Route::delete('categories/destroy-some', [CategoryController::class, 'destroySome'])->name('categories.destroy-some');
         Route::resource('categories', CategoryController::class)->except('destroySome');

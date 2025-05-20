@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Enums\ReviewStatus;
 use App\Helpers\HashidsHelper;
+use App\Models\CategorizedReview;
 use App\Models\Category;
 use App\Models\Department;
 use App\Models\Topic;
@@ -232,9 +233,23 @@ class ReviewController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Review $review)
+    public function edit(Request $request)
     {
-        //
+        try {
+            $reviewId = HashidsHelper::decode($request->route('review'));
+        } catch (\Exception $e) {
+            abort(400, 'Invalid review token');
+        }
+
+        $review = Review::with('categorizedReview')->find($reviewId);
+
+        $reviewStatus = ReviewStatus::all();
+        $actionStatus = ActionStatus::all();
+        $answerStatus = AnswerStatus::all();
+        $categories = Category::all();
+        $departments = Department::where('name', '!=', 'Admin Review')->get();
+
+        return view('reviews.edit', compact('review', 'reviewStatus', 'actionStatus', 'answerStatus', 'categories', 'departments'));
     }
 
     /**
@@ -248,10 +263,10 @@ class ReviewController extends Controller
 
             $categorizedReview = $review->categorizedReview;
 
-            if ($request->filled('category_id')) {$request['category_id'] = HashidsHelper::decode($request->category_id);}
+            if ($request->filled('category')) {$request['category'] = HashidsHelper::decode($request->category);}
 
             $validated = $request->validate([
-                'category_id' => [Rule::exists(Category::class, 'id')],
+                'category' => [Rule::exists(Category::class, 'id')],
                 'status.review' => [Rule::enum(ReviewStatus::class)],
                 'status.action' => [Rule::enum(ActionStatus::class)],
                 'status.answer' => [Rule::enum(AnswerStatus::class)],
@@ -260,7 +275,14 @@ class ReviewController extends Controller
             ]);
 
             if (Auth::user()->hasPermissionTo('categorizing_review')) {
-                if (!empty($validated['category_id'])) {$categorizedReview->update(['category_id' => $validated['category_id']]);}
+                if ($categorizedReview == null) {
+                    $categorizedReview = CategorizedReview::create([
+                        'review_id' => $reviewId,
+                        'category_id' => $validated['category']
+                    ]);
+                } else {
+                    if (!empty($validated['category_id'])) {$categorizedReview->update(['category_id' => $validated['category_id']]);}
+                }
             }
             if (Auth::user()->hasPermissionTo('flagging_review')) {
                 if (!empty($validated['status']['review'])) {$categorizedReview->update(['review_status' => $validated['status']['review']]);}
@@ -272,10 +294,10 @@ class ReviewController extends Controller
                 if (!empty($validated['comment']['department_admin'])) {$categorizedReview->update(['department_admin_comment' => $validated['comment']['department_admin']]);}
             }
 
-            return redirect()->back()->with(['success' => 'Ulasan berhasil diupdate']);
+            return redirect()->route('reviews.show', HashidsHelper::encode($reviewId))->with(['success' => 'Ulasan berhasil diupdate']);
 
         } catch (Exception $e) {
-            return redirect()->back()->with(['error' => 'Ulasan gagal diupdate']);
+            return redirect()->route('reviews.show', HashidsHelper::encode($reviewId))->with(['error' => 'Ulasan gagal diupdate']);
         }
 
     }

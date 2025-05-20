@@ -41,5 +41,6 @@ class RoleSeeder extends Seeder
         $reviewAdmin->givePermissionTo($deleteTopic);
 
         $departmentAdmin->givePermissionTo($commentReview);
+        $departmentAdmin->givePermissionTo($flaggingReview);
     }
 }
