@@ -191,6 +191,7 @@ class ReviewController extends Controller
                     $review->categorizedReview()->update([
                         'department_id' => $validated['department_id'],
                         'review_admin_comment' => $validated['comment']['review_admin'] ?? null,
+                        'review_status' => ReviewStatus::Sended
                     ]);
 
                     return redirect()->back()->with(['success' => 'Ulasan berhasil dikirimkan']);
