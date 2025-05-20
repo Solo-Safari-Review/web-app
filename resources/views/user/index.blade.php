@@ -77,7 +77,7 @@
             </div>
             <div class="flex flex-col gap-4 w-full">
                 <label class="font-semibold" for="role">Posisi</label>
-                <input type="text" name="role" id="role" class="bg-white border-0 rounded-2xl px-4 py-1 focus:outline-[#4E1F00] focus:ring-0 disabled:text-black/50" value="{{ $user->getRoleNames()->first() }}" disabled>
+                <input type="text" name="role" id="role" class="bg-white border-0 rounded-2xl px-4 py-1 focus:outline-[#4E1F00] focus:ring-0 disabled:text-black/50" value="{{ $user->getRoleNames()->first() }} {{ $user->department->name == "Admin Review" ? "" : $user->department->name }}" disabled>
             </div>
         </div>
     </div>
