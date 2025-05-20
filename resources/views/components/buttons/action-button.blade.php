@@ -29,11 +29,16 @@
           </ul>
         </div>
       </li>
-      <form id="deleteReview{{ $id }}" action="{{ $deleteUrl }}" method="POST">
-        @csrf
-        @method('DELETE')
-        <button type="button" class="block px-4 py-2 hover:bg-[#C1B6AE] w-full text-start" onclick="confirmDeleteReview('deleteReview{{ $id }}')">Hapus</button>
-      </form>
+      <li>
+        <a href="/" class="block px-4 py-2 hover:bg-[#C1B6AE]">Prediksi rating</a>
+      </li>
+      <li>
+        <form id="deleteReview{{ $id }}" action="{{ $deleteUrl }}" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="button" class="block px-4 py-2 hover:bg-[#C1B6AE] w-full text-start" onclick="confirmDeleteReview('deleteReview{{ $id }}')">Hapus</button>
+        </form>
+      </li>
       @endif
     </ul>
 </div>
