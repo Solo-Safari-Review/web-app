@@ -265,9 +265,11 @@ class ReviewController extends Controller
             $categorizedReview = $review->categorizedReview;
 
             if ($request->filled('category')) {$request['category'] = HashidsHelper::decode($request->category);}
+            if ($request->filled('department')) {$request['department'] = HashidsHelper::decode($request->department);}
 
             $validated = $request->validate([
                 'category' => [Rule::exists(Category::class, 'id')],
+                'department' => [Rule::exists(Department::class, 'id')],
                 'status.review' => [Rule::enum(ReviewStatus::class)],
                 'status.action' => [Rule::enum(ActionStatus::class)],
                 'status.answer' => [Rule::enum(AnswerStatus::class)],
@@ -282,8 +284,11 @@ class ReviewController extends Controller
                         'category_id' => $validated['category']
                     ]);
                 } else {
-                    if (!empty($validated['category_id'])) {$categorizedReview->update(['category_id' => $validated['category_id']]);}
+                    if (!empty($validated['category'])) {$categorizedReview->update(['category_id' => $validated['category']]);}
                 }
+            }
+            if (Auth::user()->hasPermissionTo('send_review')) {
+                if (!empty($validated['department'])) {$categorizedReview->update(['department_id' => $validated['department']]);}
             }
             if (Auth::user()->hasPermissionTo('flagging_review')) {
                 if (!empty($validated['status']['review'])) {$categorizedReview->update(['review_status' => $validated['status']['review']]);}
