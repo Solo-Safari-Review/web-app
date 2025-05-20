@@ -24,7 +24,7 @@ class ReviewItem extends Component
         $this->department = $review->categorizedReview && $review->categorizedReview->department_id ? "Departemen " . $review->categorizedReview->department->name : "";
         $this->content = $review->content;
         $this->rating = $review->rating;
-        $this->reviewStatus = $review->categorizedReview->review_status ?? null;
+        // $this->reviewStatus = $review->categorizedReview->review_status ?? null;
         $this->actionStatus = $review->categorizedReview->action_status ?? null;
         $this->answerStatus = $review->categorizedReview->answer_status ?? null;
         if ($this->type == 'sampah') {

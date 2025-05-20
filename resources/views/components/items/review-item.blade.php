@@ -9,7 +9,11 @@
             </div>
             <div class="flex flex-col gap-1 max-w-[100px] w-full">
                 <span class="px-2 py-1 rounded-lg w-[100px] text-[10px] text-center bg-[#FFFEC4] text-[#907B60]">{{ $category }}</span>
+                @if ($department != "")
                 <span class="px-2 py-1 rounded-lg w-[100px] text-[10px] text-center bg-[#FFFEC4] text-[#907B60]">{{ $department }}</span>
+                @else
+                <span class="px-2 py-1 rounded-lg w-[100px] text-[10px] text-center bg-[#FF8080] text-white">Belum diteruskan</span>
+                @endif
             </div>
         </div>
         <span class="grow">{{ \Illuminate\Support\Str::limit($content, 240) }}</span>
@@ -17,7 +21,7 @@
     <div class="flex gap-2 items-center justify-between xl:justify-start w-full xl:w-fit h-full">
         <x-badges.badge-rating-review rating="{{ $rating }}"></x-badges.badge-rating-review>
         <div class="flex flex-wrap xl:flex-col gap-2 items-center align-middle justify-center">
-            <x-badges.badge-status-review status="{{ $reviewStatus }}"></x-badges.badge-status-review>
+            {{-- <x-badges.badge-status-review status="{{ $reviewStatus }}"></x-badges.badge-status-review> --}}
             <x-badges.badge-action-review status="{{ $actionStatus }}"></x-badges.badge-action-review>
             <x-badges.badge-answer-status status="{{ $answerStatus }}"></x-badges.badge-answer-status>
         </div>
