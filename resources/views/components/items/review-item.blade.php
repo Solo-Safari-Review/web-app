@@ -23,7 +23,7 @@
             show-url="{{ $showUrl }}"
             delete-url="{{ $deleteUrl }}"
             edit-url="{{ $editUrl }}"
-            type="{{ 'review' }}"
+            type="{{ $type ?? 'review' }}"
             info="{{ $info }}">
         </x-buttons.action-button>
     </div>
