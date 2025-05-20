@@ -29,7 +29,7 @@ class ReviewController extends Controller
     public function index()
     {
         try {
-            $ttl = 20;
+            $ttl = 10;
 
             if (Auth::user()->hasRole('Admin Departemen')) {
                 $topTopics = Cache::remember('top_topics' . HashidsHelper::encode(Auth::user()->id), $ttl, function () {

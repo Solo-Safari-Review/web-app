@@ -11,7 +11,7 @@ use Illuminate\View\Component;
 
 class ReviewItem extends Component
 {
-    public $username, $category, $content, $rating, $reviewStatus, $actionStatus, $answerStatus, $showUrl, $editUrl, $deleteUrl, $reviewId, $info;
+    public $username, $category, $department, $content, $rating, $reviewStatus, $actionStatus, $answerStatus, $showUrl, $editUrl, $deleteUrl, $reviewId, $info;
     /**
      * Create a new component instance.
      */
@@ -20,7 +20,8 @@ class ReviewItem extends Component
         $reviewId = HashidsHelper::encode($review->id);
 
         $this->username = $review->username;
-        $this->category = $review->categorizedReview->category->name ?? "Belum Terkategori";
+        $this->category = $review->categorizedReview && $review->categorizedReview->category_id ? "Kategori " . $review->categorizedReview->category->name : "Belum Terkategori";
+        $this->department = $review->categorizedReview && $review->categorizedReview->department_id ? "Departemen " . $review->categorizedReview->department->name : "";
         $this->content = $review->content;
         $this->rating = $review->rating;
         $this->reviewStatus = $review->categorizedReview->review_status ?? null;

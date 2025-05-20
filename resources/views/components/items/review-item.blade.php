@@ -7,7 +7,10 @@
                 @endif
                 <span>{{ $username }}</span>
             </div>
-            <span class="max-w-[100px] w-full">{{ $category }}</span>
+            <div class="flex flex-col gap-1 max-w-[100px] w-full">
+                <span class="px-2 py-1 rounded-lg w-[100px] text-[10px] text-center bg-[#FFFEC4] text-[#907B60]">{{ $category }}</span>
+                <span class="px-2 py-1 rounded-lg w-[100px] text-[10px] text-center bg-[#FFFEC4] text-[#907B60]">{{ $department }}</span>
+            </div>
         </div>
         <span class="grow">{{ \Illuminate\Support\Str::limit($content, 240) }}</span>
     </div>
