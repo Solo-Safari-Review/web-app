@@ -219,14 +219,14 @@ class ReviewController extends Controller
         if (Auth::user()->hasRole('Admin Departemen')) {
             $review = Review::with('categorizedReview')
                 ->whereHas('categorizedReview', function ($query) {
-                    $query->where('user_id', Auth::user()->id);
+                    $query->where('department_id', Auth::user()->department_id);
                 })
                 ->find($reviewId);
         } else {
             $review = Review::with('categorizedReview')->find($reviewId);
         }
 
-        return response()->json($review);
+        return view('reviews.show', compact('review'));
     }
 
     /**
