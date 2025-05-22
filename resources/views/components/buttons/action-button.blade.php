@@ -53,6 +53,8 @@
       <li>
         <a href="{{ $showUrl }}" class="block px-4 py-2 hover:bg-[#C1B6AE]">Lihat Daftar Ulasan</a>
       </li>
+
+      @if (Auth::user()->hasRole('Admin Review'))
       <li>
         <a href="{{ $editUrl }}" class="block px-4 py-2 hover:bg-[#C1B6AE]">Edit {{ $type == "category" ? "Kategori" : "Topik" }}</a>
       </li>
@@ -61,6 +63,8 @@
         @method('DELETE')
         <button type="submit" class="btn block px-4 py-2 hover:bg-[#C1B6AE] w-full text-start">Hapus</button>
       </form>
+      @endif
+
     </ul>
 </div>
 @endif
