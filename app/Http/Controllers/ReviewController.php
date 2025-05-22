@@ -249,8 +249,9 @@ class ReviewController extends Controller
         $answerStatus = AnswerStatus::all();
         $categories = Category::all();
         $departments = Department::where('name', '!=', 'Admin Review')->get();
+        $topics = Topic::all();
 
-        return view('reviews.edit', compact('review', 'reviewStatus', 'actionStatus', 'answerStatus', 'categories', 'departments'));
+        return view('reviews.edit', compact('review', 'reviewStatus', 'actionStatus', 'answerStatus', 'categories', 'departments', 'topics'));
     }
 
     /**
@@ -275,6 +276,7 @@ class ReviewController extends Controller
                 'status.answer' => [Rule::enum(AnswerStatus::class)],
                 'comment.review_admin' => 'nullable|max:65535',
                 'comment.department_admin' => 'nullable|max:65535',
+                'topics' => 'nullable|array',
             ]);
 
             if (Auth::user()->hasPermissionTo('categorizing_review')) {
@@ -300,9 +302,14 @@ class ReviewController extends Controller
                 if (!empty($validated['comment']['department_admin'])) {$categorizedReview->update(['department_admin_comment' => $validated['comment']['department_admin']]);}
             }
 
+            if (!empty($validated['topics'])) {
+                $categorizedReview->review->topics()->sync($validated['topics']);
+            }
+
             return redirect()->route('reviews.show', HashidsHelper::encode($reviewId))->with(['success' => 'Ulasan berhasil diupdate']);
 
         } catch (Exception $e) {
+            return $e->getMessage();
             return redirect()->route('reviews.show', HashidsHelper::encode($reviewId))->with(['error' => 'Ulasan gagal diupdate']);
         }
 

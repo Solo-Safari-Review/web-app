@@ -59,7 +59,9 @@
                     <span class="xl:text-lg text-sm font-bold">Topik: </span>
                     <div class="flex gap-2">
                         @foreach ($review->topics as $topic)
-                            $topic->name
+                            <span class="flex gap-1 items-center justify-center px-2 py-1 rounded-[12px] text-[16px] text-center bg-[#FFFEC4] text-[#907B60]">
+                                {{ $topic->name }}
+                            </span>
                         @endforeach
                     </div>
                 </div>
