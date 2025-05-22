@@ -55,6 +55,14 @@
                     </div>
                     <textarea rows="8" name="review" id="review" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 border-0 focus:border-[#907B60] focus:ring-[#907B60]" disabled>{{ $review->content }}</textarea>
                 </div>
+                <div class="flex w-full gap-4 items-center">
+                    <span class="xl:text-lg text-sm font-bold">Topik: </span>
+                    <div class="flex gap-2">
+                        @foreach ($review->topics as $topic)
+                            $topic->name
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
