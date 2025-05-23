@@ -44,6 +44,19 @@
 </div>
 @endif
 
+@if ($type == "scraping-review")
+<button id="actionButton{{ $id }}{{ $info }}" data-dropdown-toggle="actionMenu{{ $id }}{{ $info }}" class="w-[102px] px-7 py-1 rounded-lg bg-[#F1EADA] text-[14px] h-fit border border-[#C1B6AE]" type="button">Aksi</button>
+
+{{-- Dropdown Menu --}}
+<div id="actionMenu{{ $id }}{{ $info }}" class="z-10 hidden bg-[#F1EADA] divide-y divide-[#C1B6AE] rounded-lg shadow-lg py-2 min-w-[160px]">
+    <ul class="py-2 text-[16px] text-[#1D1B20]" aria-labelledby="actionButton{{ $id }}{{ $info }}">
+      <li>
+        <a href="{{ $showUrl }}" class="block px-4 py-2 hover:bg-[#C1B6AE]">Lihat Detail</a>
+      </li>
+    </ul>
+</div>
+@endif
+
 @if ($type == "category" || $type == "topic")
 <button id="actionButton{{ $id }}" data-dropdown-toggle="actionMenu{{ $id }}" class="w-[102px] px-7 py-1 rounded-lg bg-[#F1EADA] text-[14px] h-fit border border-[#C1B6AE]" type="button">Aksi</button>
 

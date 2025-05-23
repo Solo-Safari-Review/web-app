@@ -6,6 +6,7 @@ use App\Http\Controllers\ConfirmAccountsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ScrapingController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\TrashController;
@@ -64,6 +65,8 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('confirm-accounts/destroy-some', [ConfirmAccountsController::class, 'destroySome'])->name('confirm-accounts.destroy-some');
 
         Route::resource('user', UserController::class)->except(['index']);
+
+        Route::get('/get-reviews', [ScrapingController::class, 'getScrapingData'])->name('get-reviews');
     });
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
