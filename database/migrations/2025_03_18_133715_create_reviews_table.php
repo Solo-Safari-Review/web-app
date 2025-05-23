@@ -29,10 +29,11 @@ return new class extends Migration
             $table->integer('reviewer_number_of_reviews')->nullable();
             $table->boolean('contains_question')->nullable();
             $table->boolean('contains_number')->nullable();
-            $table->boolean('is_extreme_rating')->nullable();
             $table->boolean('is_weekend')->nullable();
             $table->integer('image_count')->nullable();
+            $table->boolean('is_extreme_review')->nullable();
             $table->boolean('is_helpful')->nullable();
+            $table->text('raw_content')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
