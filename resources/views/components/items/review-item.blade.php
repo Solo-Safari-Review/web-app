@@ -21,7 +21,6 @@
     <div class="flex gap-2 items-center justify-between xl:justify-start w-full xl:w-fit h-full">
         <x-badges.badge-rating-review rating="{{ $rating }}"></x-badges.badge-rating-review>
         <div class="flex flex-wrap xl:flex-col gap-2 items-center align-middle justify-center">
-            {{-- <x-badges.badge-status-review status="{{ $reviewStatus }}"></x-badges.badge-status-review> --}}
             <x-badges.badge-action-review status="{{ $actionStatus }}"></x-badges.badge-action-review>
             <x-badges.badge-answer-status status="{{ $answerStatus }}"></x-badges.badge-answer-status>
         </div>

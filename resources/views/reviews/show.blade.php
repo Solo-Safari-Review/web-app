@@ -49,8 +49,12 @@
                     <div class="flex flex-wrap xl:flex-nowrap gap-4 justify-between">
                         <label for="review" class="xl:text-lg text-sm font-bold">Ulasan oleh {{ $review->username }}</label>
                         <div class="flex gap-4">
-                            <label for="rating" class="xl:text-lg text-sm font-bold">Rating: </label>
+                            <span class="xl:text-lg text-sm font-bold">Rating Asli: </span>
                             <x-badges.badge-rating-review rating="{{ $review->rating }}"></x-badges.badge-rating-review>
+                            <span class="xl:text-lg text-sm font-bold">Rating prediksi: </span>
+                            <x-badges.badge-rating-review rating="{{ $review->predicted_rating }}"></x-badges.badge-rating-review>
+                            <span class="xl:text-lg text-sm font-bold">Membantu: </span>
+                            <x-badges.badge-yes-no status="{{ $review->is_helpful ?? 0 }}"></x-badges.badge-yes-no>
                         </div>
                     </div>
                     <textarea rows="8" name="review" id="review" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 border-0 focus:border-[#907B60] focus:ring-[#907B60]" disabled>{{ $review->content }}</textarea>
