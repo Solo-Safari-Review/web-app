@@ -31,7 +31,7 @@
                             <td class="px-6 py-4"><x-badges.badge-rating-review rating="{{ $review->rating }}"></x-badges.badge-rating-review></td>
                             <td class="px-6 py-4"><x-badges.badge-rating-review rating="{{ $review->predicted_rating }}"></x-badges.badge-rating-review></td>
                             <td class="px-6 py-4"><x-badges.badge-yes-no status="{{ $review->is_helpful ?? 0 }}"></x-badges.badge-yes-no></td>
-                            <td class="px-6 py-4"><x-buttons.action-button type="scraping-review" id="{{ $review->id }}" show-url="/" edit-url="" delete-url=""></x-buttons.action-button></td>
+                            <td class="px-6 py-4"><x-buttons.action-button type="scraping-review" id="{{ \App\Helpers\HashidsHelper::encode($review->id) }}" show-url="{{ route('reviews.show', \App\Helpers\HashidsHelper::encode($review->id)) }}" edit-url="" delete-url=""></x-buttons.action-button></td>
                         </tr>
                         @endforeach
                     </tbody>
