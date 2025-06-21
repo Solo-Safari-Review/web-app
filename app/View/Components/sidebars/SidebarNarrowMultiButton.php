@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\sidebars;
+namespace App\View\Components\Sidebars;
 
 use Closure;
 use Illuminate\Contracts\View\View;

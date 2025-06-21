@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\buttons;
+namespace App\View\Components\Buttons;
 
 use App\Models\Department;
 use App\Models\User;

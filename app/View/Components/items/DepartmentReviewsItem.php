@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\items;
+namespace App\View\Components\Items;
 
 use App\Helpers\HashidsHelper;
 use App\Models\Department;

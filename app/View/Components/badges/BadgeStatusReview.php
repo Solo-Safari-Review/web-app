@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\badges;
+namespace App\View\Components\Badges;
 
 use App\Enums\ReviewStatus;
 use Closure;
