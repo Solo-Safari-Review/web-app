@@ -9,33 +9,37 @@ use Illuminate\Support\Facades\Http;
 
 class ScrapingController extends Controller
 {
-    public function getScrapingData() {
-        $reviews = Cache::remember('scraping_reviews', 3600, function () {
-            $scrapingUrl = 'http://localhost:8000/run-scraping';
+    public function getScrapingData()
+{
+    $reviews = Cache::remember('scraping_reviews', 3600, function () {
+        $scrapingUrl = 'http://localhost:8000/run-scraping';
 
-            try {
-                $response = Http::timeout(600)->post($scrapingUrl);
+        try {
+            $response = Http::timeout(600)->post($scrapingUrl);
 
-                if ($response->successful()) {
-                    $responseData = $response->json();
-                    $totalNewReviews = $responseData['data']['total_reviews'];
-
-                } else {
-                    return view('scraping-reviews.index')->with(['error' => 'Scraping failed'], 500);
-                }
-            } catch (\Exception $e) {
-                return view('scraping-reviews.index')->with(['error' => 'Scraping failed'], 500);
+            if (!$response->successful()) {
+                return []; // Return empty array on failure
             }
 
-            $reviews = Review::orderBy('created_at', 'desc')->limit($totalNewReviews)->get();
-            $reviews = $reviews->map(function ($review) {
-                $review->diff_rating = abs($review->rating - $review->predicted_rating);
-                return $review;
-            })->sortByDesc('diff_rating');
+            $responseData = $response->json();
+            $totalNewReviews = $responseData['data']['total_reviews'] ?? 0;
 
-            return $reviews;
-        });
+        } catch (\Exception $e) {
+            return []; // Return empty array on error
+        }
 
-        return view('scraping-reviews.index', compact('reviews'));
-    }
+        $reviews = Review::orderBy('created_at', 'desc')->limit($totalNewReviews)->get();
+
+        // Apply transformation & convert to array to avoid closure serialization
+        $transformed = $reviews->map(function ($review) {
+            $review->diff_rating = abs($review->rating - $review->predicted_rating);
+            return $review;
+        })->sortByDesc('diff_rating')->values()->toArray();
+
+        return $transformed;
+    });
+
+    return view('scraping-reviews.index', ['reviews' => collect($reviews)]);
+}
+
 }
