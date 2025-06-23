@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             DepartmentsSeeder::class,
             UserSeeder::class,
-            CategorySeeder::class,
-            TopicSeeder::class,
-            CategorizedReviewSeeder::class
+            // CategorySeeder::class,
+            // TopicSeeder::class,
+            // CategorizedReviewSeeder::class
         ]);
     }
 }
