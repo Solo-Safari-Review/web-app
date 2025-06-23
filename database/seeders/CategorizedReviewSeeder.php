@@ -13,18 +13,18 @@ class CategorizedReviewSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
-            ['category_id' => 1, 'review_id' => 1],
-            ['category_id' => 1, 'review_id' => 2],
-            ['category_id' => 1, 'review_id' => 3],
-            ['category_id' => 2, 'review_id' => 4],
-            ['category_id' => 2, 'review_id' => 5],
-            ['category_id' => 2, 'review_id' => 6],
-            ['category_id' => 3, 'review_id' => 7],
-        ];
+        // $data = [
+        //     ['category_id' => 1, 'review_id' => 1],
+        //     ['category_id' => 1, 'review_id' => 2],
+        //     ['category_id' => 1, 'review_id' => 3],
+        //     ['category_id' => 2, 'review_id' => 4],
+        //     ['category_id' => 2, 'review_id' => 5],
+        //     ['category_id' => 2, 'review_id' => 6],
+        //     ['category_id' => 3, 'review_id' => 7],
+        // ];
 
-        foreach ($data as $item) {
-            CategorizedReview::create($item);
-        }
+        // foreach ($data as $item) {
+        //     CategorizedReview::create($item);
+        // }
     }
 }

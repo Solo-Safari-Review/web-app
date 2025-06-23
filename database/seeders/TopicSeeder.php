@@ -13,13 +13,13 @@ class TopicSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = ['Toilet', 'Tempat Duduk', 'Area Parkir', 'Fasilitas Disabilitas', 'Restoran'];
+        // $data = ['Toilet', 'Tempat Duduk', 'Area Parkir', 'Fasilitas Disabilitas', 'Restoran'];
 
-        foreach ($data as $value) {
-            Topic::create([
-                'name' => $value,
-                'category_id' => rand(1, 4)
-            ]);
-        }
+        // foreach ($data as $value) {
+        //     Topic::create([
+        //         'name' => $value,
+        //         'category_id' => rand(1, 4)
+        //     ]);
+        // }
     }
 }

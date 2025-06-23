@@ -13,13 +13,13 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $data = ['Fasilitas', 'Pelayanan', 'Kebersihan & Keamanan', 'Harga & Aksebilitas'];
+        // $data = ['Fasilitas', 'Pelayanan', 'Kebersihan & Keamanan', 'Harga & Aksebilitas'];
 
-        foreach ($data as $value) {
-            Category::create([
-                'name' => $value,
-                'department_id' => rand(2, 5)
-            ]);
-        }
+        // foreach ($data as $value) {
+        //     Category::create([
+        //         'name' => $value,
+        //         'department_id' => rand(2, 5)
+        //     ]);
+        // }
     }
 }

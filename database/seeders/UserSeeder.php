@@ -13,15 +13,15 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $userType = [
-            'admin-operasional',
-            'admin-satwa',
-            'admin-konservasi-pendidikan',
-            'admin-pengunjung',
-            'admin-komunikasi-pemasaran',
-            'admin-administrasi-keuangan',
-            'admin-inovasi-pengembangan'
-        ];
+        // $userType = [
+        //     'admin-operasional',
+        //     'admin-satwa',
+        //     'admin-konservasi-pendidikan',
+        //     'admin-pengunjung',
+        //     'admin-komunikasi-pemasaran',
+        //     'admin-administrasi-keuangan',
+        //     'admin-inovasi-pengembangan'
+        // ];
 
         $user = User::create([
             'first_name' => '',
@@ -35,18 +35,18 @@ class UserSeeder extends Seeder
 
         $user->assignRole('Admin Review');
 
-        foreach ($userType as $type) {
-            $user = User::create([
-                'first_name' => '',
-                'last_name' => $type,
-                'email' => $type . '@example.com',
-                'phone' => '088888888888',
-                'password' => bcrypt('S0loSAFARI@password'),
-                'is_validated' => 1,
-                'department_id' => rand(2, 3),
-            ]);
+        // foreach ($userType as $type) {
+        //     $user = User::create([
+        //         'first_name' => '',
+        //         'last_name' => $type,
+        //         'email' => $type . '@example.com',
+        //         'phone' => '088888888888',
+        //         'password' => bcrypt('S0loSAFARI@password'),
+        //         'is_validated' => 1,
+        //         'department_id' => rand(2, 3),
+        //     ]);
 
-            $user->assignRole('Admin Departemen');
-        }
+        //     $user->assignRole('Admin Departemen');
+        // }
     }
 }
