@@ -15,7 +15,7 @@ class ScrapingController extends Controller
         $scrapingUrl = 'http://localhost:8000/run-scraping';
 
         try {
-            $response = Http::timeout(600)->post($scrapingUrl);
+            $response = Http::timeout(600)->get($scrapingUrl);
 
             if (!$response->successful()) {
                 return []; // Return empty array on failure
