@@ -18,7 +18,10 @@ class ScrapingController extends Controller
                 $response = Http::timeout(600)->get($scrapingUrl);
 
                 if (!$response->successful()) {
-                    return []; // Return empty array on failure
+                    return [
+                        'error' => $response->status(),
+                        'message' => 'Failed to fetch scraping data'
+                    ]; // Return empty array on failure
                 }
 
                 $responseData = $response->json();
