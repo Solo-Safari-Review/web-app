@@ -12,7 +12,7 @@ class ScrapingController extends Controller
     public function getScrapingData()
     {
         $reviews = Cache::remember('scraping_reviews', 3600, function () {
-            $scrapingUrl = 'http://localhost:8000/run-scraping';
+            $scrapingUrl = 'https://reveazy.site/run-scraping';
 
             try {
                 $response = Http::timeout(600)->get($scrapingUrl);
