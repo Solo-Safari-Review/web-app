@@ -25,7 +25,7 @@ class ScrapingController extends Controller
                 }
 
                 $responseData = $response->json();
-                $totalNewReviews = $responseData['data']['total_reviews'] ?? 0;
+                $totalNewReviews = $responseData['total_reviews'] ?? 0;
 
                 if ($totalNewReviews <= 0) {
                     return Cache::get('scraping_reviews', []);
