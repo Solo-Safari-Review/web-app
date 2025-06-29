@@ -32,7 +32,7 @@ class ScrapingController extends Controller
                 }
 
             } catch (\Exception $e) {
-                return Cache::get('scraping_reviews', [])->with('error', $e->getMessage());
+                return Cache::get('scraping_reviews', []);
             }
 
             $reviews = Review::orderBy('created_at', 'desc')->limit($totalNewReviews)->get();
