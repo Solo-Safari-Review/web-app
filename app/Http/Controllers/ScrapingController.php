@@ -15,7 +15,7 @@ class ScrapingController extends Controller
             $scrapingUrl = 'https://reveazy.site/run-scraping';
 
             try {
-                $response = Http::timeout(600)->get($scrapingUrl);
+                $response = Http::timeout(360)->get($scrapingUrl);
 
                 if (!$response->successful()) {
                     return [
