@@ -41,7 +41,7 @@ class ScrapingController extends Controller
             $transformed = $reviews->map(function ($review) {
                 $review->diff_rating = abs($review->rating - $review->predicted_rating);
                 return $review;
-            })->sortByDesc('diff_rating')->values()->toArray();
+            })->sortByDesc('diff_rating');
 
             return $transformed;
         });
