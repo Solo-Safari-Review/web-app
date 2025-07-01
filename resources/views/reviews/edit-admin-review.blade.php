@@ -21,8 +21,8 @@
                 <div class="flex flex-col w-full gap-4">
                     <label for="department" class="xl:text-lg text-sm font-bold">Departemen</label>
                     <select name="department" id="department" class="bg-[#D9D9D9] rounded-2xl px-4 py-2 border-0 focus:border-[#907B60] focus:ring-[#907B60]">
+                        <option value="NULL">Tidak Memiliki Departemen</option>
                         @foreach ($departments as $department)
-                            <option value="NULL">Tidak Memiliki Departemen</option>
                             <option value="{{ \App\Helpers\HashidsHelper::encode($department->id) }}" {{ $review->categorizedReview && $review->categorizedReview->department_id == $department->id ? 'selected' : '' }}>
                                 {{ $department->name }}
                             </option>
