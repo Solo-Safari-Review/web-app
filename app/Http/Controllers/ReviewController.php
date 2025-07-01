@@ -270,7 +270,7 @@ class ReviewController extends Controller
 
             $validated = $request->validate([
                 'category' => [Rule::exists(Category::class, 'id')],
-                'department' => [Rule::exists(Department::class, 'id')],
+                'department' => ['nullable', Rule::exists(Department::class, 'id')],
                 'status.review' => [Rule::enum(ReviewStatus::class)],
                 'status.action' => [Rule::enum(ActionStatus::class)],
                 'status.answer' => [Rule::enum(AnswerStatus::class)],
@@ -290,7 +290,13 @@ class ReviewController extends Controller
                 }
             }
             if (Auth::user()->hasPermissionTo('send_review')) {
-                if (!empty($validated['department'])) {$categorizedReview->update(['department_id' => $validated['department']]);}
+                if (!empty($validated['department'])) {
+                    if ($validated['department'] == 'NULL') {
+                        $categorizedReview->update(['department_id' => null]);
+                    } else {
+                        $categorizedReview->update(['department_id' => $validated['department']]);
+                    }
+                }
             }
             if (Auth::user()->hasPermissionTo('flagging_review')) {
                 if (!empty($validated['status']['review'])) {$categorizedReview->update(['review_status' => $validated['status']['review']]);}
